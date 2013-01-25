@@ -19,15 +19,11 @@ SceneBase {
     nativeUtils.displayMessageBox(qsTr("Really quit the game?"), "", 2);
   }
 
-  MultiResolutionImage {
-    source: "img/mainMenuBackground-sd.png"
-    anchors.centerIn: parent
-  }
 
   Column {
-    spacing: 25
+    spacing: 5
     anchors.horizontalCenter: parent.horizontalCenter
-    y: 30
+    y: 10
 
     MenuText {
       text: "AGJ"
@@ -39,20 +35,10 @@ SceneBase {
       text: "Highscore: " + maximumHighscore
     }
 
-    Item {
-      width: 1
-      height: 0
-    }
-
     MenuButton {
       text: "Play"
       onClicked: window.state = "game"
       textSize: 30
-    }
-
-    Item {
-      width: 1
-      height: 75
     }
 
 

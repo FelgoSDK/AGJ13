@@ -4,8 +4,8 @@ import VPlay 1.0
 // base component for all 3 scenes in the game
 Scene {
   id: sceneBase
-  width: 320
-  height: 480
+  width: 480
+  height: 320
 
   // this is an important performance improvement, as renderer can skip invisible items (and all its children)
   // also, the focus-property for key handling relies on the visible-property

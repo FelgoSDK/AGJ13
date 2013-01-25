@@ -4,8 +4,8 @@ import VPlay 1.0
 GameWindow {
   id: window
 
-  width: 320*2//*1.5 // for testing on desktop with the highest res, use *1.5 so the -hd2 textures are used
-  height: 480*2//*1.5
+  width: 480*2//*1.5 // for testing on desktop with the highest res, use *1.5 so the -hd2 textures are used
+  height: 320*2//*1.5
 
 
   property alias level: scene.level

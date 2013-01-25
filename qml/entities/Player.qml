@@ -69,4 +69,11 @@ EntityBase {
     }
   }
 
+  Rectangle {
+    width: 40
+    height: 40
+    anchors.centerIn: parent
+    color: "red"
+  }
+
 }

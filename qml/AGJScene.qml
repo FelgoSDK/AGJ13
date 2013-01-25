@@ -10,7 +10,7 @@ SceneBase {
   property alias entityContainer: level
 
   // make 1 grid (so 1 block and the player size) 48 logical px - a roost has this size, so 320/48= 6.6 can be displayed in one scene
-  gridSize: 48//32
+  gridSize: 96//48//32
 
   // place it on bottom, because otherwise it would be unfair compared to different devices because the player would see more to the bottom playfield!
   sceneAlignmentY: "bottom"
@@ -36,8 +36,6 @@ SceneBase {
 
     // for physics-based games, this should be set to 60!
     updatesPerSecondForPhysics: 60
-    // make objects fall faster by increasing gravity
-    gravity.y: -60
 
     // this should be increased so it looks good, by default it is set to 1 to save performance
     velocityIterations: 5
@@ -48,6 +46,10 @@ SceneBase {
 
   Level {
     id: level
+
+    width: scene.width
+    height: scene.height
+
 
     onGameLost: {
       level.stopGame();
