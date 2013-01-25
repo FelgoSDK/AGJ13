@@ -10,12 +10,6 @@ import "TrackLogic.js" as TrackLogic
 //Flickable {
 Item {
   id: level
-<<<<<<< HEAD
-=======
-  // use the logical size as the level size
-  width: scene.width
-  height: scene.height
->>>>>>> 3af59a51204d8f50fb4b34596a1e772e2e99a6e3
 
   // just as an abbreviation of typing, so instead of scene.gridSize just gridSize can be written in this file
   property real gridSize: scene.gridSize
@@ -94,7 +88,7 @@ Item {
     currentRow = 0;
     lastY = 0;
 
-    level.y = 0;    
+    level.y = 0;
 
 //    player.x = scene.width/2;
 //    player.y = 2*gridSize;
@@ -105,58 +99,8 @@ Item {
     // this is required, otherwise after the game the chicken would still navigate left or right if no mouse release happened before, or when coming from the main scene it might still have the old direction
     player.controller.xAxis = 0;
 
-<<<<<<< HEAD
-=======
-    // start positioned on the window top
-    levelBackground.y = -__yOffsetForWindow;
-    levelBackground2.y = levelBackground.y+levelBackgroundHeight;
-
-    // this must be set BEFORE createRandomRowForRowNumber() is called!
-    lastWindowY = 0;
 
     TrackLogic.initTrack()
-  }
-
-  // this is the offset of the 2 backgrounds
-  // make the offset a litte bit smaller, so no black background shines through when they are put below each other
-  property real levelBackgroundHeight: levelBackground.height*levelBackground.scale-1
-
-  MultiResolutionImage {
-    //BackgroundImage { // dont use a BackgroundImage yet, because blending isnt working correclty! (overlapping regions appear lighter!)
-    id:levelBackground
-    source: "img/background-wood2-sd.png"
-
-    // the logical width should be the scene size - this will change when the background image is bigger than the scene size to support multiple resolutions & aspect ratios
-    // in that case, use a MultiResolutionImage with pixelFormat set to 3 and position it in the horizontal center
-    // multiply width & height by 1.2, so it is still visible on 4:3 and 16:9 ratios!
-    scale: 1.2
-
-    // position horizontally centered
-    anchors.horizontalCenter: parent.horizontalCenter
-
-    // the windows have z=-1, all other objects have 0, so put behind the windows
-    z:-2
-
-    // the y value gets modified in onYChanged, to always position 2 background images below each other
-  }
-
-  MultiResolutionImage {
-    //BackgroundImage { // dont use a BackgroundImage yet, because blending isnt working correclty! (overlapping regions appear lighter!)
-    id:levelBackground2
-    source: "img/background-wood2-sd.png"
-
-    //opacity: 0.6 // for testing the second copy of the background
-    scale: 1.2
-
-    // position horizontally centered
-    anchors.horizontalCenter: parent.horizontalCenter
-
-    // the windows have z=-1, all other objects have 0, so put behind the windows
-    z:-2
-
-    // the y value gets modified in onYChanged, to always position 2 background images below each other
-    //y: scene.height // initially move down, and increase its size so the 2 backgrounds overlap
->>>>>>> 3af59a51204d8f50fb4b34596a1e772e2e99a6e3
   }
 
   // start in the center of the scene, and a little bit below the top
