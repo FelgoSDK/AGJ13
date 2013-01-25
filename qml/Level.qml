@@ -167,47 +167,41 @@ Item {
   Row {
     height: level.height
     Repeater {
-      model: 4
+      model: 5
       Column {
-        //width: level.width/5
+        x: level.width/5*index
+        width: level.width/5
         Rectangle {
-          x: level.width/5*index
           width: level.width/5
           height: level.height/7
           color: "green"
         }
         Rectangle {
-          x: level.width/5*index
           width: level.width/5
           height: level.height/7
           color: "grey"
         }
         Rectangle {
-          x: level.width/5*index
           width: level.width/5
           height: level.height/7
           color: "green"
         }
         Rectangle {
-          x: level.width/5*index
           width: level.width/5
           height: level.height/7
           color: "grey"
         }
         Rectangle {
-          x: level.width/5*index
           width: level.width/5
           height: level.height/7
           color: "green"
         }
         Rectangle {
-          x: level.width/5*index
           width: level.width/5
           height: level.height/7
           color: "grey"
         }
         Rectangle {
-          x: level.width/5*index
           width: level.width/5
           height: level.height/7
           color: "green"
