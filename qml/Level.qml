@@ -3,7 +3,7 @@ import QtQuick 1.1
 import Box2D 1.0
 import VPlay 1.0
 import "entities"
-
+import "TrackLogic.js" as TrackLogic
 
 // the level gets moved in the negative y direction (so upwards) -> this has the effect that all entities in it are moving downwards!
 // no Flickable is needed as root item, because it shouldnt be able to get pinched or moved by the user - instead the level gets moved downwards over time with increasing speed
@@ -109,6 +109,7 @@ Item {
     // this must be set BEFORE createRandomRowForRowNumber() is called!
     lastWindowY = 0;
 
+    TrackLogic.initTrack()
   }
 
   // this is the offset of the 2 backgrounds
@@ -171,9 +172,15 @@ Item {
       Column {
         x: level.width/5*index
         width: level.width/5
+        opacity: index%2 ? 0.5 : 1
         Rectangle {
           width: level.width/5
           height: level.height/7
+          color: "green"
+        }
+        Rectangle {
+          width: level.width/5
+          height: level.height/7/5
           color: "green"
         }
         Rectangle {
@@ -183,7 +190,7 @@ Item {
         }
         Rectangle {
           width: level.width/5
-          height: level.height/7
+          height: level.height/7/5
           color: "green"
         }
         Rectangle {
@@ -193,13 +200,28 @@ Item {
         }
         Rectangle {
           width: level.width/5
-          height: level.height/7
+          height: level.height/7/5
           color: "green"
         }
         Rectangle {
           width: level.width/5
           height: level.height/7
           color: "grey"
+        }
+        Rectangle {
+          width: level.width/5
+          height: level.height/7/5
+          color: "green"
+        }
+        Rectangle {
+          width: level.width/5
+          height: level.height/7
+          color: "grey"
+        }
+        Rectangle {
+          width: level.width/5
+          height: level.height/7/5
+          color: "green"
         }
         Rectangle {
           width: level.width/5
