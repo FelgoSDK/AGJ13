@@ -12,6 +12,7 @@ Item {
   id: level
   // use the logical size as the level size
   width: scene.width
+  height: scene.height
 
   // just as an abbreviation of typing, so instead of scene.gridSize just gridSize can be written in this file
   property real gridSize: scene.gridSize
@@ -161,6 +162,58 @@ Item {
 
     // this guarantees the player is in front of the henhouseWindows
     z: 1
+  }
+
+  Row {
+    height: level.height
+    Repeater {
+      model: 4
+      Column {
+        //width: level.width/5
+        Rectangle {
+          x: level.width/5*index
+          width: level.width/5
+          height: level.height/7
+          color: "green"
+        }
+        Rectangle {
+          x: level.width/5*index
+          width: level.width/5
+          height: level.height/7
+          color: "grey"
+        }
+        Rectangle {
+          x: level.width/5*index
+          width: level.width/5
+          height: level.height/7
+          color: "green"
+        }
+        Rectangle {
+          x: level.width/5*index
+          width: level.width/5
+          height: level.height/7
+          color: "grey"
+        }
+        Rectangle {
+          x: level.width/5*index
+          width: level.width/5
+          height: level.height/7
+          color: "green"
+        }
+        Rectangle {
+          x: level.width/5*index
+          width: level.width/5
+          height: level.height/7
+          color: "grey"
+        }
+        Rectangle {
+          x: level.width/5*index
+          width: level.width/5
+          height: level.height/7
+          color: "green"
+        }
+      }
+    }
   }
 
 
