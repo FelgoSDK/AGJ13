@@ -6,15 +6,31 @@ function createRandomRowForRowNumber(rowNumber) {
   for(var i=0; i<railAmount; i++) {
     var newTrackCenterPos = Qt.point(rowNumber*trackSectionWidth, startYForFirstRail+i*trackSectionHeight);
 
+
+    // TODO add variation type of upper  element to decide which element can be added
     entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
                                                     {"x": newTrackCenterPos.x,
-                                                     "y": newTrackCenterPos.y
+                                                     "y": newTrackCenterPos.y,
+                                                      "variationTypes": generateVariationType()
                                                     });
     console.debug("create new trackSection at position", newTrackCenterPos.x, newTrackCenterPos.y)
     // add obstacle
     createRandomObstacleInTrack(newTrackCenterPos.x,newTrackCenterPos.y)
   }
 
+}
+
+function generateVariationType() {
+  var propability = Math.random()
+  if(Math.random() < 0.1) {
+    return "both"
+  } else if(Math.random() < 0.3) {
+    return "down"
+  } else if(Math.random() < 0.6) {
+    return "up"
+  } else {
+    return "straight"
+  }
 }
 
 function createRandomObstacleInTrack(x,y) {

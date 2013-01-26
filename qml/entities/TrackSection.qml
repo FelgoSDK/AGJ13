@@ -5,7 +5,7 @@ EntityBase {
   entityType: "trackSection"
   // there are 4 variationTypes: straight, up, down, and both directions
   // depending on which direction the switch has, the player will be moved to that direction
-  //var
+  property string variationTypes: "straight"
 
   Rectangle {
     id: img
@@ -15,10 +15,27 @@ EntityBase {
     color: "grey"
 
     Rectangle {
-      width: parent.width*0.8
-      height: parent.height*0.8
+      id: main
+      width: parent.width
+      height:  parent.height*0.5
       anchors.centerIn: parent
       color: "brown"
+    }
+    Rectangle {
+      anchors.horizontalCenter: main.horizontalCenter
+      anchors.bottom: main.top
+      width: 5
+      height: 5
+      color: "brown"
+      visible: variationTypes === "up" || variationTypes === "both"
+    }
+    Rectangle {
+      anchors.horizontalCenter: main.horizontalCenter
+      anchors.top: main.bottom
+      width: 5
+      height: 5
+      color: "brown"
+      visible: variationTypes === "down" || variationTypes === "both"
     }
   }
 
