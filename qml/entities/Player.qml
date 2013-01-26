@@ -8,14 +8,6 @@ EntityBase {
 
   property alias sprite: sprite
 
-
-  // the key-pressed-signals get emitted from the scene when key presses are detected
-  // key pressed cant be detected here, because this item has no size
-  signal leftPressed(variant event)
-  signal rightPressed(variant event)
-  signal upPressed(variant event)
-  signal downPressed(variant event)
-
   signal died
   signal collisionWithTrackSection(string direction)
 
@@ -41,23 +33,6 @@ EntityBase {
   // this gets added to bonusScore every time the player catches a coin
   property int bonusScoreForCoin: 300
 
-  property alias controller: twoAxisController
-
-  // these are the settings for balancing!
-  property real upValue: 550
-  property real downValue: 5
-  property real rightValue: 250
-  property real leftValue: -rightValue
-
-  //    property variant respawnPosition: Qt.point(50,100)
-
-  property bool __isJumping: true
-  // cant be initialized with null
-  property date lastJumpTime: new Date
-
-  // this is needed internally to find out if the image should be inverted
-  property bool __isLookingRight: true
-
 
   // set the default pos to the respawnPosition
   //pos: respawnPosition
@@ -70,18 +45,10 @@ EntityBase {
   // when no blockCollisions happened, the fly-state is active!
   property int blockCollisions: 0
 
-
-  TwoAxisController {
-    id: twoAxisController
-
-    onXAxisChanged: {
-      console.debug("xAxis changed to", xAxis)
-      if(xAxis>0)
-        __isLookingRight = true;
-      else if(xAxis<0)
-        __isLookingRight = false;
-    }
-  }
+  // drive curves with locomotive
+  property variant endPoint : 0
+  property bool followingPath: false
+  property real velocity: 200
 
   MultiResolutionImage {
     id: sprite
@@ -91,9 +58,10 @@ EntityBase {
 
   BoxCollider {
     id: collider
-    //anchors.centerIn: parent
-    //radius: 15
     anchors.fill: sprite
+    // prevent from using wrong switches because the train collides with them when rotating.
+    //anchors.topMargin: 10
+    //anchors.bottomMargin: 10
     collisionTestingOnlyMode: true
     sensor: true
 
@@ -116,22 +84,53 @@ EntityBase {
 
         if(lives <= 0)
           died()
-
-
-      } /*else if(collidedEntityType === "trackSection") {
-          // this is handled in the trackSection, which knows which direction it is!
-        collisionWithTrackSection(collidedEntity.turnDirection)
-      }*/
+      }
     }
   }
 
   function init() {
     lives = initialLives
 
-    // this must get set as a binding, changes with the level
-    //x = -level.x + 50
     y = level.height/2
 
     console.debug("initialized player to level center:", x, y)
   }
+
+  function trackChangeTo(point) {
+    var sign = player.y - point.y
+    var xdiff = Math.abs(player.x - point.x)
+    var xoffset = player.x+player.sprite.width/2
+    var ydiff = (sign > 0) ? (-1)*(player.y - point.y) : Math.abs(player.y - point.y)
+    var yoffset =  player.y
+
+    pathMovement.waypoints = [
+          { x: player.x, y: player.y},
+          { x: xoffset, y: yoffset  },
+          { x: xoffset+xdiff/9*1, y: yoffset+ydiff/5*1},
+          { x: xoffset+xdiff/9*3, y: yoffset+ydiff/5*3 },
+          { x: xoffset+xdiff/9*5, y: yoffset+ydiff/5*4 },
+          { x: xoffset+xdiff/9*9, y: yoffset+ydiff/5*5 }
+        ]
+    pathMovement.running = true
+    followingPath = true
+  }
+
+  PathMovement {
+    id: pathMovement
+    enabled: false
+    running: false
+    velocity: player.velocity*(-1)+5
+    rotationAnimationEnabled: true
+    rotationAnimationDuration: player.velocity*(-1)+5
+
+
+    onPathCompleted: {
+      player.followingPath = false
+      player.rotation = 0
+    }
+    Component.onCompleted: {
+      player.x = -level.x + player.sprite.width/2
+    }
+  }
+
 }
