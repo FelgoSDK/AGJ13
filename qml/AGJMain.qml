@@ -15,11 +15,17 @@ GameWindow {
   // these get accessed from the MainScene and the ChickenOutbreakScene
   property int maximumHighscore: 0
   property int lastScore: 0
+
+  displayFpsEnabled: true
+
   Component.onCompleted: {
     var storedScore = settings.getValue("maximumHighscore");
     // if first-time use, nothing can be loaded and storedScore is undefined
     if(storedScore)
       maximumHighscore = storedScore;
+
+    // disable it, when you want no debug outputs in debug version
+//    system.logOutputEnabled = false;
   }
   onMaximumHighscoreChanged: {
     var storedScore = settings.getValue("maximumHighscore");
