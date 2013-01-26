@@ -76,6 +76,21 @@ Item {
   property int playerColliderGroup: Box.Category3
 //  property int obstacleColliderGroup: Box.Category4
 
+  EditableComponent {
+      id: editableEditorComponent
+      target: parent
+      type: "Level"
+      properties: {
+        "railAmount":               {"minimum": 0, "maximum": 10,"stepsize": 1,  "default": 3},
+        "playerRowActive":               {"minimum": 0, "maximum": railAmount,"stepsize": 1,  "default": 1},
+
+        // Particle configuration properties
+        "obstacleCreationPropability":               {"minimum": 0, "maximum": 1, "default": 0.3,"stepsize": 0.01, "label": "Obstacles","group": "level"},
+        "levelMovementSpeedMinimum":               {"minimum": 0, "maximum": 1000, "default": 40,"stepsize": 1,"group": "level"},
+        "levelMovementSpeedMaximum":               {"minimum": 0, "maximum": 1000, "default": 200,"stepsize": 1,"group": "level"},
+      }
+  }
+
   Component.onCompleted: {
 
     // this creates some roosts, coins and windows beforehand, so they dont need to be created at runtime
@@ -132,7 +147,8 @@ Item {
     LevelLogic.generateObstacles = true
 
 
-    levelMovementAnimation.velocity = -levelMovementSpeedMinimum;
+    levelMovementAnimation.velocity = -levelMovementSpeedMinimum
+    // levelMovementAnimation.velocity = -levelMovementSpeedMaximum // for performance testing with higher velocity
     levelMovementAnimation.start();
   }
 
@@ -238,7 +254,7 @@ Item {
     // increase the velocity by this amount of pixels per second, so it lasts minVelocity/acceleration seconds until the maximum is reached!
     // i.e. -70/-2 = 45 seconds
     //90-20 = 70 / 30 = 2.5
-    acceleration: -(levelMovementSpeedMaximum-levelMovementSpeedMinimum) / levelMovementDurationTillMaximum
+    acceleration: 0 //-(levelMovementSpeedMaximum-levelMovementSpeedMinimum) / levelMovementDurationTillMaximum
 
     // limit the maximum v to 100 px per second - it must not be faster than the gravity! this is the absolute maximum, so the chicken falls almost as fast as the background moves by! so rather set it to -90, or increase the gravity
     minVelocity: -levelMovementSpeedMaximum
