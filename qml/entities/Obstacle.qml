@@ -40,6 +40,8 @@ EntityBase {
     // it should not affect the movement of the player
     sensor: true
 
+    //categories: level.
+
   }
 
 }

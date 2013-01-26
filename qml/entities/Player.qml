@@ -92,6 +92,8 @@ EntityBase {
     collisionTestingOnlyMode: true
     sensor: true
 
+    categories: level.playerColliderGroup
+
     fixture.onBeginContact: {
       var fixture = other;
       var body = fixture.parent;
@@ -110,9 +112,10 @@ EntityBase {
           died()
 
 
-      } else if(collidedEntityType === "trackSection") {
+      } /*else if(collidedEntityType === "trackSection") {
+          // this is handled in the trackSection, which knows which direction it is!
         collisionWithTrackSection(collidedEntity.variationTypes)
-      }
+      }*/
     }
   }
 
