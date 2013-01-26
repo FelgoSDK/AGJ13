@@ -454,9 +454,11 @@ Item {
   // ------------------- for debugging only ------------------- //
   function pauseGame() {
     console.debug("pauseGame()")
+    levelMovementAnimation.stop()
   }
   function resumeGame() {
     console.debug("resumeGame()")
+    levelMovementAnimation.start()
   }
 
   function restartGame() {

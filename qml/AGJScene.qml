@@ -239,6 +239,7 @@ SceneBase {
     State {
       name: "ingameMenu"
       PropertyChanges { target: ingameMenu; visible: true}
+      PropertyChanges { target: hud; visible: false}
       StateChangeScript {
         script: {
           level.pauseGame();
