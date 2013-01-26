@@ -36,7 +36,8 @@ EntityBase {
       anchors.rightMargin: 1
       color: "brown"
     }
-    Rectangle {      
+    Rectangle {
+      id: rectTop
       x: variationSource === "sender" ? 0 : main.width-height
       anchors.bottom: main.top
       width: 5
@@ -45,6 +46,15 @@ EntityBase {
       visible: variationTypes === "up" || variationTypes === "both"
     }
     Rectangle {
+      x: 0
+      anchors.bottom: rectTop.top
+      width: 5
+      height: 5
+      color: "blue"
+      visible: turnDirection === "up"
+    }
+    Rectangle {
+      id: rectBottom
       x: variationSource === "sender" ? 0 : main.width-height
       anchors.top: main.bottom
       width: 5
@@ -52,13 +62,21 @@ EntityBase {
       color: variationSource === "sender" ? "green" : variationSource === "receiver" ? "red" : "white"
       visible: variationTypes === "down" || variationTypes === "both"
     }
+    Rectangle {
+      x: 0
+      anchors.top: rectBottom.bottom
+      width: 5
+      height: 5
+      color: "blue"
+      visible: turnDirection === "down"
+    }
   }
 
   BoxCollider {
     anchors.fill: img
     collisionTestingOnlyMode: true
     sensor: true
-    active: variationSource == "sender"
+    active: variationSource == "sender" && turnDirection != "straight"
   }
 
   MultiTouchArea {
@@ -66,7 +84,7 @@ EntityBase {
     anchors.fill: img
 
     // Straight types need no swipes
-    enabled: variationTypes !== "straight"
+    enabled: variationSource === "sender" && variationTypes !== "straight"
 
     onSwipe: {
       // console.debug("angle is", angle)

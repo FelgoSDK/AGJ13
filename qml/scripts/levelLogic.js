@@ -20,6 +20,7 @@ function createRandomRowForRowNumber(rowNumber) {
 
     var currentVariationType = "straight"
     var currentVariationSource = "sender"
+    var currentTurnDirection = "straight"
     if(i === 1) {
       currentVariationType = selectedTrackVariationType
       currentVariationSource = selectedVarationSource
@@ -34,6 +35,7 @@ function createRandomRowForRowNumber(rowNumber) {
                                                      "y": newTrackCenterPos.y,
                                                      "variationTypes": currentVariationType,
                                                      "variationSource": currentVariationSource,
+                                                     "turnDirection": currentTurnDirection,
                                                      "entityId:": "trackSection" + entityCounter
                                                     });
     entityCounter++
