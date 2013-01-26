@@ -11,7 +11,7 @@ function createRandomRowForRowNumber(rowNumber) {
     entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
                                                     {"x": newTrackCenterPos.x,
                                                      "y": newTrackCenterPos.y,
-                                                      "variationTypes": generateVariationType()
+                                                     "variationTypes": generateVariationType()
                                                     });
     console.debug("create new trackSection at position", newTrackCenterPos.x, newTrackCenterPos.y)
     // add obstacle

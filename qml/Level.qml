@@ -27,6 +27,8 @@ Item {
 
   // the player starts in the middle track 0, and then moves upwards or downwards
   property int playerRow: 1
+  // the player track which is currently active which does not influent the startYForFirstRail.
+  property int playerRowActive: 1
 
   property int railAmount: 3
 
@@ -145,6 +147,16 @@ Item {
     }
     onCollisionWithTrackSection: {
       console.debug("PLAYER COLLIDED WITH trackelement, variation:",direction)
+      if(direction === "up") {
+        playerRowActive--
+        if(playerRowActive<0)
+          playerRowActive = 0
+      } else if(direction === "down") {
+        playerRowActive++
+        if(playerRowActive>railAmount-1)
+          playerRowActive = railAmount-1
+      }
+      player.y = startYForFirstRail+(playerRowActive)*trackSectionHeight
     }
   }
 
