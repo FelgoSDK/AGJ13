@@ -40,7 +40,7 @@ Item {
   // if it gets set too low, the game will be unplayable because too few roosts are created, so balance this with care!
   property real platformCreationProbability: 0.09
   // probability of 30% to create a obstacle on top of the track, so in 3 of 10 tracks there will be a obstacle created
-  property real obstacleCreationPropability: 0.1
+  property real obstacleCreationPropability: 0.3
   // windows get created randomly as well - they only have visual effect, but dont set too high because then it looks boring
   property real windowCreationProbability: 0.05
   // this avoids creating too many windows, so not possible to have more than 2 on a scene with this code!

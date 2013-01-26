@@ -51,7 +51,7 @@ function createRandomRowForRowNumber(rowNumber) {
 
     // add obstacle
     if(generateObstacles) {
-      createRandomObstacleInTrack(newTrackCenterPos.x,newTrackCenterPos.y)
+      createRandomObstacleInTrack(currentVariationType,newTrackCenterPos.x,newTrackCenterPos.y)
     }
   }
 
@@ -122,24 +122,21 @@ function generateVariationSource(track) {
   return variation
 }
 
-function createRandomObstacleInTrack(x,y) {
+function createRandomObstacleInTrack(currentVariationType,x,y) {
+
+  // do not place a obstacle on a switch
+  if(currentVariationType !== "straight")
+    return
 
   // do not create an obstacle in the first section
   if(x<level.width/3)
     return;
 
-  // create an obstacle in 10% of all created blocks
+  // create an obstacle in 30% of all created blocks
   if(Math.random() < obstacleCreationPropability) {
 
     // look at 1 grid position above
     var coinCenterPos = Qt.point(x, y);
-
-
-    /*if(physicsWorld.bodyAt(coinCenterPos)) {
-          console.debug("there is a obstacle before the to create block, dont create a coin here!")
-          continue;
-      }*/
-
 
     console.debug("create new obstacle on track ",coinCenterPos.x, coinCenterPos.y)
     entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/Obstacle.qml"),
