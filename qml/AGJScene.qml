@@ -83,23 +83,23 @@ SceneBase {
   }
 
 
-  MouseArea {
-    // use the full window as control item, press anywhere on the left half for steering left, on the right half for steering right
-    anchors.fill: scene.gameWindowAnchorItem
-    onPressed: {
-      if(mouseX > scene.gameWindowAnchorItem.width/2)
-        player.controller.xAxis = 1;
-      else
-        player.controller.xAxis = -1;
-    }
-    onPositionChanged: {
-      if(mouseX > scene.gameWindowAnchorItem.width/2)
-        player.controller.xAxis = 1;
-      else
-        player.controller.xAxis = -1;
-    }
-    onReleased: player.controller.xAxis = 0
-  }
+//  MouseArea {
+//    // use the full window as control item, press anywhere on the left half for steering left, on the right half for steering right
+//    anchors.fill: scene.gameWindowAnchorItem
+//    onPressed: {
+//      if(mouseX > scene.gameWindowAnchorItem.width/2)
+//        player.controller.xAxis = 1;
+//      else
+//        player.controller.xAxis = -1;
+//    }
+//    onPositionChanged: {
+//      if(mouseX > scene.gameWindowAnchorItem.width/2)
+//        player.controller.xAxis = 1;
+//      else
+//        player.controller.xAxis = -1;
+//    }
+//    onReleased: player.controller.xAxis = 0
+//  }
 
   Text {
     x: 5
