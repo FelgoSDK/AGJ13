@@ -106,6 +106,7 @@ SceneBase {
     x: 5
     // place it on top of the window, not on top of the logical scene
     anchors.top: scene.gameWindowAnchorItem.top
+    anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
     anchors.topMargin: 5
 
     text: "Score: " + player.totalScore + " Lives:" + player.lives
@@ -147,6 +148,12 @@ SceneBase {
     // in the default state, this should be invisible!
     visible: false
     anchors.centerIn: parent
+  }
+
+  HornControl {
+    anchors.top: gameWindowAnchorItem.top
+    anchors.left: gameWindowAnchorItem.left
+    anchors.leftMargin: 10
   }
 
   ThrottleControl {
