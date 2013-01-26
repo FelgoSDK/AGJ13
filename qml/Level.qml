@@ -251,6 +251,45 @@ Item {
   }
   */
 
+  Timer {
+    id: pressureTimer
+
+    // Trigger every 0.5 sec, so the maximum steam power of 100 would be lost after 5sec on full acceleration
+    interval: 500;
+    // Can't use levelMovementSpeed cause it never gets adapt to acceleration influenced velocity changes
+    // Instead we use -levelMovementAnimation.velocity directly
+    running: levelMovementAnimation.acceleration < 0 && player.steamPressure > 0 && -levelMovementAnimation.velocity !== levelMovementSpeedMaximum || levelMovementAnimation.acceleration > 0 && -levelMovementAnimation.velocity !== levelMovementSpeedMinimum
+    repeat: true
+    onTriggered: {
+
+      console.log("levelMovementSpeed", levelMovementSpeed, "levelMovementSpeedMinimum", levelMovementSpeedMinimum)
+
+      // Acceleration is negative
+      player.steamPressure += levelMovementAnimation.acceleration / 10
+
+      if (player.steamPressure <= 0) {
+        player.steamPressure = 0
+        levelMovementAnimation.acceleration = 0
+      }
+    }
+  }
+
+  Timer {
+    id: pressureRegenerationTimer
+
+    // Trigger every 0.5 sec, so the maximum steam power of 100 would be lost after 5sec on full acceleration
+    interval: 500;
+    running: !pressureTimer && player.steamPressure <= 100
+    repeat: true
+    onTriggered: {
+      // Our steam pressure regenerates slowly while travelling uniformly
+      player.steamPressure += 2
+      if (player.steamPressure > 100) {
+        player.steamPressure = 100
+      }
+    }
+  }
+
   MovementAnimation {
     id: levelMovementAnimation
     property: "x"
@@ -334,7 +373,12 @@ Item {
   }
 
   function setAcceleration(acceleration) {
+    // We can't accelerate if our steam pressure is 0
+    if (player.steamPressure <= 0 && acceleration < 0)
+      return;
+
     levelMovementAnimation.acceleration = acceleration * 10
+
     console.debug("New acceleration:", acceleration)
   }
 

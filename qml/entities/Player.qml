@@ -27,6 +27,10 @@ EntityBase {
   // the total count of deaths within this gaming session
   property int deaths: 0
 
+  // Gets decreased while accelerating and honking, increases while acceleration is 0
+  property int steamPressure: 100
+  property int steamPressureDeltaForHonking: 20
+
   property int initialLives: 100
 
   property int lives: initialLives

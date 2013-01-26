@@ -103,7 +103,8 @@ SceneBase {
 //  }
 
   Text {
-    x: 5
+    id: scoreText
+
     // place it on top of the window, not on top of the logical scene
     anchors.top: scene.gameWindowAnchorItem.top
     anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
@@ -112,6 +113,17 @@ SceneBase {
     text: /*"Score: " + player.totalScore + */" Lives:" + player.lives + " Speed:" + level.levelMovementSpeed
     font.family: fontHUD.name
     font.pixelSize: 22
+    color: "white"
+  }
+
+  Text {
+    // place it on top of the window, not on top of the logical scene
+    anchors.top: scoreText.bottom
+    anchors.horizontalCenter: scoreText.horizontalCenter
+
+    text: "Pressure: " + player.steamPressure + "%"
+    font.family: fontHUD.name
+    font.pixelSize: 18
     color: "white"
   }
 
@@ -156,8 +168,11 @@ SceneBase {
     anchors.leftMargin: 10
 
     onHonkingChanged: {
-      if (honking)
-       level.moveFirstObstacleInCurrentTrack()
+      // Honking is only possible if we have more than 20% steam
+      if (honking && player.steamPressure >= player.steamPressureDeltaForHonking) {
+        level.moveFirstObstacleInCurrentTrack()
+        player.steamPressure -= player.steamPressureDeltaForHonking
+      }
     }
   }
 
