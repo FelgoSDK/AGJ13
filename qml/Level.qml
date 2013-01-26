@@ -3,6 +3,7 @@ import QtQuick 1.1
 import Box2D 1.0
 import VPlay 1.0
 import "entities"
+import "particles"
 import "scripts/levelLogic.js" as LevelLogic
 
 // the level gets moved in the negative y direction (so upwards) -> this has the effect that all entities in it are moving downwards!
@@ -206,7 +207,7 @@ Item {
   Player {
     id: player
 
-    x: -level.x + 50
+    x: -level.x + player.sprite.width/2
     // y will be initialized in init()
 
     // this guarantees the player is in front of the henhouseWindows
@@ -228,6 +229,32 @@ Item {
           playerRowActive = railAmount-1
       }
       player.y = startYForFirstRail+(playerRowActive)*trackSectionHeight
+    }
+
+    SmokeParticle {
+      id: chimneyParticle
+      x: 30
+      Component.onCompleted: {
+        chimneyParticle.start()
+      }
+    }
+    SmokeParticle {
+      id: chimneyExplotionParticle
+      x: 30
+      sourcePositionVariance: Qt.point(7,7)
+      duration: 0.1
+      gravity: Qt.point(0,0)
+      particleLifespan: 0.46
+      particleLifespanVariance: 0.11
+      angleVariance: 360
+      radialAcceleration: -1000
+      tangentialAcceleration: 4
+      finishParticleSize: 0
+      finishParticleSizeVariance: 0
+      speed: 277
+      speedVariance: 6.58
+      startColor: Qt.rgba(1.0,0.18,0.0,0.90)
+      finishColor: Qt.rgba(1.0,1.0,1.0,0.0)
     }
   }
 
@@ -302,7 +329,17 @@ Item {
     // this is the movement in px per second, start with very slow movement, 10 px per second
     velocity: -levelMovementSpeed
 
-    onVelocityChanged: console.debug("vel changed to:", velocity)
+    onVelocityChanged: {
+      var colormult = velocity*(-1)/1000
+      console.log("===="+colormult)
+      if(colormult>0.75) {
+        chimneyExplotionParticle.start()
+        chimneyParticle.startColor = Qt.rgba(1.0,0.5,1-colormult,colormult)
+      } else {
+        chimneyParticle.startColor = Qt.rgba(1-colormult,1-colormult,1-colormult,colormult)
+      }
+      //console.debug("vel changed to:", velocity)
+    }
 
     // running is set to false - call start() here
     // increase the velocity by this amount of pixels per second, so it lasts minVelocity/acceleration seconds until the maximum is reached!
@@ -314,8 +351,6 @@ Item {
     minVelocity: -levelMovementSpeedMaximum
     // Use a certain minimum speed
     maxVelocity: -levelMovementSpeedMinimum
-
-    //onVelocityChanged: console.debug("velocity changed to:", velocity)
   }
 
   onXChanged: {
