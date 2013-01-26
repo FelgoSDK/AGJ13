@@ -107,7 +107,7 @@ SceneBase {
     anchors.top: scene.gameWindowAnchorItem.top
     anchors.topMargin: 5
 
-    text: "Score: " + player.totalScore
+    text: "Score: " + player.totalScore + " Lives:" + player.lives
     font.family: fontHUD.name
     font.pixelSize: 22
     color: "white"

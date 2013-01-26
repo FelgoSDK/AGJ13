@@ -57,7 +57,7 @@ Item {
   signal gameLost
 
   property real trackSectionWidth: scene.width/7
-  property real trackSectionHeight: scene.width/5
+  property real trackSectionHeight: scene.height/3
 
 
   // just as an abbreviation of typing, so instead of scene.gridSize just gridSize can be written in this file
@@ -329,6 +329,9 @@ Item {
 
   function accelerate(diff) {
     levelMovementAnimation.acceleration += diff
+
+    console.debug("acceleration diff:", diff, "new acc:", levelMovementAnimation.acceleration)
+
   }
 
 

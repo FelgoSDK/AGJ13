@@ -77,16 +77,18 @@ EntityBase {
   }
 
   Rectangle {
+    id: img
     width: 40
     height: 40
     anchors.centerIn: parent
     color: "red"
   }
 
-  CircleCollider {
+  BoxCollider {
     id: collider
-    anchors.centerIn: parent
-    radius: 15
+    //anchors.centerIn: parent
+    //radius: 15
+    anchors.fill: img
     collisionTestingOnlyMode: true
     sensor: true
 
@@ -104,7 +106,7 @@ EntityBase {
 
         collision()
 
-        if(lives < 0)
+        if(lives <= 0)
           died()
 
 
