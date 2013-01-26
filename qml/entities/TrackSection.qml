@@ -36,8 +36,8 @@ EntityBase {
 
   MultiResolutionImage {
     id: multiresimg
-//    contentWidth: img.width/imageSource.contentScaleFactor
-//    contentHeight: img.height/imageSource.contentScaleFactor
+    contentWidth: img.width/multiresimg.contentScaleFactor
+    contentHeight: img.height/multiresimg.contentScaleFactor
     source:  (variationType==="straight") ? "../img/railstraight-sd.png" : ((variationType==="up" || variationType==="down" || variationType==="upreceiver" || variationType==="downreceiver") ? "../img/railcurve-sd.png" : "../img/raildoubled-sd.png")
     anchors.centerIn: parent
     mirrorY: (variationType==="down" || variationType==="downreceiver")
