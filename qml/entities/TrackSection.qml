@@ -6,6 +6,8 @@ EntityBase {
   // there are 4 variationTypes: straight, up, down, and both directions
   // depending on which direction the switch has, the player will be moved to that direction
   property string variationTypes: "straight"
+  // there are 3 variationSource: sender, receiver, none (straight)
+  property string variationSource: "sender"
 
   // this is important - a lot get removed and destroyed dynamically!
   poolingEnabled: true
@@ -30,19 +32,21 @@ EntityBase {
       color: "brown"
     }
     Rectangle {
-      anchors.horizontalCenter: main.horizontalCenter
+      anchors.left: variationSource === "sender" ? main.left : "undefined"
+      anchors.right: variationSource === "receiver" ? main.right : "undefined"
       anchors.bottom: main.top
       width: 5
       height: 5
-      color: "brown"
+      color: variationSource === "sender" ? "green" : "brown"
       visible: variationTypes === "up" || variationTypes === "both"
     }
     Rectangle {
-      anchors.horizontalCenter: main.horizontalCenter
+      anchors.left: variationSource === "sender" ? main.left : "undefined"
+      anchors.right: variationSource === "receiver" ? main.right : "undefined"
       anchors.top: main.bottom
       width: 5
       height: 5
-      color: "brown"
+      color: variationSource === "sender" ? "green" : "brown"
       visible: variationTypes === "down" || variationTypes === "both"
     }
   }
