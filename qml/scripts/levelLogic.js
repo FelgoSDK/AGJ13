@@ -11,7 +11,7 @@ var entityCounter = 0
 var switchDepths = 0
 var maximalSwitchDepths = 1
 
-function createRandomRowForRowNumber(rowNumber) {
+function createRandomRowForRowNumber(rowNumber, levelX) {
 
   console.debug("createRandomRowForRowNumber:", rowNumber, ", railAmount:", railAmount)
 
@@ -25,7 +25,9 @@ function createRandomRowForRowNumber(rowNumber) {
   }
 
   for(var i=0; i<railAmount; i++) {
-    var newTrackCenterPos = Qt.point(rowNumber*trackSectionWidth, startYForFirstRail+i*trackSectionHeight);
+
+    //var newTrackCenterPos = Qt.point(rowNumber*trackSectionWidth, startYForFirstRail+i*trackSectionHeight);
+    var newTrackCenterPos = Qt.point(-levelX+rowNumber*trackSectionWidth, startYForFirstRail+i*trackSectionHeight);
 
     var currentVariationType = "straight"
     var currentVariationSource = "none"

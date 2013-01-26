@@ -56,16 +56,11 @@ Item {
   // gets emitted when a BorderRegion.onPlayerCollision() is received
   signal gameLost
 
-  property real trackSectionWidth: scene.width/7
-  property real trackSectionHeight: scene.height/5
+  property real trackSectionWidth: 118 // (120 is img size) //scene.width/7 // this must be the image size! make it at least 1 pixel smaller, so the images overlap a bit!
+  property real trackSectionHeight: scene.height/5 // this is NOT the image size!
 
-
-  // just as an abbreviation of typing, so instead of scene.gridSize just gridSize can be written in this file
-  property real gridSize: trackSectionWidth//scene.gridSize
-
-  // make some more, so it goes outside
-  // 5 more is too few! otherwise the creation would not work well enough!
-  property int numVisibleTracks: level.width/trackSectionWidth + 40 // for testing the creation and make it visible in the scene, set the additional amount to 0
+  // make some more, so they are created outside of the screen also at 16:9 devices
+  property int numVisibleTracks: level.width/trackSectionWidth + 5 // for testing the creation and make it visible in the scene, set the additional amount to 0
 
   // the background images are moved up by this offset so on widescreen devices the full background is visible
   property real __xOffsetForWindow: scene.__xOffsetForAbsoluteWindowCoordinates
@@ -130,6 +125,10 @@ Item {
     //startGame();
   }
 
+  // this was a test when any other start value was set, and if "big" float values are a problem
+  // the are not, there was an error at the initial position of trackSections when setting lastX
+  property real startX: 0 //20000//1000
+
   // initialize level data - this function can be called multiple times, so every time a new game gets started
   // it is called from ChickenOutbreakScene.enterScene()
   function startGame() {
@@ -138,8 +137,9 @@ Item {
     // it is important that lastY is set first, so the dy in onYChanged will be 0 and no new row is created
     currentRow = 0    
 
-    level.x = 0 // set it to 10000 to test float inaccuracies
-    lastX = level.x
+    // it is important to set lastX before level.x! otherwise in onXChanged it would lead to a creation already!
+    lastX = -startX
+    level.x = lastX
 
     player.init()
 
@@ -149,7 +149,7 @@ Item {
 
     console.debug("numVisibleTracks:", numVisibleTracks)
     for(var i=0; i<numVisibleTracks; i++) {
-      LevelLogic.createRandomRowForRowNumber(i);
+      LevelLogic.createRandomRowForRowNumber(i, level.x);
     }
     // from now on generate obstacles
     LevelLogic.generateObstacles = true
@@ -282,10 +282,12 @@ Item {
   onXChanged: {
     // y gets more and more negative, so e.g. -40 - (-25) = -15
     var dx = x - lastX;
-    //console.debug("level.dx:", -dx, "currentRow:", currentRow, ", x:", -x, ", lastX:", -lastX)
-    if(-dx > gridSize) {
+    console.debug("level.dx:", -dx, "currentRow:", currentRow, ", x:", -x, ", lastX:", -lastX)
+    if(-dx > trackSectionWidth) {
 
-      var amountNewRows = (-dx/gridSize).toFixed();
+      // 4.7.toFixed() will lead to a value of 4
+      // dont use ceil() here
+      var amountNewRows = (-dx/trackSectionWidth).toFixed();
       //console.debug(amountNewRows, "new rows are getting created...")
 
       if(amountNewRows>1) {
@@ -296,11 +298,15 @@ Item {
       // this doesnt happen with fixed dt, but it could happen with varying dt where more than 1 row might need to be created because of such a big y delta
       for(var i=0; i<amountNewRows; i++) {        
         // this guarantees it is created outside of the visual screen
-        LevelLogic.createRandomRowForRowNumber(currentRow+numVisibleTracks);
+        //LevelLogic.createRandomRowForRowNumber(currentRow+numVisibleTracks, level.x);
+        LevelLogic.createRandomRowForRowNumber(numVisibleTracks-1+i, level.x);
         currentRow++;
+        // it's important to decrease lastX like that, not setting it to x!
+        lastX -= trackSectionWidth
       }
 
-      lastX = x;
+      // this would be wrong! the dx will be a little bit higher, so lastX would be wrong
+      //lastX = x;
 
     }
 

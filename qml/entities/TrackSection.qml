@@ -23,6 +23,10 @@ EntityBase {
   property bool touchEnabled: variationSource == "sender"
 
 
+  Component.onCompleted:  {
+    console.debug("size of TrackSection:", multiresimg.width)
+  }
+
   onUsedFromPool: {
     console.debug("Track got used from pool")
     //collider.active = (variationSource == "sender")
@@ -38,10 +42,24 @@ EntityBase {
     mirrorX: (variationSource==="receiver")
   }
 
+  // for debugging the sizes of trackSectionWidth and image width
+//  Rectangle {
+//    anchors.fill: multiresimg
+//    opacity: 0.5
+//    color: "blue"
+//  }
+
+//  Rectangle {
+//    anchors.fill: img
+//    opacity: 0.3
+//    color: "green"
+//  }
+
   Item {
     id: img
-    width: scene.width/7
-    height: scene.height/5
+    // NOTE: this size is not valid any more!!!
+    width: level.trackSectionWidth
+    height: level.trackSectionHeight
     anchors.centerIn: parent
 //    color: "grey"
     opacity: 0.8
