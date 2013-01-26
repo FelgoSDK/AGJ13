@@ -76,4 +76,11 @@ EntityBase {
     color: "red"
   }
 
+  CircleCollider {
+    anchors.centerIn: parent
+    radius: 15
+    collisionTestingOnlyMode: true
+    sensor: true
+  }
+
 }

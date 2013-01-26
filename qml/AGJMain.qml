@@ -90,7 +90,7 @@ GameWindow {
   // use state game for the beginning for debugging the game logic, as the game state gets entered in the beginning
   state: "main"
   // use one of the following states to start with another state when launching the game
-  //    state: "game"
+//      state: "game"
   //state: "gameOver"
 
   // these states are switched when the play button is pressed in MainScene, when the game is lost and when the Continue button is pressed in GameOverScene
