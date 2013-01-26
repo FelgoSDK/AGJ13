@@ -1,20 +1,32 @@
 
 var generateObstacles = false
+var selectedTrack = 0
+var selectedTrackVariationType = ""
 
 function createRandomRowForRowNumber(rowNumber) {
 
   console.debug("createRandomRowForRowNumber:", rowNumber, ", railAmount:", railAmount)
 
+  // generate the switch for the middle track
+  selectedTrackVariationType = generateMiddeVariationType()
+
   for(var i=0; i<railAmount; i++) {
     var newTrackCenterPos = Qt.point(rowNumber*trackSectionWidth, startYForFirstRail+i*trackSectionHeight);
 
+    var currentVariationType = "straight"
+    if(i === 1) {
+      currentVariationType = selectedTrackVariationType
+    } else {
+      currentVariationType = generateVariationType(i)
+    }
 
     // TODO add variation type of upper  element to decide which element can be added
     entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
                                                     {"x": newTrackCenterPos.x,
                                                      "y": newTrackCenterPos.y,
-                                                     "variationTypes": generateVariationType(i)
+                                                     "variationTypes": currentVariationType
                                                     });
+
     console.debug("create new trackSection at position", newTrackCenterPos.x, newTrackCenterPos.y)
     // add obstacle
     if(generateObstacles) {
@@ -22,44 +34,43 @@ function createRandomRowForRowNumber(rowNumber) {
     }
   }
 
+
+}
+
+function generateMiddeVariationType() {
+  // everything is allowed in middle rails
+  if(Math.random() < 0.1) {
+    return "both"
+  } else if(Math.random() < 0.2) {
+    return "down"
+  } else if(Math.random() < 0.3) {
+    return "up"
+  } else {
+    return "straight"
+  }
 }
 
 // generates random variation for tracks
 function generateVariationType(track) {
   var propability = Math.random()
-  var variation = ""
-
-  // only up and straight is allowed in lowest rail
-  if(track === (railAmount-1))
-  {
-    if(Math.random() < 0.4) {
-      variation = "up"
-    } else {
-      variation = "straight"
-    }
-    return variation
-  }
+  var variation = "straight"
 
   // only down and straight is allowed in highest rail
   if(track === 0)
   {
-    if(Math.random() < 0.4) {
+    if(selectedTrackVariationType === "up" || selectedTrackVariationType === "both") {
       variation = "down"
-    } else {
-      variation = "straight"
     }
     return variation
   }
 
-  // everything is allowed in middle rails
-  if(Math.random() < 0.1) {
-    variation = "both"
-  } else if(Math.random() < 0.2) {
-    variation = "down"
-  } else if(Math.random() < 0.3) {
-    variation = "up"
-  } else {
-    variation = "straight"
+  // only up and straight is allowed in lowest rail
+  if(track === (railAmount-1))
+  {
+    if(selectedTrackVariationType === "down" || selectedTrackVariationType === "both") {
+      variation = "up"
+    }
+    return variation
   }
   return variation
 }
