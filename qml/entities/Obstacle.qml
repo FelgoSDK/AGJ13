@@ -11,6 +11,7 @@ EntityBase {
   // put them before the track
   z:2
 
+
   Component.onCompleted: {
     console.debug("NEW Obstacle created")
   }
@@ -19,22 +20,22 @@ EntityBase {
     console.debug("obstacle used from pool")
   }
 
-  /*Image {
+  Image {
     id: sprite
-    source: "../img/corn.png"
+    source: "../img/cowdy.png"
 
-    width: 7
-    height: 10
+//    width: 7
+//    height: 10
 
-    anchors.centerIn: parent
-  }*/
-  Rectangle {
-    id: sprite
-    width: 50
-    height: 50
-    color: "yellow"
     anchors.centerIn: parent
   }
+//  Rectangle {
+//    id: sprite
+//    width: 50
+//    height: 50
+//    color: "yellow"
+//    anchors.centerIn: parent
+//  }
 
   property alias collider: collider
   BoxCollider {

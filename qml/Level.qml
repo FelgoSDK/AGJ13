@@ -31,9 +31,11 @@ Item {
   property alias player: player
 
   // specifies the px/second how much the level moves
-  property real levelMovementSpeedMinimum: 40
+
+  property real levelMovementSpeedMinimum: 20
   property real levelMovementSpeedMaximum: 800
   property real levelMovementSpeed: 50//levelMovementSpeedMinimum
+
 
   // with 9% probability, a roost will get created in a row for any column
   // if it gets set too low, the game will be unplayable because too few roosts are created, so balance this with care!
@@ -55,7 +57,7 @@ Item {
   signal gameLost
 
   property real trackSectionWidth: scene.width/7
-  property real trackSectionHeight: scene.height/3
+  property real trackSectionHeight: scene.height/5
 
 
   // just as an abbreviation of typing, so instead of scene.gridSize just gridSize can be written in this file
@@ -269,8 +271,8 @@ Item {
 
     // limit the maximum v to 100 px per second - it must not be faster than the gravity! this is the absolute maximum, so the chicken falls almost as fast as the background moves by! so rather set it to -90, or increase the gravity
     minVelocity: -levelMovementSpeedMaximum
-    // dont allow moving backwards
-    maxVelocity: 0
+    // Use a certain minimum speed
+    maxVelocity: -levelMovementSpeedMinimum
 
     //onVelocityChanged: console.debug("velocity changed to:", velocity)
   }
@@ -329,6 +331,11 @@ Item {
 
     console.debug("acceleration diff:", diff, "new acc:", levelMovementAnimation.acceleration)
 
+  }
+
+  function setAcceleration(acceleration) {
+    levelMovementAnimation.acceleration = acceleration * 10
+    console.debug("New acceleration:", acceleration)
   }
 
 

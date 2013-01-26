@@ -106,6 +106,7 @@ SceneBase {
     x: 5
     // place it on top of the window, not on top of the logical scene
     anchors.top: scene.gameWindowAnchorItem.top
+    anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
     anchors.topMargin: 5
 
     text: /*"Score: " + player.totalScore + */" Lives:" + player.lives + " Speed:" + level.levelMovementSpeed
@@ -149,6 +150,12 @@ SceneBase {
     anchors.centerIn: parent
   }
 
+  HornControl {
+    anchors.top: gameWindowAnchorItem.top
+    anchors.left: gameWindowAnchorItem.left
+    anchors.leftMargin: 10
+  }
+
   ThrottleControl {
     // Can't use anchors here because of rotation
     // anchors.right: gameWindowAnchorItem.right
@@ -157,14 +164,19 @@ SceneBase {
     y: gameWindowAnchorItem.y + gameWindowAnchorItem.height - width/2 - height
 
     onBrakeChanged: {
-      if (brake)
+      if (brake) {
         console.log("Train in brake mode!")
-      else
+        level.setAcceleration(20);
+      }
+      else {
         console.log("Brakes released")
+        level.setAcceleration(0)
+      }
     }
 
     onAccelerationChanged: {
       console.log("Train's acceleration value", acceleration)
+      level.setAcceleration(-acceleration)
     }
   }
 
