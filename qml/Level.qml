@@ -100,6 +100,8 @@ Item {
     // this function automatically pools all entities which have poolingEnabled set to true
     // and it ignores the entities that have preventFromRemovalFromEntityManager set to true
     entityManager.removeAllEntities();
+    // from now on generate obstacles
+    LevelLogic.generateObstacles = false
 
     // only use this for debugging, whena game should immediately be started after it was stopped
     //startGame();

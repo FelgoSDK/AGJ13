@@ -114,7 +114,7 @@ EntityBase {
 
       } /*else if(collidedEntityType === "trackSection") {
           // this is handled in the trackSection, which knows which direction it is!
-        collisionWithTrackSection(collidedEntity.variationTypes)
+        collisionWithTrackSection(collidedEntity.turnDirection)
       }*/
     }
   }
