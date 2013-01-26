@@ -315,6 +315,36 @@ Item {
     }
   }
 
+  property int __playerSoundStep: 0
+
+  Timer {
+    id: playerSoundTimer
+
+    interval: {
+      if (-levelMovementAnimation.velocity < 100)
+        return 300
+      else if (-levelMovementAnimation.velocity < 500)
+        return 250
+      else
+        return 200
+    }
+
+    running: levelMovementAnimation.running
+    repeat: true
+
+    onTriggered: {
+      if (__playerSoundStep == 0)
+        player.step1.play()
+      else if (__playerSoundStep == 0)
+        player.step2.play()
+      else
+        player.step3.play()
+
+     __playerSoundStep = (++__playerSoundStep)%3
+
+    }
+  }
+
   MovementAnimation {
     id: levelMovementAnimation
     property: "x"

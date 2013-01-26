@@ -59,6 +59,10 @@ EntityBase {
   property bool __isLookingRight: true
 
 
+  property alias step1: step1
+  property alias step2: step2
+  property alias step3: step3
+
   // set the default pos to the respawnPosition
   //pos: respawnPosition
 
@@ -87,6 +91,21 @@ EntityBase {
     id: sprite
     source:  "../img/train-sd.png"
     anchors.centerIn: parent
+  }
+
+  Sound {
+    id: step1
+    source: "../snd/s1.wav"
+  }
+
+  Sound {
+    id: step2
+    source: "../snd/s2.wav"
+  }
+
+  Sound {
+    id: step3
+    source: "../snd/s3.wav"
   }
 
   BoxCollider {

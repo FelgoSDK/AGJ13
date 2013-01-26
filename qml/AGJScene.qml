@@ -170,9 +170,15 @@ SceneBase {
     onHonkingChanged: {
       // Honking is only possible if we have more than 20% steam
       if (honking && player.steamPressure >= player.steamPressureDeltaForHonking) {
+        hornSound.play();
         level.moveFirstObstacleInCurrentTrack()
         player.steamPressure -= player.steamPressureDeltaForHonking
       }
+    }
+
+    Sound {
+      id: hornSound
+      source: "snd/horn.wav"
     }
   }
 

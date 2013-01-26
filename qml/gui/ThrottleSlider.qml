@@ -86,7 +86,6 @@ Item {
   width: handle.width
   height: handle.height
   // When the slider element was deactivated it should be displayed in another style
-  opacity: enabled ? platformSkin.opacityEnabled : platformSkin.opacityDisabled
 
   Item {
     id: sliderStyle
