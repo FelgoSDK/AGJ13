@@ -31,6 +31,7 @@ EntityBase {
 
 
   MultiResolutionImage {
+    id: multiresimg
     source:  (variationType==="straight") ? "../img/railstraight-sd.png" : (variationType==="up" || variationType==="down" || variationType==="upreceiver" || variationType==="downreceiver") ? "../img/railcurve-sd.png" : "../img/raildoubled-sd.png"
     anchors.centerIn: parent
     mirrorY: (variationType==="down" || variationType==="downreceiver")
@@ -94,7 +95,7 @@ EntityBase {
 
   BoxCollider {
     id: collider
-    anchors.fill: img
+    anchors.fill: multiresimg
     collisionTestingOnlyMode: true
     categories: level.trackSectionColliderGroup
     collidesWith: level.playerColliderGroup | level.borderRegionColliderGroup
@@ -122,7 +123,7 @@ EntityBase {
 
   MultiTouchArea {
     // Probably make a little bit higher than the actual track section item?
-    anchors.fill: img
+    anchors.fill: multiresimg
 
     // Straight types need no swipes
     enabled: touchEnabled
