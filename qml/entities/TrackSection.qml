@@ -22,6 +22,7 @@ EntityBase {
 
   property bool touchEnabled: variationSource == "sender"
 
+
   onUsedFromPool: {
     console.debug("Track got used from pool")
     //collider.active = (variationSource == "sender")
@@ -29,9 +30,8 @@ EntityBase {
     touchEnabled = (variationSource == "sender")
   }
 
-
   MultiResolutionImage {
-    source:  (variationType==="straight") ? "../img/railstraight-sd.png" : (variationType==="up" || variationType==="down" || variationType==="upreceiver" || variationType==="downreceiver") ? "../img/railcurve-sd.png" : "../img/raildoubled-sd.png"
+    source:  (variationType==="straight") ? "../img/railstraight-sd.png" : ((variationType==="up" || variationType==="down" || variationType==="upreceiver" || variationType==="downreceiver") ? "../img/railcurve-sd.png" : "../img/raildoubled-sd.png")
     anchors.centerIn: parent
     mirrorY: (variationType==="down" || variationType==="downreceiver")
     mirrorX: (variationSource==="receiver")

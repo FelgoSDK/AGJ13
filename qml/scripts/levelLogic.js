@@ -28,7 +28,7 @@ function createRandomRowForRowNumber(rowNumber) {
     var newTrackCenterPos = Qt.point(rowNumber*trackSectionWidth, startYForFirstRail+i*trackSectionHeight);
 
     var currentVariationType = "straight"
-    var currentVariationSource = "sender"
+    var currentVariationSource = "none"
     var currentTurnDirection = "straight"
     if(i === 1) {
       currentVariationType = selectedTrackVariationType
@@ -38,16 +38,22 @@ function createRandomRowForRowNumber(rowNumber) {
       currentVariationSource = generateVariationSource(i)
     }
 
+    var input = ""
+    if(currentVariationType !== "straight" && currentVariationSource==="receiver") {
+      input = currentVariationSource
+    }
+
     // TODO add variation type of upper  element to decide which element can be added
     var trackId = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
                                                     {"x": newTrackCenterPos.x,
                                                      "y": newTrackCenterPos.y,
-                                                     "variationType": currentVariationType + (currentVariationSource==="reveiver" ? currentVariationSource : ""),
+                                                     "variationType": currentVariationType + input,
                                                      "variationSource": currentVariationSource,
                                                      "turnDirection": currentTurnDirection,
                                                      // comment entityId - restarting would not work any more!
                                                      "entityId": "trackSection" + entityCounter
                                                     });
+
     entityCounter++
 
     var track = entityManager.getEntityById(trackId);
