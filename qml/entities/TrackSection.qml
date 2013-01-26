@@ -32,8 +32,8 @@ EntityBase {
       color: "brown"
     }
     Rectangle {
-      anchors.left: variationSource === "sender" ? main.left : "undefined"
-      anchors.right: variationSource === "receiver" ? main.right : "undefined"
+      anchors.left: variationSource === "sender" ? main.left : undefined
+      anchors.right: variationSource === "receiver" ? main.right : undefined
       anchors.bottom: main.top
       width: 5
       height: 5
@@ -41,8 +41,8 @@ EntityBase {
       visible: variationTypes === "up" || variationTypes === "both"
     }
     Rectangle {
-      anchors.left: variationSource === "sender" ? main.left : "undefined"
-      anchors.right: variationSource === "receiver" ? main.right : "undefined"
+      anchors.left: variationSource === "sender" ? main.left : undefined
+      anchors.right: variationSource === "receiver" ? main.right : undefined
       anchors.top: main.bottom
       width: 5
       height: 5

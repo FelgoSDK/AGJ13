@@ -77,9 +77,9 @@ SceneBase {
   Keys.onReleased: {
     if(event.key === Qt.Key_Plus)
       // the level is moved faster, when the accel is increased in its negative direction
-      level.accelerate(-4)
+      level.accelerate(-40)
     if(event.key === Qt.Key_Minus)
-      level.accelerate(+4)
+      level.accelerate(+40)
   }
 
 

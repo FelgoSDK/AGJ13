@@ -27,7 +27,7 @@ EntityBase {
   // the total count of deaths within this gaming session
   property int deaths: 0
 
-  property int initialLives: 1
+  property int initialLives: 100
 
   property int lives: initialLives
 
