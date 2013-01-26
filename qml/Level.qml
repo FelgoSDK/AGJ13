@@ -31,7 +31,7 @@ Item {
   property alias player: player
 
   // specifies the px/second how much the level moves
-  property real levelMovementSpeedMinimum: 40
+  property real levelMovementSpeedMinimum: 20
   property real levelMovementSpeedMaximum: 200
   // after 30seconds, the maximum speed will be reached - if you set this too high, also increase the gravity so the chicken falls faster than the level moves
   property int levelMovementDurationTillMaximum: 30
@@ -242,8 +242,8 @@ Item {
 
     // limit the maximum v to 100 px per second - it must not be faster than the gravity! this is the absolute maximum, so the chicken falls almost as fast as the background moves by! so rather set it to -90, or increase the gravity
     minVelocity: -levelMovementSpeedMaximum
-    // dont allow moving backwards
-    maxVelocity: 0
+    // Use a certain minimum speed
+    maxVelocity: -levelMovementSpeedMinimum
 
     //onVelocityChanged: console.debug("velocity changed to:", velocity)
   }
@@ -302,6 +302,11 @@ Item {
 
     console.debug("acceleration diff:", diff, "new acc:", levelMovementAnimation.acceleration)
 
+  }
+
+  function setAcceleration(acceleration) {
+    levelMovementAnimation.acceleration = acceleration * 10
+    console.debug("New acceleration:", acceleration)
   }
 
 
