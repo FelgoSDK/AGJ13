@@ -17,6 +17,7 @@ function createRandomRowForRowNumber(rowNumber) {
 
     var currentVariationType = "straight"
     var currentVariationSource = "sender"
+    var currentTurnDirection = "straight"
     if(i === 1) {
       currentVariationType = selectedTrackVariationType
       currentVariationSource = selectedVarationSource
@@ -30,7 +31,8 @@ function createRandomRowForRowNumber(rowNumber) {
                                                     {"x": newTrackCenterPos.x,
                                                      "y": newTrackCenterPos.y,
                                                      "variationTypes": currentVariationType,
-                                                     "variationSource": currentVariationSource
+                                                     "variationSource": currentVariationSource,
+                                                      "turnDirection": currentTurnDirection
                                                     });
 
     console.debug("create new trackSection at position", newTrackCenterPos.x, newTrackCenterPos.y)
