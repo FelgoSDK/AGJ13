@@ -340,7 +340,7 @@ Item {
         if (playerRowActive == 0)
           o.y += trackSectionHeight
         // Obstacle is on bottom
-        else if (playerRowActive == railAmount)
+        else if (playerRowActive === railAmount - 1)
           o.y -= trackSectionHeight
         // Obstacle is in between
         else {
