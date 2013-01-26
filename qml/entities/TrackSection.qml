@@ -76,7 +76,7 @@ EntityBase {
     anchors.fill: img
     collisionTestingOnlyMode: true
     sensor: true
-    active: variationSource == "sender"
+    active: variationSource == "sender" && turnDirection != "straight"
   }
 
   MultiTouchArea {
