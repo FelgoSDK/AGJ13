@@ -84,7 +84,7 @@ EntityBase {
     collidesWith: level.playerColliderGroup | level.borderRegionColliderGroup
     sensor: true
     // do not deactivate if straight, because when player collides with a straight section, and the switch would be set afterwards, then it would switch track although player is further behind
-    //active: variationSource == "sender" //&& turnDirection != "straight"
+    active: variationSource == "sender" //&& turnDirection != "straight"
 
     fixture.onBeginContact: {
       var fixture = other;
