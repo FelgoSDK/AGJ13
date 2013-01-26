@@ -33,7 +33,7 @@ Item {
 
   // specifies the px/second how much the level moves
   property real levelMovementSpeedMinimum: 40
-  property real levelMovementSpeedMaximum: 90
+  property real levelMovementSpeedMaximum: 200
   // after 30seconds, the maximum speed will be reached - if you set this too high, also increase the gravity so the chicken falls faster than the level moves
   property int levelMovementDurationTillMaximum: 30
 
@@ -82,7 +82,7 @@ Item {
   }
 
   function preCreateEntityPool() {
-    entityManager.createPooledEntitiesFromUrl(Qt.resolvedUrl("entities/TrackSection.qml"), 40);
+//    entityManager.createPooledEntitiesFromUrl(Qt.resolvedUrl("entities/TrackSection.qml"), 40);
     entityManager.createPooledEntitiesFromUrl(Qt.resolvedUrl("entities/Obstacle.qml"), 10);
 
   }

@@ -4,6 +4,9 @@ var selectedTrack = 0
 var selectedTrackVariationType = ""
 var selectedVarationSource = "none"
 
+// this is a dirty hack, because the entityManager does not work well when the entityId already exists!
+var entityCounter = 0
+
 function createRandomRowForRowNumber(rowNumber) {
 
   console.debug("createRandomRowForRowNumber:", rowNumber, ", railAmount:", railAmount)
@@ -26,14 +29,23 @@ function createRandomRowForRowNumber(rowNumber) {
     }
 
     // TODO add variation type of upper  element to decide which element can be added
-    entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
+    var trackId = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
                                                     {"x": newTrackCenterPos.x,
                                                      "y": newTrackCenterPos.y,
                                                      "variationTypes": currentVariationType,
-                                                     "variationSource": currentVariationSource
+                                                     "variationSource": currentVariationSource,
+                                                     "entityId:": "trackSection" + entityCounter
                                                     });
+    entityCounter++
+
+    var track = entityManager.getEntityById(trackId);
+    if(!track.visible)
+      console.debug("ERROR: TRACK invisible!? - this happens when the entityId was duplicated")
 
     console.debug("create new trackSection at position", newTrackCenterPos.x, newTrackCenterPos.y)
+    if(newTrackCenterPos.x != track.x || newTrackCenterPos.y!=track.y)
+      console.debug("ERROR: not the same pos!?- this happens when the entityId was duplicated")
+
     // add obstacle
     if(generateObstacles) {
       createRandomObstacleInTrack(newTrackCenterPos.x,newTrackCenterPos.y)
