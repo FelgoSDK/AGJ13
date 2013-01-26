@@ -14,6 +14,7 @@ EntityBase {
   signal downPressed(variant event)
 
   signal died
+  signal collisionWithTrackSection(string direction)
 
   signal collision
 
@@ -107,6 +108,8 @@ EntityBase {
           died()
 
 
+      } else if(collidedEntityType === "trackSection") {
+        collisionWithTrackSection(collidedEntity.variationTypes)
       }
     }
   }

@@ -22,7 +22,11 @@ EntityBase {
       id: main
       width: parent.width
       height:  parent.height*0.5
-      anchors.centerIn: parent
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.leftMargin: 1
+      anchors.rightMargin: 1
       color: "brown"
     }
     Rectangle {

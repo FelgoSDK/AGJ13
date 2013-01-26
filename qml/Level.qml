@@ -21,6 +21,8 @@ Item {
 
   // the player starts in the middle track 0, and then moves upwards or downwards
   property int playerRow: 1
+  // the player track which is currently active which does not influent the startYForFirstRail.
+  property int playerRowActive: 1
 
   property int railAmount: 3
 
@@ -122,6 +124,8 @@ Item {
     for(var i=0; i<numVisibleTracks; i++) {
       LevelLogic.createRandomRowForRowNumber(i);
     }
+    // from now on generate obstacles
+    LevelLogic.generateObstacles = true
 
 
     levelMovementAnimation.velocity = -levelMovementSpeedMinimum;
@@ -142,6 +146,19 @@ Item {
       console.debug("PLAYER COLLIDED WITH obstacle, level.y:", level.y, ", player.y:", player.y)
       // emit the gameLost signal, which is handled in MainScene
       gameLost();
+    }
+    onCollisionWithTrackSection: {
+      console.debug("PLAYER COLLIDED WITH trackelement, variation:",direction)
+      if(direction === "up") {
+        playerRowActive--
+        if(playerRowActive<0)
+          playerRowActive = 0
+      } else if(direction === "down") {
+        playerRowActive++
+        if(playerRowActive>railAmount-1)
+          playerRowActive = railAmount-1
+      }
+      player.y = startYForFirstRail+(playerRowActive)*trackSectionHeight
     }
   }
 
@@ -268,7 +285,7 @@ Item {
     if(-dx > gridSize) {
 
       var amountNewRows = (-dx/gridSize).toFixed();
-      console.debug(amountNewRows, "new rows are getting created...")
+      //console.debug(amountNewRows, "new rows are getting created...")
 
       if(amountNewRows>1) {
         console.debug("WARNING: the step difference was too big, more than 1 track got created!")
