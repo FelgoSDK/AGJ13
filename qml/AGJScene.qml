@@ -9,6 +9,7 @@ SceneBase {
   property alias level: level
   property alias player: level.player
   property alias entityContainer: level
+  property alias itemEditor: itemEditor
 
   // make 1 grid (so 1 block and the player size) 48 logical px - a roost has this size, so 320/48= 6.6 can be displayed in one scene
   gridSize: 96//48//32
@@ -165,6 +166,29 @@ SceneBase {
     onAccelerationChanged: {
       console.log("Train's acceleration value", acceleration)
     }
+  }
+
+  ItemEditor {
+    id: itemEditor
+    //width: 200
+    //height: scene.height
+    anchors.left: scene.left
+    groupAnchor: "top"
+
+    // Add all particles here which should be available
+    filterGroups: [
+      "Level",
+    ]
+
+    // Add all particles textures here which should be available for a particle
+    imageSources: [
+    ]
+
+    filterSelection: "Level"
+
+    visible: false
+
+    opacity: 0.4
   }
 
   states: [
