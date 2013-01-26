@@ -157,14 +157,19 @@ SceneBase {
     y: gameWindowAnchorItem.y + gameWindowAnchorItem.height - width/2 - height
 
     onBrakeChanged: {
-      if (brake)
+      if (brake) {
         console.log("Train in brake mode!")
-      else
+        level.setAcceleration(20);
+      }
+      else {
         console.log("Brakes released")
+        level.setAcceleration(0)
+      }
     }
 
     onAccelerationChanged: {
       console.log("Train's acceleration value", acceleration)
+      level.setAcceleration(-acceleration)
     }
   }
 
