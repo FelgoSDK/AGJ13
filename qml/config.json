@@ -1,10 +1,10 @@
 {
-  "title": "agj13",
+  "title": "AGJ13",
   "identifier": "net.vplay.demos.agj13",
-  "orientation": "portrait",
-  "versioncode": 2,
-  "versionname": "1.1",
-  "plugins": [ "gamecenter", "flurry" ],
+  "orientation": "landscape",
+  "versioncode": 1,
+  "versionname": "1",
+  "plugins": [ "gui" ],
 
   "ios": {
     "prerendered_icon": true
