@@ -14,6 +14,7 @@ EntityBase {
   signal downPressed(variant event)
 
   signal died
+  signal collisionWithTrackSection(string direction)
 
   // gets increased over time - it has the same value as the y value of the level
   property int score: 0
@@ -93,8 +94,10 @@ EntityBase {
         // the obstacle is pooled for better performance
         collidedEntity.removeEntity();
 
-
+        // OMG! Dead
         died()
+      } else if(collidedEntityType === "trackSection") {
+        collisionWithTrackSection(collidedEntity.variationTypes)
       }
     }
   }
