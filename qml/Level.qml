@@ -3,7 +3,6 @@ import QtQuick 1.1
 import Box2D 1.0
 import VPlay 1.0
 import "entities"
-import "TrackLogic.js" as TrackLogic
 import "scripts/levelLogic.js" as LevelLogic
 
 // the level gets moved in the negative y direction (so upwards) -> this has the effect that all entities in it are moving downwards!
@@ -66,6 +65,9 @@ Item {
   // make some more, so it goes outside
   property int numVisibleTracks: level.width/trackSectionWidth + 5 // for testing the creation and make it visible in the scene, set the additional amount to 0
 
+  // the background images are moved up by this offset so on widescreen devices the full background is visible
+  property real __xOffsetForWindow: scene.__xOffsetForAbsoluteWindowCoordinates
+
 
   // players collide with obstacles (game lost) and trackSections (if direction chan
   // borderRegion collides with obstacles and trackSections
@@ -114,14 +116,11 @@ Item {
 
     level.x = 0
 
-//    player.x = scene.width/2;
-//    player.y = 2*gridSize;
-
     player.init()
-   
-    TrackLogic.initTrack()
 
-
+    // start positioned on the window top
+    levelBackground.x = -__xOffsetForWindow;
+    levelBackground2.x = levelBackground.x+levelBackgroundWidth;
 
     console.debug("numVisibleTracks:", numVisibleTracks)
     for(var i=0; i<numVisibleTracks; i++) {
@@ -134,6 +133,43 @@ Item {
     levelMovementAnimation.velocity = -levelMovementSpeedMinimum;
     levelMovementAnimation.start();
   }
+
+  // this is the offset of the 2 backgrounds
+  // make the offset a litte bit smaller, so no black background shines through when they are put below each other
+  property real levelBackgroundWidth: levelBackground.width*levelBackground.scale-1
+
+  MultiResolutionImage {
+    //BackgroundImage { // dont use a BackgroundImage yet, because blending isnt working correclty! (overlapping regions appear lighter!)
+    id:levelBackground
+    source: "img/background-wood2-sd.png"
+
+    // the logical width should be the scene size - this will change when the background image is bigger than the scene size to support multiple resolutions & aspect ratios
+    // in that case, use a MultiResolutionImage with pixelFormat set to 3 and position it in the horizontal center
+    // multiply width & height by 1.2, so it is still visible on 4:3 and 16:9 ratios!
+    scale: 1.2
+
+    // position horizontally centered
+    anchors.verticalCenter: parent.verticalCenter
+
+    // the windows have z=-1, all other objects have 0, so put behind the windows
+    z:-2
+  }
+
+  MultiResolutionImage {
+    //BackgroundImage { // dont use a BackgroundImage yet, because blending isnt working correclty! (overlapping regions appear lighter!)
+    id:levelBackground2
+    source: "img/background-wood2-sd.png"
+
+    //opacity: 0.6 // for testing the second copy of the background
+    scale: 1.2
+
+    // position horizontally centered
+    anchors.verticalCenter: parent.verticalCenter
+
+    // the windows have z=-1, all other objects have 0, so put behind the windows
+    z:-2
+  }
+
 
   // start in the center of the scene, and a little bit below the top
   // the player will fall to the playerInitialBlock below at start
@@ -210,77 +246,6 @@ Item {
     //onVelocityChanged: console.debug("velocity changed to:", velocity)
   }
 
-
-
-
-  /*
-  Row {
-    height: level.height
-    Repeater {
-      model: 5
-      Column {
-        x: level.width/5*index
-        width: level.width/5
-        opacity: index%2 ? 0.5 : 1
-        Rectangle {
-          width: level.width/5
-          height: level.height/7
-          color: "green"
-        }
-        Rectangle {
-          width: level.width/5
-          height: level.height/7/5
-          color: "green"
-        }
-        Rectangle {
-          width: level.width/5
-          height: level.height/7
-          color: "grey"
-        }
-        Rectangle {
-          width: level.width/5
-          height: level.height/7/5
-          color: "green"
-        }
-        Rectangle {
-          width: level.width/5
-          height: level.height/7
-          color: "grey"
-        }
-        Rectangle {
-          width: level.width/5
-          height: level.height/7/5
-          color: "green"
-        }
-        Rectangle {
-          width: level.width/5
-          height: level.height/7
-          color: "grey"
-        }
-        Rectangle {
-          width: level.width/5
-          height: level.height/7/5
-          color: "green"
-        }
-        Rectangle {
-          width: level.width/5
-          height: level.height/7
-          color: "grey"
-        }
-        Rectangle {
-          width: level.width/5
-          height: level.height/7/5
-          color: "green"
-        }
-        Rectangle {
-          width: level.width/5
-          height: level.height/7
-          color: "green"
-        }
-      }
-    }    
-  } */
-
   onXChanged: {
     // y gets more and more negative, so e.g. -40 - (-25) = -15
     var dx = x - lastX;
@@ -308,16 +273,16 @@ Item {
 
     // handles the repositioning of the backgrounds, if they are getting out of the scene
     // by tiling the 2 backgrounds vertically, it appears to the user as being one continuous background
-//    if(-x-__yOffsetForWindow > (levelBackground.y+levelBackgroundHeight)) {
-//      console.debug("shift background1 down from", levelBackground.y)
-//      levelBackground.y += 2*levelBackgroundHeight;
-//      console.debug("... to", levelBackground.y)
-//    }
-//    if(-y-__yOffsetForWindow > (levelBackground2.y+levelBackgroundHeight)) {
-//      console.debug("shift background2 down from", levelBackground2.y)
-//      levelBackground2.y += 2*levelBackgroundHeight;
-//      console.debug("... to", levelBackground2.y)
-//    }
+    if(-x-__xOffsetForWindow > (levelBackground.x+levelBackgroundWidth)) {
+      //console.debug("shift background1 down from", levelBackground.x, levelBackgroundWidth)
+      levelBackground.x += 2*levelBackgroundWidth
+      //console.debug("... to", levelBackground.x)
+    }
+    if(-x-__yOffsetForWindow > (levelBackground2.x+levelBackgroundWidth)) {
+      //console.debug("shift background2 down from", levelBackground2.x, levelBackgroundWidth )
+      levelBackground2.x += 2*levelBackgroundWidth
+      //console.debug("... to", levelBackground2.x)
+    }
 
 
     // TODO: use a bitmap font for text updating which is much faster -> this feature is not supported by V-Play yet, contact us if you would need it at team@v-play.net
