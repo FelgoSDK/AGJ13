@@ -11,7 +11,8 @@ EntityBase {
   property string variationSource: "none"
 
   // this is important - a lot get removed and destroyed dynamically!
-  poolingEnabled: true
+//  poolingEnabled: true
+  poolingEnabled: level.trackSectionPoolingEnabled
 
 
   // In comparison to the variatonType the turnDirection property holds the logical direction in
@@ -19,9 +20,13 @@ EntityBase {
   // Valid values are "straight", "up" and "down"
   property string turnDirection: "straight"
 
+  property bool touchEnabled: variationSource == "sender"
+
   onUsedFromPool: {
     console.debug("Track got used from pool")
-    collider.active = (variationSource == "sender")
+    //collider.active = (variationSource == "sender")
+
+    touchEnabled = (variationSource == "sender")
   }
 
 
@@ -95,7 +100,7 @@ EntityBase {
     collidesWith: level.playerColliderGroup | level.borderRegionColliderGroup
     sensor: true
     // do not deactivate if straight, because when player collides with a straight section, and the switch would be set afterwards, then it would switch track although player is further behind
-    active: variationSource == "sender" //&& turnDirection != "straight"
+    //active: variationSource == "sender" //&& turnDirection != "straight"
 
     fixture.onBeginContact: {
       var fixture = other;
@@ -105,10 +110,13 @@ EntityBase {
       var collidedEntityType = collidedEntity.entityType;
 
       console.debug("collision in TrackSection with", collidedEntityType)
-      collider.active = false
+      //collider.active = false
 
-      if(turnDirection !== "straight")
-        player.collisionWithTrackSection(turnDirection)
+      if(collidedEntityType === "player") {
+        touchEnabled = false
+        if(turnDirection !== "straight")
+          player.collisionWithTrackSection(turnDirection)
+      }
     }
   }
 
@@ -117,7 +125,7 @@ EntityBase {
     anchors.fill: img
 
     // Straight types need no swipes
-    enabled: collider.active
+    enabled: touchEnabled
 
     onSwipe: {
       // console.debug("angle is", angle)

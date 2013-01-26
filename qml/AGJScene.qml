@@ -109,7 +109,7 @@ SceneBase {
     anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
     anchors.topMargin: 5
 
-    text: "Score: " + player.totalScore + " Lives:" + player.lives
+    text: /*"Score: " + player.totalScore + */" Lives:" + player.lives + " Speed:" + level.levelMovementSpeed
     font.family: fontHUD.name
     font.pixelSize: 22
     color: "white"
@@ -133,7 +133,7 @@ SceneBase {
     // place it on top of the window, not on top of the logical scene
     anchors.top: scene.gameWindowAnchorItem.top
     anchors.right: scene.gameWindowAnchorItem.right
-    visible: system.debugBuild // only display in debug mode - the menu button for ingame testing should not be visible in retail builds for the store (and also not in release builds)
+    visible: true//system.debugBuild // only display in debug mode - the menu button for ingame testing should not be visible in retail builds for the store (and also not in release builds)
     text: "Menu"
     onClicked: {
       // this activates the ingameMenu state, which will show the IngameMenu item

@@ -31,10 +31,11 @@ Item {
   property alias player: player
 
   // specifies the px/second how much the level moves
+
   property real levelMovementSpeedMinimum: 20
-  property real levelMovementSpeedMaximum: 200
-  // after 30seconds, the maximum speed will be reached - if you set this too high, also increase the gravity so the chicken falls faster than the level moves
-  property int levelMovementDurationTillMaximum: 30
+  property real levelMovementSpeedMaximum: 800
+  property real levelMovementSpeed: 50//levelMovementSpeedMinimum
+
 
   // with 9% probability, a roost will get created in a row for any column
   // if it gets set too low, the game will be unplayable because too few roosts are created, so balance this with care!
@@ -74,7 +75,10 @@ Item {
   property int borderRegionColliderGroup: Box.Category1
   property int trackSectionColliderGroup: Box.Category2
   property int playerColliderGroup: Box.Category3
-//  property int obstacleColliderGroup: Box.Category4
+  property int obstacleColliderGroup: Box.Category4
+
+  // TODO: test if pooling is SLOWER than re-creation!?
+  property bool trackSectionPoolingEnabled: true
 
   EditableComponent {
       id: editableEditorComponent
@@ -82,12 +86,14 @@ Item {
       type: "Level"
       properties: {
         "railAmount":               {"minimum": 0, "maximum": 10,"stepsize": 1,  "default": 3},
-        "playerRowActive":               {"minimum": 0, "maximum": railAmount,"stepsize": 1,  "default": 1},
+        "playerRowActive":          {"minimum": 0, "maximum": railAmount,"stepsize": 1,  "default": 1},
+        "trackSectionPoolingEnabled":          {"minimum": false, "maximum": true, "default": trackSectionPoolingEnabled},
 
         // Particle configuration properties
-        "obstacleCreationPropability":               {"minimum": 0, "maximum": 1, "default": 0.3,"stepsize": 0.01, "label": "Obstacles","group": "level"},
-        "levelMovementSpeedMinimum":               {"minimum": 0, "maximum": 1000, "default": 40,"stepsize": 1,"group": "level"},
-        "levelMovementSpeedMaximum":               {"minimum": 0, "maximum": 1000, "default": 200,"stepsize": 1,"group": "level"},
+        "obstacleCreationPropability":               {"minimum": 0, "maximum": 1, "default": 0.3,"stepsize": 0.01, "label": "Obstacles" /*,"group": "level"*/},
+        "levelMovementSpeed":                      {"minimum": 0, "maximum": 1000, "default": levelMovementSpeed,"stepsize": 1, /*"group": "level"*/},
+        "levelMovementSpeedMinimum":               {"minimum": 0, "maximum": 1000, "default": levelMovementSpeedMinimum,"stepsize": 1, /*"group": "level"*/},
+        "levelMovementSpeedMaximum":               {"minimum": 0, "maximum": 1000, "default": levelMovementSpeedMaximum,"stepsize": 1, /*"group": "level"*/},
       }
   }
 
@@ -147,9 +153,13 @@ Item {
     LevelLogic.generateObstacles = true
 
 
-    levelMovementAnimation.velocity = -levelMovementSpeedMinimum
+    // the minimum is still 0 here!?
+//    levelMovementSpeed = -levelMovementSpeedMinimum
+    //levelMovementAnimation.velocity = -levelMovementSpeedMinimum
     // levelMovementAnimation.velocity = -levelMovementSpeedMaximum // for performance testing with higher velocity
     levelMovementAnimation.start();
+
+    console.debug("movementanimation.v:", levelMovementAnimation.velocity)
   }
 
   // this is the offset of the 2 backgrounds
@@ -225,7 +235,7 @@ Item {
     //x: -level.x
     y: scene.gameWindowAnchorItem.x
     height: scene.gameWindowAnchorItem.height// make bigger than the window, because the roost can stand out of the scene on the right side when the gridSize is not a multiple of the scene.width (which it currently is: 320/48=6.6) and thus if the player would stand on the right side no collision would be detected!
-    width: 20
+    width: 80 // make big enough, so they dont go through
   }
 
   /* TODO: does it work with physics, when the tracks are moved, and not the whole world? i guess not, because the positions are not mapped to world when the parent changes!
@@ -249,7 +259,10 @@ Item {
     // target: tracks probably wont work, because physics only takes the direct position!?
 
     // this is the movement in px per second, start with very slow movement, 10 px per second
-    velocity: -levelMovementSpeedMinimum
+    velocity: -levelMovementSpeed
+
+    onVelocityChanged: console.debug("vel changed to:", velocity)
+
     // running is set to false - call start() here
     // increase the velocity by this amount of pixels per second, so it lasts minVelocity/acceleration seconds until the maximum is reached!
     // i.e. -70/-2 = 45 seconds
