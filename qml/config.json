@@ -4,7 +4,6 @@
   "orientation": "landscape",
   "versioncode": 1,
   "versionname": "1",
-  "plugins": [ "gui" ],
 
   "ios": {
     "prerendered_icon": true

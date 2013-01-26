@@ -6,6 +6,9 @@ import VPlay 1.0
 EntityBase {
   entityType: "player"
 
+  property alias sprite: sprite
+
+
   // the key-pressed-signals get emitted from the scene when key presses are detected
   // key pressed cant be detected here, because this item has no size
   signal leftPressed(variant event)
@@ -26,6 +29,10 @@ EntityBase {
   property int totalScore: score + (bonusScore * bonusScoreForCoin)
   // the total count of deaths within this gaming session
   property int deaths: 0
+
+  // Gets decreased while accelerating and honking, increases while acceleration is 0
+  property int steamPressure: 100
+  property int steamPressureDeltaForHonking: 20
 
   property int initialLives: 100
 
@@ -76,23 +83,22 @@ EntityBase {
     }
   }
 
-  Rectangle {
-    id: img
-    width: 40
-    height: 40
+  MultiResolutionImage {
+    id: sprite
+    source:  "../img/train-sd.png"
     anchors.centerIn: parent
-    color: "red"
   }
 
   BoxCollider {
     id: collider
     //anchors.centerIn: parent
     //radius: 15
-    anchors.fill: img
+    anchors.fill: sprite
     collisionTestingOnlyMode: true
     sensor: true
 
     categories: level.playerColliderGroup
+
 
     fixture.onBeginContact: {
       var fixture = other;
