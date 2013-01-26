@@ -17,4 +17,10 @@ Column {
       scene.state = "" // reset to default state, so hide this menu
     }
   }
+  MenuButton {
+    text: "Tweak"
+    onClicked: {
+      itemEditor.visible = !itemEditor.visible
+    }
+  }
 }

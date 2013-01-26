@@ -76,6 +76,21 @@ Item {
   property int playerColliderGroup: Box.Category3
 //  property int obstacleColliderGroup: Box.Category4
 
+  EditableComponent {
+      id: editableEditorComponent
+      target: parent
+      type: "Level"
+      properties: {
+        "railAmount":               {"minimum": 0, "maximum": 10,"stepsize": 1,  "default": 3},
+        "playerRowActive":               {"minimum": 0, "maximum": railAmount,"stepsize": 1,  "default": 1},
+
+        // Particle configuration properties
+        "obstacleCreationPropability":               {"minimum": 0, "maximum": 1, "default": 0.3,"stepsize": 0.01, "label": "Obstacles","group": "level"},
+        "levelMovementSpeedMinimum":               {"minimum": 0, "maximum": 1000, "default": 40,"stepsize": 1,"group": "level"},
+        "levelMovementSpeedMaximum":               {"minimum": 0, "maximum": 1000, "default": 200,"stepsize": 1,"group": "level"},
+      }
+  }
+
   Component.onCompleted: {
 
     // this creates some roosts, coins and windows beforehand, so they dont need to be created at runtime
