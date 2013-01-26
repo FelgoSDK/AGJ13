@@ -42,7 +42,7 @@ function createRandomRowForRowNumber(rowNumber) {
     var trackId = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
                                                     {"x": newTrackCenterPos.x,
                                                      "y": newTrackCenterPos.y,
-                                                     "variationType": currentVariationType,
+                                                     "variationType": currentVariationType + (currentVariationSource==="reveiver" ? currentVariationSource : ""),
                                                      "variationSource": currentVariationSource,
                                                      "turnDirection": currentTurnDirection,
                                                      // comment entityId - restarting would not work any more!

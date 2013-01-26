@@ -3,7 +3,7 @@ import VPlay 1.0
 
 EntityBase {
   entityType: "trackSection"
-  // there are 4 variationType: straight, up, down, and both directions
+  // there are 4 variationType: straight, up, upreceiver, down, downreceiver, and both, bothreceiver directions
   // depending on which direction the switch has, the player will be moved to that direction
   variationType: "straight"
   //variationTypes: "straight"
@@ -26,26 +26,9 @@ EntityBase {
 
 
   MultiResolutionImage {
-    id: straight
-    source:  "../img/railstraight-sd.png"
-    visible: (variationType==="straight")
+    source:  (variationType==="straight") ? "../img/railstraight-sd.png" : (variationType==="up" || variationType==="down" || variationType==="upreceiver" || variationType==="downreceiver") ? "../img/railcurve-sd.png" : "../img/raildoubled-sd.png"
     anchors.centerIn: parent
-  }
-
-  MultiResolutionImage {
-    id: upDown
-    source: "../img/railcurve-sd.png"
-    visible: (variationType==="up" || variationType==="down")
-    anchors.centerIn: parent
-    mirrorY: (variationType==="down")
-    mirrorX: (variationSource==="receiver")
-  }
-
-  MultiResolutionImage {
-    id: doubled
-    source: "../img/raildoubled-sd.png"
-    visible: (variationType==="both")
-    anchors.centerIn: parent
+    mirrorY: (variationType==="down" || variationType==="downreceiver")
     mirrorX: (variationSource==="receiver")
   }
 
