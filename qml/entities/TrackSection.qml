@@ -13,6 +13,11 @@ EntityBase {
   poolingEnabled: true
 
 
+  // In comparison to the variatonType the turnDirection property holds the logical direction in
+  // which the track section is pointing to. This should be used for the resulting player path.
+  // Valid values are "straight", "up" and "down"
+  property string turnDirection: "straight"
+
   Rectangle {
     id: img
     width: scene.width/7
@@ -56,4 +61,31 @@ EntityBase {
     active: variationSource == "sender"
   }
 
+  MultiTouchArea {
+    // Probably make a little bit higher than the actual track section item?
+    anchors.fill: img
+
+    // Straight types need no swipes
+    enabled: variationTypes !== "straight"
+
+    onSwipe: {
+      // console.debug("angle is", angle)
+
+      // Check for swipe direction, delta is 60 degrees
+      if (angle  > 330 || angle < 30 || angle  > 150 && angle < 210) {
+        // console.debug("Straight swipe...")
+        turnDirection = "straight"
+      }
+      else if (angle  > 60 && angle < 120) {
+        // console.debug("Swipe down...")
+        if (variationTypes === "both" || variationTypes === "down")
+          turnDirection = "down"
+      }
+      else if (angle  > 240 && angle < 300) {
+        // console.debug("Swipe up...")
+        if (variationTypes === "both" || variationTypes === "up")
+          turnDirection = "up"
+      }
+    }
+  }
 }
