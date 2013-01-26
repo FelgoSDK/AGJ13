@@ -74,6 +74,7 @@ Item {
   property int borderRegionColliderGroup: Box.Category1
   property int trackSectionColliderGroup: Box.Category2
   property int playerColliderGroup: Box.Category3
+//  property int obstacleColliderGroup: Box.Category4
 
   Component.onCompleted: {
 

@@ -18,6 +18,10 @@ EntityBase {
   // Valid values are "straight", "up" and "down"
   property string turnDirection: "straight"
 
+  onUsedFromPool: {
+    collider.active = (variationSource == "sender")
+  }
+
   Rectangle {
     id: img
     width: scene.width/7
@@ -73,10 +77,28 @@ EntityBase {
   }
 
   BoxCollider {
+    id: collider
     anchors.fill: img
     collisionTestingOnlyMode: true
+    categories: level.trackSectionColliderGroup
+    collidesWith: level.playerColliderGroup | level.borderRegionColliderGroup
     sensor: true
-    active: variationSource == "sender" && turnDirection != "straight"
+    // do not deactivate if straight, because when player collides with a straight section, and the switch would be set afterwards, then it would switch track although player is further behind
+    //active: variationSource == "sender" //&& turnDirection != "straight"
+
+    fixture.onBeginContact: {
+      var fixture = other;
+      var body = fixture.parent;
+      var component = body.parent;
+      var collidedEntity = component.owningEntity;
+      var collidedEntityType = collidedEntity.entityType;
+
+      console.debug("collision in TrackSection with", collidedEntityType)
+      collider.active = false
+
+      if(turnDirection !== "straight")
+        player.collisionWithTrackSection(turnDirection)
+    }
   }
 
   MultiTouchArea {
@@ -84,7 +106,7 @@ EntityBase {
     anchors.fill: img
 
     // Straight types need no swipes
-    enabled: variationSource === "sender" && variationTypes !== "straight"
+    enabled: collider.active
 
     onSwipe: {
       // console.debug("angle is", angle)
