@@ -17,7 +17,7 @@ Item {
 
   // how many new rows were created, it starts with 0 if the level has y position 0, and then gets increased with every gridSize
   // gets initialized in onCompleted
-  property real currentRow: 0
+  property real currentTrackColumn: 0
 
   // the player starts in the middle track 0, and then moves upwards or downwards
   property int playerRow: 1
@@ -37,17 +37,8 @@ Item {
   property real levelMovementSpeedMaximum: 800
   property real levelMovementSpeed: 50//levelMovementSpeedMinimum
 
-
-  // with 9% probability, a roost will get created in a row for any column
-  // if it gets set too low, the game will be unplayable because too few roosts are created, so balance this with care!
-  property real platformCreationProbability: 0.09
   // probability of 30% to create a obstacle on top of the track, so in 3 of 10 tracks there will be a obstacle created
   property real obstacleCreationPropability: 0.3
-  // windows get created randomly as well - they only have visual effect, but dont set too high because then it looks boring
-  property real windowCreationProbability: 0.05
-  // this avoids creating too many windows, so not possible to have more than 2 on a scene with this code!
-  property real minimumWindowHeightDifference: 300
-
   // is needed internally to avoid creating too many windows close to each other
   property int lastWindowY: 0
 
@@ -132,7 +123,7 @@ Item {
     console.debug("Level: startGame()");
 
     // it is important that lastY is set first, so the dy in onYChanged will be 0 and no new row is created
-    currentRow = 0    
+    currentTrackColumn = 0
 
     // it is important to set lastX before level.x! otherwise in onXChanged it would lead to a creation already!
     lastX = -0
@@ -368,8 +359,8 @@ Item {
       // this doesnt happen with fixed dt, but it could happen with varying dt where more than 1 row might need to be created because of such a big y delta
       for(var i=0; i<amountNewRows; i++) {        
         // this guarantees it is created outside of the visual screen
-        LevelLogic.createRandomRowForRowNumber(currentRow+numVisibleTracks);
-        currentRow++;
+        LevelLogic.createRandomRowForRowNumber(currentTrackColumn+numVisibleTracks);
+        currentTrackColumn++;
         // it's important to decrease lastX like that, not setting it to x!
         lastX -= trackSectionWidth
       }
