@@ -14,7 +14,7 @@ Item {
   // Rotate the item here instead of using orientation: Qt.Vertical on the slider
   rotation: -90
 
-  Slider {
+  ThrottleSlider {
     id: throttleSlider
 
     // Width is height with vertical orientation
