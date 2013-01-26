@@ -24,7 +24,16 @@ EntityBase {
 
 
   Component.onCompleted:  {
-    console.debug("size of TrackSection:", multiresimg.width)
+    //console.debug("size of TrackSection:", multiresimg.width)
+    console.debug("NEW TRACKSECTION with id", entityId, "variationType:", variationType)
+  }
+
+  onVisibleChanged: {
+    //console.debug("TRACKSECTION visible changed to", visible, "with id", entityId, ", type:", entityType)
+  }
+
+  onMovedToPool: {
+//    collider.active = false
   }
 
   onUsedFromPool: {
@@ -32,13 +41,20 @@ EntityBase {
     //collider.active = (variationSource == "sender")
 
     touchEnabled = (variationSource == "sender")
+
+    //console.debug("use pooled TRACKSECTION with id", entityId, "visible:", visible)
+
+    //collider.active = true
   }
 
   MultiResolutionImage {
     id: multiresimg
-//    contentWidth: img.width/imageSource.contentScaleFactor
-//    contentHeight: img.height/imageSource.contentScaleFactor
-    source:  (variationType==="straight") ? "../img/railstraight-sd.png" : ((variationType==="up" || variationType==="down" || variationType==="upreceiver" || variationType==="downreceiver") ? "../img/railcurve-sd.png" : "../img/raildoubled-sd.png")
+//    contentWidth: img.width/multiresimg.contentScaleFactor
+//    contentHeight: img.height/multiresimg.contentScaleFactor
+    source:  (variationType==="straight") ? "../img/railstraight-sd.png" :
+             ((variationType==="up" || variationType==="down" ||
+               variationType==="upreceiver" || variationType==="downreceiver") ? "../img/railcurve-sd.png" :
+                                                                                 "../img/raildoubled-sd.png") // is used when variationtype is both
     anchors.centerIn: parent
     mirrorY: (variationType==="down" || variationType==="downreceiver")
     mirrorX: (variationSource==="receiver")
@@ -58,6 +74,7 @@ EntityBase {
 //  }
 
   Item {
+//  Rectangle {
     id: img
     // NOTE: this size is not valid any more!!!
     width: level.trackSectionWidth
@@ -67,6 +84,7 @@ EntityBase {
     opacity: 0.8
 
     Item {
+//    Rectangle {
       id: main
       width: parent.width
       height:  parent.height*0.5
@@ -137,6 +155,10 @@ EntityBase {
         touchEnabled = false
         if(turnDirection !== "straight")
           player.collisionWithTrackSection(turnDirection)
+      } else {
+        // in this case, the track collided with the borderregion and will be destroyed now
+        // with the old solution of VPlay without updating the position of mBody, without this there was a recreation error!
+        //collider.active = false
       }
     }
   }

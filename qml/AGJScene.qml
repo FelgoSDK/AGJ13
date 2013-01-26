@@ -79,8 +79,10 @@ SceneBase {
     if(event.key === Qt.Key_Plus)
       // the level is moved faster, when the accel is increased in its negative direction
       level.accelerate(-40)
-    if(event.key === Qt.Key_Minus)
+    else if(event.key === Qt.Key_Minus)
       level.accelerate(+40)
+    else if(event.key === Qt.Key_R)
+      level.restartGame()
   }
 
 

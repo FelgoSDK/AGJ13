@@ -1,8 +1,8 @@
 
 var generateObstacles = false
 var selectedTrack = 0
-var selectedTrackVariationType = "straight"
-var selectedVarationSource = "none"
+var middleRailVariationType = "straight"
+var middleRailVariationSource = "none"
 
 // this is a dirty hack, because the entityManager does not work well when the entityId already exists!
 var entityCounter = 0
@@ -11,14 +11,25 @@ var entityCounter = 0
 var switchDepths = 0
 var maximalSwitchDepths = 1
 
+function init() {
+  switchDepths = 0
+}
+
 function createRandomRowForRowNumber(rowNumber) {
 
   console.debug("createRandomRowForRowNumber:", rowNumber, ", railAmount:", railAmount)
 
+
+  // initialize
+  middleRailVariationType = "straight"
+  middleRailVariationSource = "none"
+
   // generate the switch for the middle track
+  // it determines the direction of the switch below and above
+  // switchDepths is used to avoid 2 switches being at to neighbour COLUMNS!
   if(switchDepths < maximalSwitchDepths) {
-    selectedTrackVariationType = generateMiddeVariationType()
-    selectedVarationSource = generateMiddeVariationSource()
+    middleRailVariationType = generateMiddeVariationType()
+    middleRailVariationSource = generateMiddeVariationSource()
     switchDepths++
   } else {
     switchDepths = 0
@@ -28,12 +39,13 @@ function createRandomRowForRowNumber(rowNumber) {
 
     var newTrackCenterPos = Qt.point(rowNumber*trackSectionWidth, startYForFirstRail+i*trackSectionHeight);
 
-    var currentVariationType = "straight"
-    var currentVariationSource = "none"
+    // the next 2 get overwritten anyway below
+    var currentVariationType// = "straight"
+    var currentVariationSource// = "none"
     var currentTurnDirection = "straight"
     if(i === 1) {
-      currentVariationType = selectedTrackVariationType
-      currentVariationSource = selectedVarationSource
+      currentVariationType = middleRailVariationType
+      currentVariationSource = middleRailVariationSource
     } else {
       currentVariationType = generateVariationType(i)
       currentVariationSource = generateVariationSource(i)
@@ -44,11 +56,31 @@ function createRandomRowForRowNumber(rowNumber) {
       input = currentVariationSource
     }
 
+    var variationType = currentVariationType + input;
+    // for testing, if different varTypes has an impact on the holes
+    // with the following test, the issue occurs that the first time when a pooled entity is created, the straight sectio is removed immediately, because it was on the old position
+    // also, for testing, set the numVisibleTracks in level to 3
+    // this got fixed in box2dbody.cpp now
+//    variationType = "straight"; // if all are the same variationType, it works with pooling
+//    if(entityCounter % 7 == 0) {
+//      variationType = "up"
+//    } else if(entityCounter % 6 == 0) {
+//      variationType = "both"
+//    } else if(entityCounter % 5 == 0) {
+//      variationType = "down"
+//    }else if(entityCounter % 4 == 0) {
+//      variationType = "bothreceiver"
+//    }else if(entityCounter % 3 == 0) {
+//      variationType = "downreceiver"
+//    }else if(entityCounter % 2 == 0) {
+//      variationType = "upreceiver"
+//    }
+
     // TODO add variation type of upper  element to decide which element can be added
     var trackId = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
                                                     {"x": newTrackCenterPos.x,
                                                      "y": newTrackCenterPos.y,
-                                                     "variationType": currentVariationType + input,
+                                                     "variationType": variationType,
                                                      "variationSource": currentVariationSource,
                                                      "turnDirection": currentTurnDirection,
                                                      // comment entityId - restarting would not work any more!
@@ -58,26 +90,26 @@ function createRandomRowForRowNumber(rowNumber) {
     entityCounter++
 
     var track = entityManager.getEntityById(trackId);
-    if(!track.visible)
-      console.debug("ERRO: TRACK invisible!? - this happens when the entityId was duplicated")
+    if(!track.visible) {
+      console.debug("ERRO: TRACK invisible!? - this happens when the entityId was duplicated - for id:", trackId, "or this one:", track.entityId, "variationType:", track.variationType, "local variationType:", variationType)
+      track.visible = true
+      console.debug("track is visible now:", track.visible)
+    }
 
     console.debug("create new trackSection at position", newTrackCenterPos.x, newTrackCenterPos.y)
-    if(newTrackCenterPos.x != track.x || newTrackCenterPos.y!=track.y)
+    if(newTrackCenterPos.x !== track.x || newTrackCenterPos.y !== track.y)
       console.debug("ERRO: not the same pos!?- this happens when the entityId was duplicated")
 
     // add obstacle
     if(generateObstacles) {
-      createRandomObstacleInTrack(currentVariationType,newTrackCenterPos.x,newTrackCenterPos.y)
+//      createRandomObstacleInTrack(currentVariationType,newTrackCenterPos.x,newTrackCenterPos.y)
     }
   }
 
-  // reset
-  selectedTrackVariationType = "straight"
-  selectedVarationSource = "none"
 }
 
 function generateMiddeVariationSource() {
-  if(selectedTrackVariationType === "straight")
+  if(middleRailVariationType === "straight")
     return "none"
 
   var propability = Math.random()
@@ -89,14 +121,17 @@ function generateMiddeVariationSource() {
   }
 }
 
+var probabilityMiddleBoth = 0.1
+var probabilityMiddleUpOrDown = 0.15
+
 function generateMiddeVariationType() {
   var propability = Math.random()
   // everything is allowed in middle rails
-  if(propability < 0.1) {
+  if(propability < probabilityMiddleBoth) {
     return "both"
-  } else if(propability < 0.3) {
+  } else if(propability < probabilityMiddleBoth + probabilityMiddleUpOrDown) {
     return "down"
-  } else if(propability < 0.4) {
+  } else if(propability < probabilityMiddleBoth + 2*probabilityMiddleUpOrDown) {
     return "up"
   } else {
     return "straight"
@@ -111,7 +146,7 @@ function generateVariationType(track) {
   // only down and straight is allowed in highest rail
   if(track === 0)
   {
-    if(selectedTrackVariationType === "up" || selectedTrackVariationType === "both") {
+    if(middleRailVariationType === "up" || middleRailVariationType === "both") {
       variation = "down"
     }
     return variation
@@ -120,7 +155,7 @@ function generateVariationType(track) {
   // only up and straight is allowed in lowest rail
   if(track === (railAmount-1))
   {
-    if(selectedTrackVariationType === "down" || selectedTrackVariationType === "both") {
+    if(middleRailVariationType === "down" || middleRailVariationType === "both") {
       variation = "up"
     }
     return variation
@@ -131,9 +166,9 @@ function generateVariationType(track) {
 // generates random variation for tracks
 function generateVariationSource(track) {
   var variation = "none"
-  if(selectedVarationSource === "sender") {
+  if(middleRailVariationSource === "sender") {
     variation = "receiver"
-  } else if (selectedVarationSource === "receiver") {
+  } else if (middleRailVariationSource === "receiver") {
     variation = "sender"
   }
 
@@ -159,7 +194,8 @@ function createRandomObstacleInTrack(currentVariationType,x,y) {
     console.debug("create new obstacle on track ",coinCenterPos.x, coinCenterPos.y)
     entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/Obstacle.qml"),
                                                     {"x": coinCenterPos.x,
-                                                      "y": coinCenterPos.y
+                                                      "y": coinCenterPos.y,
+                                                      "entityId": "obstacle" + entityCounter
                                                     });
   }
 }

@@ -67,7 +67,7 @@ Item {
 
   // TODO: test if pooling is SLOWER than re-creation!?
   // pooling doesnt work with variationTypes yet!
-  property bool trackSectionPoolingEnabled: false
+  property bool trackSectionPoolingEnabled: true
 
   EditableComponent {
       id: editableEditorComponent
@@ -135,6 +135,7 @@ Item {
     levelBackground.x = -__xOffsetForWindow;
     levelBackground2.x = levelBackground.x+levelBackgroundWidth;
 
+    LevelLogic.init()
     console.debug("numVisibleTracks:", numVisibleTracks)
     for(var i=0; i<numVisibleTracks; i++) {
       LevelLogic.createRandomRowForRowNumber(i);
