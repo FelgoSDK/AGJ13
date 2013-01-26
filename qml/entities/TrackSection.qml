@@ -37,15 +37,15 @@ EntityBase {
     mirrorX: (variationSource==="receiver")
   }
 
-  Rectangle {
+  Item {
     id: img
     width: scene.width/7
     height: scene.height/5
     anchors.centerIn: parent
-    color: "grey"
-    opacity: 0.2
+//    color: "grey"
+    opacity: 0.8
 
-    Rectangle {
+    Item {
       id: main
       width: parent.width
       height:  parent.height*0.5
@@ -54,7 +54,7 @@ EntityBase {
       anchors.right: parent.right
       anchors.leftMargin: 1
       anchors.rightMargin: 1
-      color: "brown"
+//      color: "brown"
     }
     Rectangle {
       id: rectTop
