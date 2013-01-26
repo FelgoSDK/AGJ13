@@ -7,6 +7,10 @@ EntityBase {
   // depending on which direction the switch has, the player will be moved to that direction
   property string variationTypes: "straight"
 
+  // this is important - a lot get removed and destroyed dynamically!
+  poolingEnabled: true
+
+
   Rectangle {
     id: img
     width: scene.width/7

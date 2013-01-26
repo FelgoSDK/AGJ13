@@ -15,6 +15,8 @@ EntityBase {
 
   signal died
 
+  signal collision
+
   // gets increased over time - it has the same value as the y value of the level
   property int score: 0
   // gets increased when a coin is collected
@@ -23,6 +25,10 @@ EntityBase {
   property int totalScore: score + (bonusScore * bonusScoreForCoin)
   // the total count of deaths within this gaming session
   property int deaths: 0
+
+  property int initialLives: 1
+
+  property int lives: initialLives
 
   // this gets added to bonusScore every time the player catches a coin
   property int bonusScoreForCoin: 300
@@ -93,9 +99,25 @@ EntityBase {
         // the obstacle is pooled for better performance
         collidedEntity.removeEntity();
 
+        lives--
 
-        died()
+        collision()
+
+        if(lives < 0)
+          died()
+
+
       }
     }
+  }
+
+  function init() {
+    lives = initialLives
+
+    // this must get set as a binding, changes with the level
+    //x = -level.x + 50
+    y = level.height/2
+
+    console.debug("initialized player to level center:", x, y)
   }
 }

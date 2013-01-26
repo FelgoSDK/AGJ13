@@ -69,17 +69,17 @@ SceneBase {
     var deaths = player.deaths;
 
     console.log("Collected grains:", grains);
-    if(gameCenter.authenticated) {
-      if (grains >= 10)
-        gameCenter.reportAchievement("grains10", 100, true);
-      if (grains >= 25)
-        gameCenter.reportAchievement("grains25", 100, true);
-      if (grains >= 50)
-        gameCenter.reportAchievement("grains50", 100, true);
+//    if(gameCenter.authenticated) {
+//      if (grains >= 10)
+//        gameCenter.reportAchievement("grains10", 100, true);
+//      if (grains >= 25)
+//        gameCenter.reportAchievement("grains25", 100, true);
+//      if (grains >= 50)
+//        gameCenter.reportAchievement("grains50", 100, true);
 
-      if (deaths >= 10)
-        gameCenter.reportAchievement("chickendead1", 100, true);
-    }
+//      if (deaths >= 10)
+//        gameCenter.reportAchievement("chickendead1", 100, true);
+//    }
 
     console.log("Player's death count:", deaths);
   }

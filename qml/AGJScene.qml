@@ -13,7 +13,13 @@ SceneBase {
   gridSize: 96//48//32
 
   // place it on bottom, because otherwise it would be unfair compared to different devices because the player would see more to the bottom playfield!
-  sceneAlignmentY: "bottom"
+  //sceneAlignmentY: "bottom"
+
+  // place it on right, because otherwise it would be unfair compared to different devices because the player would see more to the bottom playfield!
+  //sceneAlignmentX: "right"
+
+  // put it left, so the train is always on the very left side - in the end, it should be put right! does not matter if train reaches further right
+  sceneAlignmentX: "left"
 
   // for performance-testing, if the score should updated every frame with the y value of the level
   // it is set to false, because updating a static text every frame is very poor for performance, because a texture is generated every frame!
@@ -66,6 +72,14 @@ SceneBase {
   // focus must be set to visible, not just to true, because when the scene gets invisible, it looses focus and would never get set to true again!  
   // forward the input to the controller of the player
   Keys.forwardTo: player.controller
+
+  Keys.onReleased: {
+    if(event.key === Qt.Key_Plus)
+      // the level is moved faster, when the accel is increased in its negative direction
+      level.accelerate(-4)
+    if(event.key === Qt.Key_Minus)
+      level.accelerate(+4)
+  }
 
 
   MouseArea {

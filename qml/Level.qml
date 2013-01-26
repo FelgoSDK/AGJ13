@@ -12,12 +12,6 @@ import "scripts/levelLogic.js" as LevelLogic
 Item {
   id: level
 
-  // just as an abbreviation of typing, so instead of scene.gridSize just gridSize can be written in this file
-  property real gridSize: trackSectionWidth//scene.gridSize
-
-  // available columns for creating roosts - the current logical scene width is 320, gridSize is 48, so 6 and a half roosts can be displayed horizontally
-  property int roostColumns: width/gridSize
-
   // gets used to measure how much the level was moved downwards in the last frame - if this is bigger than gridSize, a new row will be created in onYChanged
   property real lastX: 0
 
@@ -63,7 +57,13 @@ Item {
   property real trackSectionWidth: scene.width/7
   property real trackSectionHeight: scene.width/5
 
-  property real numVisibleTracks: level.width/trackSectionWidth
+
+  // just as an abbreviation of typing, so instead of scene.gridSize just gridSize can be written in this file
+  property real gridSize: trackSectionWidth//scene.gridSize
+
+  // make some more, so it goes outside
+  property int numVisibleTracks: level.width/trackSectionWidth + 5 // for testing the creation and make it visible in the scene, set the additional amount to 0
+
 
   // players collide with obstacles (game lost) and trackSections (if direction chan
   // borderRegion collides with obstacles and trackSections
@@ -85,6 +85,10 @@ Item {
 
 
   function stopGame() {
+
+    console.debug("stopGame")
+
+    levelMovementAnimation.stop()
 
     // this function automatically pools all entities which have poolingEnabled set to true
     // and it ignores the entities that have preventFromRemovalFromEntityManager set to true
@@ -108,13 +112,8 @@ Item {
 //    player.x = scene.width/2;
 //    player.y = 2*gridSize;
 
-    player.score = 0;
-    player.bonusScore = 0;
-
-    // this is required, otherwise after the game the chicken would still navigate left or right if no mouse release happened before, or when coming from the main scene it might still have the old direction
-    player.controller.xAxis = 0;
-
-
+    player.init()
+   
     TrackLogic.initTrack()
 
 
@@ -123,6 +122,7 @@ Item {
     for(var i=0; i<numVisibleTracks; i++) {
       LevelLogic.createRandomRowForRowNumber(i);
     }
+
 
     levelMovementAnimation.velocity = -levelMovementSpeedMinimum;
     levelMovementAnimation.start();
@@ -134,7 +134,7 @@ Item {
     id: player
 
     x: -level.x + 50
-    y: level.height/2
+    // y will be initialized in init()
 
     // this guarantees the player is in front of the henhouseWindows
     z: 1
@@ -146,9 +146,9 @@ Item {
   }
 
   BorderRegion {
-    //x: -level.x - width - trackSectionWidth
+    x: -level.x - width - trackSectionWidth// + 5
     // for testing the functionality, put it inside the view not outside
-    x: -level.x
+    //x: -level.x
     y: scene.gameWindowAnchorItem.x
     height: scene.gameWindowAnchorItem.height// make bigger than the window, because the roost can stand out of the scene on the right side when the gridSize is not a multiple of the scene.width (which it currently is: 320/48=6.6) and thus if the player would stand on the right side no collision would be detected!
     width: 20
@@ -178,11 +178,14 @@ Item {
     velocity: -levelMovementSpeedMinimum
     // running is set to false - call start() here
     // increase the velocity by this amount of pixels per second, so it lasts minVelocity/acceleration seconds until the maximum is reached!
-    // i.e. -90/-2 = 45 seconds
+    // i.e. -70/-2 = 45 seconds
+    //90-20 = 70 / 30 = 2.5
     acceleration: -(levelMovementSpeedMaximum-levelMovementSpeedMinimum) / levelMovementDurationTillMaximum
 
     // limit the maximum v to 100 px per second - it must not be faster than the gravity! this is the absolute maximum, so the chicken falls almost as fast as the background moves by! so rather set it to -90, or increase the gravity
     minVelocity: -levelMovementSpeedMaximum
+    // dont allow moving backwards
+    maxVelocity: 0
 
     //onVelocityChanged: console.debug("velocity changed to:", velocity)
   }
@@ -261,18 +264,22 @@ Item {
   onXChanged: {
     // y gets more and more negative, so e.g. -40 - (-25) = -15
     var dx = x - lastX;
-    console.debug("level.dx:", -dx, "currentRow:", currentRow, ", x:", -x, ", lastX:", -lastX)
+    //console.debug("level.dx:", -dx, "currentRow:", currentRow, ", x:", -x, ", lastX:", -lastX)
     if(-dx > gridSize) {
 
       var amountNewRows = (-dx/gridSize).toFixed();
       console.debug(amountNewRows, "new rows are getting created...")
 
+      if(amountNewRows>1) {
+        console.debug("WARNING: the step difference was too big, more than 1 track got created!")
+      }
+
       // if y changes a lot within the last frame, multiple rows might get created
       // this doesnt happen with fixed dt, but it could happen with varying dt where more than 1 row might need to be created because of such a big y delta
-      for(var i=0; i<amountNewRows; i++) {
-        currentRow++;
+      for(var i=0; i<amountNewRows; i++) {        
         // this guarantees it is created outside of the visual screen
-        LevelLogic.createRandomRowForRowNumber(currentRow+numVisibleTracks-1);
+        LevelLogic.createRandomRowForRowNumber(currentRow+numVisibleTracks);
+        currentRow++;
       }
 
       lastX = x;
@@ -301,6 +308,10 @@ Item {
       // divide by an arbitrary number, so the text doesnt get changed every frame which is bad for performance as it is no bitmap font yet!
       player.score = -(level.x/40).toFixed()
 
+  }
+
+  function accelerate(diff) {
+    levelMovementAnimation.acceleration += diff
   }
 
 
