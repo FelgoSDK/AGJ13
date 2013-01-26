@@ -76,6 +76,11 @@ function generateVariationType(track) {
 }
 
 function createRandomObstacleInTrack(x,y) {
+
+  // do not create an obstacle in the first section
+  if(x<level.width/3)
+    return;
+
   // create an obstacle in 10% of all created blocks
   if(Math.random() < obstacleCreationPropability) {
 
