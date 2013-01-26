@@ -36,7 +36,8 @@ function createRandomRowForRowNumber(rowNumber) {
                                                      "variationTypes": currentVariationType,
                                                      "variationSource": currentVariationSource,
                                                      "turnDirection": currentTurnDirection,
-                                                     "entityId:": "trackSection" + entityCounter
+                                                     // comment entityId - restarting would not work any more!
+//                                                     "entityId:": "trackSection" + entityCounter
                                                     });
     entityCounter++
 
