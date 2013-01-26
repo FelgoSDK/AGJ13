@@ -2,6 +2,7 @@
 var generateObstacles = false
 var selectedTrack = 0
 var selectedTrackVariationType = ""
+var selectedVarationSource = "none"
 
 function createRandomRowForRowNumber(rowNumber) {
 
@@ -9,22 +10,27 @@ function createRandomRowForRowNumber(rowNumber) {
 
   // generate the switch for the middle track
   selectedTrackVariationType = generateMiddeVariationType()
+  selectedVarationSource = generateMiddeVariationSource()
 
   for(var i=0; i<railAmount; i++) {
     var newTrackCenterPos = Qt.point(rowNumber*trackSectionWidth, startYForFirstRail+i*trackSectionHeight);
 
     var currentVariationType = "straight"
+    var currentVariationSource = "sender"
     if(i === 1) {
       currentVariationType = selectedTrackVariationType
+      currentVariationSource = selectedVarationSource
     } else {
       currentVariationType = generateVariationType(i)
+      currentVariationSource = generateVariationSource(i)
     }
 
     // TODO add variation type of upper  element to decide which element can be added
     entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
                                                     {"x": newTrackCenterPos.x,
                                                      "y": newTrackCenterPos.y,
-                                                     "variationTypes": currentVariationType
+                                                     "variationTypes": currentVariationType,
+                                                     "variationSource": currentVariationSource
                                                     });
 
     console.debug("create new trackSection at position", newTrackCenterPos.x, newTrackCenterPos.y)
@@ -37,13 +43,27 @@ function createRandomRowForRowNumber(rowNumber) {
 
 }
 
-function generateMiddeVariationType() {
+function generateMiddeVariationSource() {
+  if(selectedTrackVariationType === "straight")
+    return "none"
+
+  var propability = Math.random()
   // everything is allowed in middle rails
-  if(Math.random() < 0.1) {
+  if(propability < 0.5) {
+    return "sender"
+  } else {
+    return "receiver"
+  }
+}
+
+function generateMiddeVariationType() {
+  var propability = Math.random()
+  // everything is allowed in middle rails
+  if(propability < 0.1) {
     return "both"
-  } else if(Math.random() < 0.2) {
+  } else if(propability < 0.3) {
     return "down"
-  } else if(Math.random() < 0.3) {
+  } else if(propability < 0.4) {
     return "up"
   } else {
     return "straight"
@@ -72,6 +92,18 @@ function generateVariationType(track) {
     }
     return variation
   }
+  return variation
+}
+
+// generates random variation for tracks
+function generateVariationSource(track) {
+  var variation = "none"
+  if(selectedVarationSource === "sender") {
+    variation = "receiver"
+  } else if (selectedVarationSource === "receiver") {
+    variation = "sender"
+  }
+
   return variation
 }
 

@@ -7,7 +7,7 @@ EntityBase {
   // depending on which direction the switch has, the player will be moved to that direction
   property string variationTypes: "straight"
   // there are 3 variationSource: sender, receiver, none (straight)
-  property string variationSource: "sender"
+  property string variationSource: "none"
 
   // this is important - a lot get removed and destroyed dynamically!
   poolingEnabled: true
@@ -31,22 +31,20 @@ EntityBase {
       anchors.rightMargin: 1
       color: "brown"
     }
-    Rectangle {
-      anchors.left: variationSource === "sender" ? main.left : undefined
-      anchors.right: variationSource === "receiver" ? main.right : undefined
+    Rectangle {      
+      x: variationSource === "sender" ? 0 : main.width-height
       anchors.bottom: main.top
       width: 5
       height: 5
-      color: variationSource === "sender" ? "green" : "brown"
+      color: variationSource === "sender" ? "green" : variationSource === "receiver" ? "red" : "white"
       visible: variationTypes === "up" || variationTypes === "both"
     }
     Rectangle {
-      anchors.left: variationSource === "sender" ? main.left : undefined
-      anchors.right: variationSource === "receiver" ? main.right : undefined
+      x: variationSource === "sender" ? 0 : main.width-height
       anchors.top: main.bottom
       width: 5
       height: 5
-      color: variationSource === "sender" ? "green" : "brown"
+      color: variationSource === "sender" ? "green" : variationSource === "receiver" ? "red" : "white"
       visible: variationTypes === "down" || variationTypes === "both"
     }
   }
@@ -55,6 +53,7 @@ EntityBase {
     anchors.fill: img
     collisionTestingOnlyMode: true
     sensor: true
+    active: variationSource == "sender"
   }
 
 }
