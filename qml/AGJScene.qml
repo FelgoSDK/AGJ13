@@ -204,8 +204,12 @@ SceneBase {
     id: itemEditor
     //width: 200
     //height: scene.height
-    anchors.left: scene.left
+    //anchors.left: scene.left
+    // anchor it right, so we are not below the HornControl
+    anchors.right: scene.right
+
     groupAnchor: "top"
+    z:2 // the editor is NOT on top of the MultiTouchArea in the Horn! z issue in MultiTouchArea!
 
     // Add all particles here which should be available
     filterGroups: [

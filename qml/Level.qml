@@ -64,7 +64,8 @@ Item {
   property real gridSize: trackSectionWidth//scene.gridSize
 
   // make some more, so it goes outside
-  property int numVisibleTracks: level.width/trackSectionWidth + 5 // for testing the creation and make it visible in the scene, set the additional amount to 0
+  // 5 more is too few! otherwise the creation would not work well enough!
+  property int numVisibleTracks: level.width/trackSectionWidth + 40 // for testing the creation and make it visible in the scene, set the additional amount to 0
 
   // the background images are moved up by this offset so on widescreen devices the full background is visible
   property real __xOffsetForWindow: scene.__xOffsetForAbsoluteWindowCoordinates
@@ -78,7 +79,8 @@ Item {
   property int obstacleColliderGroup: Box.Category4
 
   // TODO: test if pooling is SLOWER than re-creation!?
-  property bool trackSectionPoolingEnabled: true
+  // pooling doesnt work with variationTypes yet!
+  property bool trackSectionPoolingEnabled: false
 
   EditableComponent {
       id: editableEditorComponent
@@ -134,10 +136,10 @@ Item {
     console.debug("Level: startGame()");
 
     // it is important that lastY is set first, so the dy in onYChanged will be 0 and no new row is created
-    currentRow = 0
-    lastX = 0
+    currentRow = 0    
 
-    level.x = 0
+    level.x = 0 // set it to 10000 to test float inaccuracies
+    lastX = level.x
 
     player.init()
 

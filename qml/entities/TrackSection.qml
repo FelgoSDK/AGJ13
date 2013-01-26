@@ -22,6 +22,7 @@ EntityBase {
 
   property bool touchEnabled: variationSource == "sender"
 
+
   onUsedFromPool: {
     console.debug("Track got used from pool")
     //collider.active = (variationSource == "sender")
@@ -29,23 +30,23 @@ EntityBase {
     touchEnabled = (variationSource == "sender")
   }
 
-
   MultiResolutionImage {
-    source:  (variationType==="straight") ? "../img/railstraight-sd.png" : (variationType==="up" || variationType==="down" || variationType==="upreceiver" || variationType==="downreceiver") ? "../img/railcurve-sd.png" : "../img/raildoubled-sd.png"
+    id: multiresimg
+    source:  (variationType==="straight") ? "../img/railstraight-sd.png" : ((variationType==="up" || variationType==="down" || variationType==="upreceiver" || variationType==="downreceiver") ? "../img/railcurve-sd.png" : "../img/raildoubled-sd.png")
     anchors.centerIn: parent
     mirrorY: (variationType==="down" || variationType==="downreceiver")
     mirrorX: (variationSource==="receiver")
   }
 
-  Rectangle {
+  Item {
     id: img
     width: scene.width/7
     height: scene.height/5
     anchors.centerIn: parent
-    color: "grey"
-    opacity: 0.2
+//    color: "grey"
+    opacity: 0.8
 
-    Rectangle {
+    Item {
       id: main
       width: parent.width
       height:  parent.height*0.5
@@ -54,7 +55,7 @@ EntityBase {
       anchors.right: parent.right
       anchors.leftMargin: 1
       anchors.rightMargin: 1
-      color: "brown"
+//      color: "brown"
     }
     Rectangle {
       id: rectTop
@@ -94,7 +95,7 @@ EntityBase {
 
   BoxCollider {
     id: collider
-    anchors.fill: img
+    anchors.fill: multiresimg
     collisionTestingOnlyMode: true
     categories: level.trackSectionColliderGroup
     collidesWith: level.playerColliderGroup | level.borderRegionColliderGroup
@@ -122,7 +123,7 @@ EntityBase {
 
   MultiTouchArea {
     // Probably make a little bit higher than the actual track section item?
-    anchors.fill: img
+    anchors.fill: multiresimg
 
     // Straight types need no swipes
     enabled: touchEnabled
