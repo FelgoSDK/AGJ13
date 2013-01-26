@@ -125,6 +125,8 @@ Item {
     for(var i=0; i<numVisibleTracks; i++) {
       LevelLogic.createRandomRowForRowNumber(i);
     }
+    // from now on generate obstacles
+    LevelLogic.generateObstacles = true
 
     levelMovementAnimation.velocity = -levelMovementSpeedMinimum;
     levelMovementAnimation.start();

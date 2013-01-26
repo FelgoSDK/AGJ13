@@ -1,4 +1,6 @@
 
+var generateObstacles = false
+
 function createRandomRowForRowNumber(rowNumber) {
 
   console.debug("createRandomRowForRowNumber:", rowNumber, ", railAmount:", railAmount)
@@ -11,26 +13,55 @@ function createRandomRowForRowNumber(rowNumber) {
     entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
                                                     {"x": newTrackCenterPos.x,
                                                      "y": newTrackCenterPos.y,
-                                                     "variationTypes": generateVariationType()
+                                                     "variationTypes": generateVariationType(i)
                                                     });
     console.debug("create new trackSection at position", newTrackCenterPos.x, newTrackCenterPos.y)
     // add obstacle
-    createRandomObstacleInTrack(newTrackCenterPos.x,newTrackCenterPos.y)
+    if(generateObstacles) {
+      createRandomObstacleInTrack(newTrackCenterPos.x,newTrackCenterPos.y)
+    }
   }
 
 }
 
-function generateVariationType() {
+// generates random variation for tracks
+function generateVariationType(track) {
   var propability = Math.random()
-  if(Math.random() < 0.1) {
-    return "both"
-  } else if(Math.random() < 0.3) {
-    return "down"
-  } else if(Math.random() < 0.6) {
-    return "up"
-  } else {
-    return "straight"
+  var variation = ""
+
+  // only up and straight is allowed in lowest rail
+  if(track === (railAmount-1))
+  {
+    if(Math.random() < 0.4) {
+      variation = "up"
+    } else {
+      variation = "straight"
+    }
+    return variation
   }
+
+  // only down and straight is allowed in highest rail
+  if(track === 0)
+  {
+    if(Math.random() < 0.4) {
+      variation = "down"
+    } else {
+      variation = "straight"
+    }
+    return variation
+  }
+
+  // everything is allowed in middle rails
+  if(Math.random() < 0.1) {
+    variation = "both"
+  } else if(Math.random() < 0.2) {
+    variation = "down"
+  } else if(Math.random() < 0.3) {
+    variation = "up"
+  } else {
+    variation = "straight"
+  }
+  return variation
 }
 
 function createRandomObstacleInTrack(x,y) {
