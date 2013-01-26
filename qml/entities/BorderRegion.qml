@@ -19,6 +19,7 @@ EntityBase {
     // if only sensor would be set to true it would not be enough, because then the body would fall down based on gravity!
     collisionTestingOnlyMode: true
     categories: level.borderRegionColliderGroup
+    collidesWith: level.obstacleColliderGroup | level.trackSectionColliderGroup
 
     fixture.onBeginContact: {
 

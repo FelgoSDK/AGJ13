@@ -11,6 +11,14 @@ EntityBase {
   // put them before the track
   z:2
 
+  Component.onCompleted: {
+    console.debug("NEW Obstacle created")
+  }
+
+  onUsedFromPool: {
+    console.debug("obstacle used from pool")
+  }
+
   /*Image {
     id: sprite
     source: "../img/corn.png"
@@ -32,6 +40,8 @@ EntityBase {
   BoxCollider {
     id: collider
     bodyType: Body.Static
+
+    categories: level.obstacleColliderGroup
 
     anchors.fill: sprite
     //        anchors.centerIn: parent
