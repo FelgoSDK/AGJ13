@@ -1,19 +1,28 @@
 
 var generateObstacles = false
 var selectedTrack = 0
-var selectedTrackVariationType = ""
+var selectedTrackVariationType = "straight"
 var selectedVarationSource = "none"
 
 // this is a dirty hack, because the entityManager does not work well when the entityId already exists!
 var entityCounter = 0
+
+// too many switches
+var switchDepths = 0
+var maximalSwitchDepths = 1
 
 function createRandomRowForRowNumber(rowNumber) {
 
   console.debug("createRandomRowForRowNumber:", rowNumber, ", railAmount:", railAmount)
 
   // generate the switch for the middle track
-  selectedTrackVariationType = generateMiddeVariationType()
-  selectedVarationSource = generateMiddeVariationSource()
+  if(switchDepths < maximalSwitchDepths) {
+    selectedTrackVariationType = generateMiddeVariationType()
+    selectedVarationSource = generateMiddeVariationSource()
+    switchDepths++
+  } else {
+    switchDepths = 0
+  }
 
   for(var i=0; i<railAmount; i++) {
     var newTrackCenterPos = Qt.point(rowNumber*trackSectionWidth, startYForFirstRail+i*trackSectionHeight);
@@ -33,7 +42,7 @@ function createRandomRowForRowNumber(rowNumber) {
     var trackId = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/TrackSection.qml"),
                                                     {"x": newTrackCenterPos.x,
                                                      "y": newTrackCenterPos.y,
-                                                     "variationTypes": currentVariationType,
+                                                     "variationType": currentVariationType,
                                                      "variationSource": currentVariationSource,
                                                      "turnDirection": currentTurnDirection,
                                                      // comment entityId - restarting would not work any more!
@@ -55,7 +64,9 @@ function createRandomRowForRowNumber(rowNumber) {
     }
   }
 
-
+  // reset
+  selectedTrackVariationType = "straight"
+  selectedVarationSource = "none"
 }
 
 function generateMiddeVariationSource() {

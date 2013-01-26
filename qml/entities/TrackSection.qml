@@ -3,9 +3,10 @@ import VPlay 1.0
 
 EntityBase {
   entityType: "trackSection"
-  // there are 4 variationTypes: straight, up, down, and both directions
+  // there are 4 variationType: straight, up, down, and both directions
   // depending on which direction the switch has, the player will be moved to that direction
-  property string variationTypes: "straight"
+  variationType: "straight"
+  //variationTypes: "straight"
   // there are 3 variationSource: sender, receiver, none (straight)
   property string variationSource: "none"
 
@@ -23,12 +24,38 @@ EntityBase {
     collider.active = (variationSource == "sender")
   }
 
+
+  MultiResolutionImage {
+    id: straight
+    source:  "../img/railstraight-sd.png"
+    visible: (variationType==="straight")
+    anchors.centerIn: parent
+  }
+
+  MultiResolutionImage {
+    id: upDown
+    source: "../img/railcurve-sd.png"
+    visible: (variationType==="up" || variationType==="down")
+    anchors.centerIn: parent
+    mirrorY: (variationType==="down")
+    mirrorX: (variationSource==="receiver")
+  }
+
+  MultiResolutionImage {
+    id: doubled
+    source: "../img/raildoubled-sd.png"
+    visible: (variationType==="both")
+    anchors.centerIn: parent
+    mirrorX: (variationSource==="receiver")
+  }
+
   Rectangle {
     id: img
     width: scene.width/7
     height: scene.height/5
     anchors.centerIn: parent
     color: "grey"
+    opacity: 0.2
 
     Rectangle {
       id: main
@@ -48,7 +75,7 @@ EntityBase {
       width: 5
       height: 5
       color: variationSource === "sender" ? "green" : variationSource === "receiver" ? "red" : "white"
-      visible: variationTypes === "up" || variationTypes === "both"
+      visible: variationType === "up" || variationType === "both"
     }
     Rectangle {
       x: 0
@@ -65,7 +92,7 @@ EntityBase {
       width: 5
       height: 5
       color: variationSource === "sender" ? "green" : variationSource === "receiver" ? "red" : "white"
-      visible: variationTypes === "down" || variationTypes === "both"
+      visible: variationType === "down" || variationType === "both"
     }
     Rectangle {
       x: 0
@@ -119,12 +146,12 @@ EntityBase {
       }
       else if (angle  > 60 && angle < 120) {
         // console.debug("Swipe down...")
-        if (variationTypes === "both" || variationTypes === "down")
+        if (variationType === "both" || variationType === "down")
           turnDirection = "down"
       }
       else if (angle  > 240 && angle < 300) {
         // console.debug("Swipe up...")
-        if (variationTypes === "both" || variationTypes === "up")
+        if (variationType === "both" || variationType === "up")
           turnDirection = "up"
       }
     }
