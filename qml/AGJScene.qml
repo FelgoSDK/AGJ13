@@ -1,6 +1,7 @@
 import QtQuick 1.1
 import VPlay 1.0
 import "entities"
+import "gui"
 
 SceneBase {
   id: scene
@@ -131,6 +132,25 @@ SceneBase {
     // in the default state, this should be invisible!
     visible: false
     anchors.centerIn: parent
+  }
+
+  ThrottleControl {
+    // Can't use anchors here because of rotation
+    // anchors.right: gameWindowAnchorItem.right
+    // anchors.bottom: gameWindowAnchorItem.bottom
+    x: gameWindowAnchorItem.x + gameWindowAnchorItem.width - width/2 - height
+    y: gameWindowAnchorItem.y + gameWindowAnchorItem.height - width/2 - height
+
+    onBrakeChanged: {
+      if (brake)
+        console.log("Train in brake mode!")
+      else
+        console.log("Brakes released")
+    }
+
+    onAccelerationChanged: {
+      console.log("Train's acceleration value", acceleration)
+    }
   }
 
   states: [
