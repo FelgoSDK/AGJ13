@@ -19,6 +19,7 @@ EntityBase {
   property string turnDirection: "straight"
 
   onUsedFromPool: {
+    console.debug("Track got used from pool")
     collider.active = (variationSource == "sender")
   }
 

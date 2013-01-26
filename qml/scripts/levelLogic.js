@@ -37,17 +37,17 @@ function createRandomRowForRowNumber(rowNumber) {
                                                      "variationSource": currentVariationSource,
                                                      "turnDirection": currentTurnDirection,
                                                      // comment entityId - restarting would not work any more!
-//                                                     "entityId:": "trackSection" + entityCounter
+                                                     "entityId": "trackSection" + entityCounter
                                                     });
     entityCounter++
 
     var track = entityManager.getEntityById(trackId);
     if(!track.visible)
-      console.debug("ERROR: TRACK invisible!? - this happens when the entityId was duplicated")
+      console.debug("ERRO: TRACK invisible!? - this happens when the entityId was duplicated")
 
     console.debug("create new trackSection at position", newTrackCenterPos.x, newTrackCenterPos.y)
     if(newTrackCenterPos.x != track.x || newTrackCenterPos.y!=track.y)
-      console.debug("ERROR: not the same pos!?- this happens when the entityId was duplicated")
+      console.debug("ERRO: not the same pos!?- this happens when the entityId was duplicated")
 
     // add obstacle
     if(generateObstacles) {

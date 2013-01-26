@@ -18,7 +18,7 @@ EntityBase {
     // this is required, because the position should not be modified from the physics system, but from the QML positioning!
     // if only sensor would be set to true it would not be enough, because then the body would fall down based on gravity!
     collisionTestingOnlyMode: true
-    collidesWith: Box.Category1
+    categories: level.borderRegionColliderGroup
 
     fixture.onBeginContact: {
 
