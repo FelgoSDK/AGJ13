@@ -25,6 +25,7 @@ function createRandomRowForRowNumber(rowNumber) {
   }
 
   for(var i=0; i<railAmount; i++) {
+
     var newTrackCenterPos = Qt.point(rowNumber*trackSectionWidth, startYForFirstRail+i*trackSectionHeight);
 
     var currentVariationType = "straight"
