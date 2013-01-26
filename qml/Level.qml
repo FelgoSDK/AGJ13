@@ -56,7 +56,7 @@ Item {
   signal gameLost
 
   property real trackSectionWidth: scene.width/7
-  property real trackSectionHeight: scene.height/3
+  property real trackSectionHeight: scene.height/5
 
 
   // just as an abbreviation of typing, so instead of scene.gridSize just gridSize can be written in this file
