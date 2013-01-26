@@ -143,6 +143,9 @@ Item {
       // emit the gameLost signal, which is handled in MainScene
       gameLost();
     }
+    onCollisionWithTrackSection: {
+      console.debug("PLAYER COLLIDED WITH trackelement, variation:",direction)
+    }
   }
 
   BorderRegion {
@@ -261,11 +264,11 @@ Item {
   onXChanged: {
     // y gets more and more negative, so e.g. -40 - (-25) = -15
     var dx = x - lastX;
-    console.debug("level.dx:", -dx, "currentRow:", currentRow, ", x:", -x, ", lastX:", -lastX)
+    //console.debug("level.dx:", -dx, "currentRow:", currentRow, ", x:", -x, ", lastX:", -lastX)
     if(-dx > gridSize) {
 
       var amountNewRows = (-dx/gridSize).toFixed();
-      console.debug(amountNewRows, "new rows are getting created...")
+      //console.debug(amountNewRows, "new rows are getting created...")
 
       // if y changes a lot within the last frame, multiple rows might get created
       // this doesnt happen with fixed dt, but it could happen with varying dt where more than 1 row might need to be created because of such a big y delta
