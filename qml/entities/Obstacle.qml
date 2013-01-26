@@ -11,22 +11,22 @@ EntityBase {
   // put them before the track
   z:2
 
-  /*Image {
+  Image {
     id: sprite
-    source: "../img/corn.png"
+    source: "../img/cowdy.png"
 
-    width: 7
-    height: 10
+//    width: 7
+//    height: 10
 
-    anchors.centerIn: parent
-  }*/
-  Rectangle {
-    id: sprite
-    width: 50
-    height: 50
-    color: "yellow"
     anchors.centerIn: parent
   }
+//  Rectangle {
+//    id: sprite
+//    width: 50
+//    height: 50
+//    color: "yellow"
+//    anchors.centerIn: parent
+//  }
 
   property alias collider: collider
   BoxCollider {
