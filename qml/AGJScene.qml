@@ -154,6 +154,11 @@ SceneBase {
     anchors.top: gameWindowAnchorItem.top
     anchors.left: gameWindowAnchorItem.left
     anchors.leftMargin: 10
+
+    onHonkingChanged: {
+      if (honking)
+       level.moveFirstObstacleInCurrentTrack()
+    }
   }
 
   ThrottleControl {

@@ -338,6 +338,37 @@ Item {
     console.debug("New acceleration:", acceleration)
   }
 
+  function moveFirstObstacleInCurrentTrack() {
+    // Get obstacles of type cow
+    var obstacles = entityManager.getEntityArrayByType("obstacle")
+
+    var currentY = startYForFirstRail + playerRowActive * trackSectionHeight
+
+    for (var i = 0; i < obstacles.length; i++) {
+      var o = obstacles[i]
+
+      // Use obstacle only if on current track and before the player
+      if (o.y === currentY && o.x > player.x) {
+        // Obstacle is on top
+        if (playerRowActive == 0)
+          o.y += trackSectionHeight
+        // Obstacle is on bottom
+        else if (playerRowActive == railAmount)
+          o.y -= trackSectionHeight
+        // Obstacle is in between
+        else {
+          // Dirty random boolean
+          var flag = !! Math.round(Math.random() * 1)
+          if (flag)
+            o.y += trackSectionHeight
+          else
+            o.y -= trackSectionHeight
+        }
+        return;
+      }
+    }
+  }
+
 
   // ------------------- for debugging only ------------------- //
   function pauseGame() {
