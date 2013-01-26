@@ -111,7 +111,7 @@ EntityBase {
 
 
       } else if(collidedEntityType === "trackSection") {
-        collisionWithTrackSection(collidedEntity.variationTypes)
+        collisionWithTrackSection(collidedEntity.turnDirection)
       }
     }
   }
