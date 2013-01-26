@@ -4,20 +4,27 @@ import VPlay 1.0
 import Box2D 1.0 // needed for Body.Static
 
 EntityBase {
-  entityType: "coin"
+  entityType: "obstacle"
 
   poolingEnabled: true
 
-  // put them before the windows
-  z:1
+  // put them before the track
+  z:2
 
-  Image {
+  /*Image {
     id: sprite
     source: "../img/corn.png"
 
     width: 7
     height: 10
 
+    anchors.centerIn: parent
+  }*/
+  Rectangle {
+    id: sprite
+    width: 50
+    height: 50
+    color: "yellow"
     anchors.centerIn: parent
   }
 

@@ -44,8 +44,8 @@ Item {
   // with 9% probability, a roost will get created in a row for any column
   // if it gets set too low, the game will be unplayable because too few roosts are created, so balance this with care!
   property real platformCreationProbability: 0.09
-  // probability of 30% to create a corn on top of the roost, so in 3 of 10 roosts there will be a corn created
-  property real coinCreationPropability: 0.3
+  // probability of 30% to create a obstacle on top of the track, so in 3 of 10 tracks there will be a obstacle created
+  property real obstacleCreationPropability: 0.1
   // windows get created randomly as well - they only have visual effect, but dont set too high because then it looks boring
   property real windowCreationProbability: 0.05
   // this avoids creating too many windows, so not possible to have more than 2 on a scene with this code!
@@ -138,6 +138,11 @@ Item {
 
     // this guarantees the player is in front of the henhouseWindows
     z: 1
+    onDied: {
+      console.debug("PLAYER COLLIDED WITH obstacle, level.y:", level.y, ", player.y:", player.y)
+      // emit the gameLost signal, which is handled in MainScene
+      gameLost();
+    }
   }
 
   BorderRegion {

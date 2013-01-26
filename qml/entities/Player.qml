@@ -77,10 +77,25 @@ EntityBase {
   }
 
   CircleCollider {
+    id: collider
     anchors.centerIn: parent
     radius: 15
     collisionTestingOnlyMode: true
     sensor: true
-  }
 
+    fixture.onBeginContact: {
+      var fixture = other;
+      var body = fixture.parent;
+      var component = body.parent;
+      var collidedEntity = component.owningEntity;
+      var collidedEntityType = collidedEntity.entityType;
+      if(collidedEntityType === "obstacle") {
+        // the obstacle is pooled for better performance
+        collidedEntity.removeEntity();
+
+
+        died()
+      }
+    }
+  }
 }
