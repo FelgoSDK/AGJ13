@@ -269,8 +269,9 @@ Item {
       // Acceleration is negative
       player.steamPressure += levelMovementAnimation.acceleration / 10
 
-      if (player.steamPressure <= 0) {
+      if (player.steamPressure < 0) {
         player.steamPressure = 0
+        // Stop acceleration if there is not enough pressure available
         levelMovementAnimation.acceleration = 0
       }
     }
@@ -279,9 +280,8 @@ Item {
   Timer {
     id: pressureRegenerationTimer
 
-    // Trigger every 0.5 sec, so the maximum steam power of 100 would be lost after 5sec on full acceleration
-    interval: 500;
-    running: !pressureTimer && player.steamPressure <= 100
+    interval: 2500;
+    running: !pressureTimer.running && player.steamPressure <= 100
     repeat: true
     onTriggered: {
       // Our steam pressure regenerates slowly while travelling uniformly
