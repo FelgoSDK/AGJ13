@@ -112,10 +112,10 @@ SceneBase {
     anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
     anchors.topMargin: 5
 
-    text: "Score: " + Math.round(player.totalScore) + " Lives:" + player.lives + " Speed:" + -Math.round(level.levelMovementSpeedCurrent)
+    text: "Score: " + Math.round(player.totalScore)// + " Lives:" + player.lives + " Speed:" + -Math.round(level.levelMovementSpeedCurrent)
     font.family: fontHUD.name
     font.pixelSize: 22
-    color: "white"
+    color: "blue"
   }
 
   // gets called by Main when this scene gets active
@@ -228,6 +228,43 @@ SceneBase {
       console.log("Train's acceleration value", acceleration)
       level.setAcceleration(-acceleration)
     }
+  }
+
+  Row {
+    anchors.bottom: scene.gameWindowAnchorItem.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    spacing: 10
+
+    Image {
+      source: "img/moose-sd.png"
+      width: 32
+      height: 32
+      visible: player.lives>0
+    }
+
+    Image {
+      source: "img/moose-sd.png"
+      width: 32
+      height: 32
+      visible: player.lives>1
+    }
+
+    Image {
+      source: "img/moose-sd.png"
+      width: 32
+      height: 32
+      visible: player.lives>2
+    }
+
+//    Repeater {
+//      model: player.lives
+
+//      Image {
+//        source: "img/moose-sd.png"
+//        width: 32
+//        height: 32
+//      }
+//    }
   }
 
   ItemEditor {

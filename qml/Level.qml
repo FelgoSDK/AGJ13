@@ -479,11 +479,15 @@ Item {
         // Obstacle is in between
         else {
           // Dirty random boolean
-          var flag = !! Math.round(Math.random() * 1)
-          if (flag)
-            o.y += trackSectionHeight
-          else
-            o.y -= trackSectionHeight
+          //var flag = !! Math.round(Math.random() * 1)
+          o.jump()
+//          if (!o.directionUp) {
+//            o.jump(false) // jump down
+//            //o.y += trackSectionHeight
+//          } else {
+//            o.jump(true) // jump up
+//            //o.y -= trackSectionHeight
+//          }
         }
         return;
       }
