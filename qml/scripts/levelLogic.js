@@ -8,13 +8,40 @@ var middleRailVariationSource = "none"
 var switchDepths = 0
 var maximalSwitchDepths = 1
 
+// holds the last 3 switches - needed to create cows after switches with a higher p
+var lastTrackSwitches
+
 function init() {
   switchDepths = 0
+
+  // initialize with each of the tracks being empty
+
+  lastTrackSwitches = new Array()
+  for( var i=0; i< railAmount; i++) {
+    lastTrackSwitches[i] = 0
+  }
+
 }
 
 function createRandomRowForRowNumber(rowNumber) {
 
   console.debug("createRandomRowForRowNumber:", rowNumber, ", railAmount:", railAmount)
+
+  var currentTrackArray = new Array()
+  // if a switch is created at any of the rails, create one here
+  for( var i=0; i< railAmount; i++) {
+    currentTrackArray[i] = 0
+//    console.debug("currentTrackArray at pos", i, currentTrackArray[i])
+  }
+
+
+//  var r1 = Mat.random()
+//  if(r1<pSwitchAtPlayerRail) {
+//    // create a switch where the player is
+  // the player is at its current position - but the switches are created out of screen on the right
+
+//    if()
+//  }
 
 
   // initialize
@@ -82,12 +109,37 @@ function createRandomRowForRowNumber(rowNumber) {
                                                      "turnDirection": currentTurnDirection
                                                     });
 
+    // set a 1 on all non-straight tracks - only on straight tracks obstacles should be created
+    // only add obstacles after senders, not receivers - it would be unfair to place a cow at a receiver!
+    if( currentVariationSource === "sender" /*currentVariationType !== "straight"*/) {
 
-    // add obstacle
-    if(generateObstacles) {
-      createRandomObstacleInTrack(currentVariationType,newTrackCenterPos.x,newTrackCenterPos.y)
+      // we set a 2 if the switch was created at the player rail, 1 if it was created at another
+      if(i == playerRowActive) {
+        currentTrackArray[i] = 2
+        console.debug("setting trackArray at row", i, "to 2, because player is on this row")
+      } else {
+        currentTrackArray[i] = 1
+        console.debug("setting trackArray at row", i, "to 1, because player is on another row")
+      }
+
+
+    } else {
+      // add obstacle, if we have a straight track
+      if(generateObstacles) {
+        createRandomObstacleInTrack(i, currentVariationType, newTrackCenterPos.x,newTrackCenterPos.y)
+      }
     }
+
+
+  } // end of for loop over all rails
+
+  // for debugging only
+  for( var i=0; i< railAmount; i++) {
+    console.debug("currentTrackArray at pos", i, currentTrackArray[i])
   }
+
+  // set the last trackArray to the current one, because obstacles are also built according to the last column
+  lastTrackSwitches = currentTrackArray;
 
 }
 
@@ -161,26 +213,68 @@ function generateVariationSource(track,variationType) {
   return variation
 }
 
-function createRandomObstacleInTrack(currentVariationType,x,y) {
+function
+createRandomObstacleInTrack(railNumber, currentVariationType,x,y) {
 
+  // this is checked before already
   // do not place a obstacle on a switch
-  if(currentVariationType !== "straight")
-    return
+//  if(currentVariationType !== "straight")
+//    return
+
+  var createHere = false;
+  console.debug("last track at rail:", lastTrackSwitches[railNumber], "for railNumber", railNumber)
+
+  if(lastTrackSwitches[railNumber] === 2) {
+    if(Math.random() < pCowAfterPlayerSwitchInLastColumn) {
+      createHere = true;
+    }
+  } else  if(lastTrackSwitches[railNumber] === 1){
+    if(Math.random() < pCowAfterNonPlayerSwitch) {
+      createHere = true;
+    }
+  } else {
+    if(Math.random() < pCowFreePos) {
+      createHere = true;
+    }
+  }
+
+  console.debug("createHEre:", createHere)
+
+  if(!createHere)
+    return;
+
 
   // do not create an obstacle in the first section
   if(x<level.width/3)
     return;
 
+  var borders = level.trackSectionWidth*0.4
+  // e.g. create in between 20...80, when the trackSectionWidth is 100
+  var randomPosForCow = (Math.random()*level.trackSectionWidth-borders*2) + borders
+  // the x is in the middle, so add an offset between -30 ... +30
+  randomPosForCow -= level.trackSectionWidth/2
+  // for testing if creation is correct, reset the random xOffset
+  randomPosForCow = 0
+
+  var cowCenterPos = Qt.point(x+randomPosForCow, y);
+  console.debug("create new obstacle on track ",cowCenterPos.x, cowCenterPos.y)
+  entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/Obstacle.qml"),
+                                                  {"x": cowCenterPos.x,
+                                                    "y": cowCenterPos.y
+                                                  });
+
+
+  // OLD:
   // create an obstacle in 30% of all created blocks
-  if(Math.random() < obstacleCreationPropability) {
+//  if(Math.random() < obstacleCreationPropability) {
 
-    // look at 1 grid position above
-    var coinCenterPos = Qt.point(x, y);
+//    // look at 1 grid position above
+//    var coinCenterPos = Qt.point(x, y);
 
-    console.debug("create new obstacle on track ",coinCenterPos.x, coinCenterPos.y)
-    entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/Obstacle.qml"),
-                                                    {"x": coinCenterPos.x,
-                                                      "y": coinCenterPos.y
-                                                    });
-  }
+//    console.debug("create new obstacle on track ",coinCenterPos.x, coinCenterPos.y)
+//    entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("entities/Obstacle.qml"),
+//                                                    {"x": coinCenterPos.x,
+//                                                      "y": coinCenterPos.y
+//                                                    });
+//  }
 }
