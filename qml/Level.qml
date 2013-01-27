@@ -168,6 +168,8 @@ Item {
     levelBackground.x = -__xOffsetForWindow;
     levelBackground2.x = levelBackground.x+levelBackgroundWidth;
 
+    levelMovementSpeedCurrent = levelMovementSpeed
+
     LevelLogic.init()
     console.debug("numVisibleTracks:", numVisibleTracks)
     for(var i=0; i<numVisibleTracks; i++) {
@@ -348,7 +350,7 @@ Item {
       } else {
         chimneyParticle.startColor = Qt.rgba(1-colormult,1-colormult,1-colormult,colormult)
       }
-      console.debug("vel changed to:", velocity)
+//      console.debug("vel changed to:", velocity)
 
 
       // the faster the player moves, the more points he gets
