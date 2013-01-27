@@ -315,6 +315,7 @@ Item {
 
     onVelocityChanged: {
       player.velocity = velocity
+      scene.snowing.gravity.x = velocity
       var colormult = velocity*(-1)/1000
       if(colormult>0.60) {
         chimneyExplotionParticle.start()
@@ -322,7 +323,7 @@ Item {
       } else {
         chimneyParticle.startColor = Qt.rgba(1-colormult,1-colormult,1-colormult,colormult)
       }
-      //console.debug("vel changed to:", velocity)
+      console.debug("vel changed to:", velocity)
     }
 
     // running is set to false - call start() here

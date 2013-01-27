@@ -7,17 +7,17 @@ Particle {
   // Particle location properties
   x: scene.gameWindowAnchorItem.width
   y:0
-  sourcePositionVariance: Qt.point(scene.width,0)
+  sourcePositionVariance: Qt.point(0,scene.height)
 
   // Particle configuration properties
   maxParticles: 290
-  particleLifespan: 5.00
+  particleLifespan: 2.00
   particleLifespanVariance: 1.00
-  startParticleSize: 10
-  startParticleSizeVariance: 10
-  finishParticleSize: 15
-  finishParticleSizeVariance: 10
-  rotation: 81
+  startParticleSize: 6
+  startParticleSizeVariance: 2
+  finishParticleSize: 8
+  finishParticleSizeVariance: 2
+  rotation: 0
   angleVariance: 27
   rotationStart: 0
   rotationStartVariance: 0
@@ -30,8 +30,8 @@ Particle {
   positionType: Particle.Relative
 
   // Gravity Mode (Gravity + Tangential Accel + Radial Accel)
-  gravity: Qt.point(0,-177)
-  speed: 200
+  gravity: Qt.point(-100,0)
+  speed: 0
   speedVariance: 300
   tangentialAcceleration: 0
   tangentialAccelVariance: 0

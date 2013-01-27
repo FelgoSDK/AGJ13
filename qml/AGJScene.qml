@@ -172,9 +172,14 @@ SceneBase {
     onHonkingChanged: {
       // Honking is only possible if we have more than 20% steam
       if (honking && player.steamPressure >= player.steamPressureDeltaForHonking) {
-        hornSound.play();
+        hornSound.play()
+        player.steamParticle.start()
+        player.steamParticle2.start()
         level.moveFirstObstacleInCurrentTrack()
         player.steamPressure -= player.steamPressureDeltaForHonking
+      } else {
+        player.steamParticle.stop()
+        player.steamParticle2.stop()
       }
     }
 
