@@ -27,7 +27,7 @@ Particle {
 
   // Emitter Behaviour
   emitterType: Particle.Gravity
-  duration: 5
+  duration: 0.5
   positionType: Particle.Relative
 
   // Gravity Mode (Gravity + Tangential Accel + Radial Accel)
