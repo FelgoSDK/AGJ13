@@ -36,7 +36,7 @@ Item {
   // specifies the px/second how much the level moves
 
   property real levelMovementSpeedMinimum: 20
-  property real levelMovementSpeedMaximum: 800
+  property real levelMovementSpeedMaximum: 400
   property real levelMovementSpeed: 50//levelMovementSpeedMinimum
   property alias levelMovementSpeedCurrent: levelMovementAnimation.velocity
 
