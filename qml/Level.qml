@@ -72,6 +72,11 @@ Item {
   // multiplayer: 2nd player must scoop coal to increase pressure, single player: pressure increases by time
   property bool multiplayer: true
 
+  // debug flags
+  property bool showCollision: false
+  property bool showTouchAreas: false
+
+
   EditableComponent {
       id: editableEditorComponent
       target: parent

@@ -45,7 +45,7 @@ function createRandomRowForRowNumber(rowNumber) {
       currentVariationSource = middleRailVariationSource
     } else {
       currentVariationType = generateVariationType(i)
-      currentVariationSource = generateVariationSource(i)
+      currentVariationSource = generateVariationSource(i,currentVariationType)
     }
 
     var input = ""
@@ -147,7 +147,10 @@ function generateVariationType(track) {
 }
 
 // generates random variation for tracks
-function generateVariationSource(track) {
+function generateVariationSource(track,variationType) {
+  if(variationType === "straight")
+    return "none"
+
   var variation = "none"
   if(middleRailVariationSource === "sender") {
     variation = "receiver"
