@@ -116,6 +116,13 @@ EntityBase {
 
     anim.to = point.y
     anim.start()
+
+    moveSound.play()
+  }
+
+  SoundEffect {
+    id: moveSound
+    source: "../snd/elkmoves.wav"
   }
 
   SplatterParticle {
