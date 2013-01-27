@@ -302,6 +302,9 @@ Item {
         // Stop acceleration if there is not enough pressure available
         levelMovementAnimation.acceleration = 0
       }
+      else if (player.steamPressure > 200) {
+        player.steamPressure = 200
+      }
     }
   }
 

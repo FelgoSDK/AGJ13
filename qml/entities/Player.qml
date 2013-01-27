@@ -75,6 +75,8 @@ EntityBase {
       // Swipe to the right
       if (angle  > 330 || angle < 30) {
         steamPressure += steamPressureIncreaseWithScooping
+        if (steamPressure > 200)
+          steamPressure = 200
         coalScooped()
       }
     }
