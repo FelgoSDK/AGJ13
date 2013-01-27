@@ -18,7 +18,7 @@ EntityBase {
   signal coalScooped
 
   // gets increased over time - it has the same value as the y value of the level
-  property int score: 0
+  property real score: 0
   // gets increased when a coin is collected
   property int bonusScore: 0
   // the total score is the one that gets displayed
@@ -153,6 +153,7 @@ EntityBase {
     lives = initialLives
 
     y = level.height/2
+    score = 0
 
     console.debug("initialized player to level center:", x, y)
   }
