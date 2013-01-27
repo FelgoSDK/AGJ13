@@ -23,7 +23,7 @@ SceneBase {
   Column {
     spacing: 5
     anchors.horizontalCenter: parent.horizontalCenter
-    y: 10
+    anchors.verticalCenter: parent.verticalCenter
 
     MenuText {
       text: "AGJ"
@@ -39,6 +39,15 @@ SceneBase {
       text: "Play"
       onClicked: window.state = "game"
       textSize: 30
+    }
+
+    MenuButton {
+      text: window.level.multiplayer ?  "2 Players" : "1 Player"
+
+      width: 170 * 0.8
+      height: 60 * 0.8
+
+      onClicked: window.level.multiplayer = !window.level.multiplayer;
     }
 
 
