@@ -60,6 +60,15 @@ EntityBase {
     mirrorX: (variationSource==="receiver")
   }
 
+  MultiResolutionImage {
+    id: sign
+    anchors.left: img.left
+    anchors.verticalCenter: img.verticalCenter
+
+    visible: !(variationType==="straight") && (variationSource==="sender")
+    source:  "../img/switchbutton-sd.png"
+    rotation: (turnDirection === "straight") ? 90 : ((turnDirection == "up") ? 45 : -45)
+  }
   // for debugging the sizes of trackSectionWidth and image width
 //  Rectangle {
 //    anchors.fill: multiresimg
@@ -140,7 +149,6 @@ EntityBase {
     sensor: true
     // do not deactivate if straight, because when player collides with a straight section, and the switch would be set afterwards, then it would switch track although player is further behind
     //active: variationSource == "sender" //&& turnDirection != "straight"
-    //active: !(variationType==="straight")
 
     Rectangle {
       anchors.fill: parent
@@ -176,12 +184,12 @@ EntityBase {
     //anchors.fill: multiresimg
     //anchors.left: multiresimg.left
     x: multiresimg.x-multiresimg.width/4
-    y: multiresimg.y-multiresimg.height/2
-    height: multiresimg.height*2
+    y: multiresimg.y-multiresimg.height*2/2
+    height: multiresimg.height*3
     width: multiresimg.width
 
     // Straight types need no swipes
-    enabled: touchEnabled //&& !(variationType==="straight")
+    enabled: touchEnabled
 
     Rectangle {
       anchors.fill: parent

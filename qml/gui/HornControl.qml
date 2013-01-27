@@ -11,15 +11,11 @@ Item {
 
   onHonkingChanged: console.debug("HONNK", honking)
 
-  Rectangle {
+  MultiResolutionImage {
     id: chain
-
-    color: "magenta"
-
+    source: "../img/steamhandle-sd.png"
     x: 20
     y: -20
-    width: 10
-    height: 80
   }
 
   MultiTouchArea {
@@ -29,6 +25,12 @@ Item {
     multiTouch.dragAxis: MultiTouch.YAxis
     multiTouch.minimumY: -20
     multiTouch.maximumY: 0
+
+    Rectangle{
+      anchors.fill: parent
+      visible: level.showTouchAreas
+      opacity: 0.5
+    }
 
     onReleased: {
       // Move Y back to initial value

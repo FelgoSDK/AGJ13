@@ -70,6 +70,9 @@ Item {
   // pooling doesnt work with variationTypes yet!
   property bool trackSectionPoolingEnabled: true
 
+  // multiplayer: 2nd player must scoop coal to increase pressure, single player: pressure increases by time
+  property bool multiplayer: true
+
   // debug flags
   property bool showCollision: false
   property bool showTouchAreas: false
@@ -278,19 +281,6 @@ Item {
     width: 80 // make big enough, so they dont go through
   }
 
-  /* TODO: does it work with physics, when the tracks are moved, and not the whole world? i guess not, because the positions are not mapped to world when the parent changes!
-  Item {
-    id: tracks
-    TrackSection {
-    }
-
-    TrackSection {
-      x: 100
-      y: scene.height/2
-    }
-  }
-  */
-
   Timer {
     id: pressureTimer
 
@@ -319,7 +309,8 @@ Item {
     id: pressureRegenerationTimer
 
     interval: 2500;
-    running: !pressureTimer.running && player.steamPressure <= 100
+    // Only used in single player mode
+    running: !multiplayer && levelMovementAnimation.running && !pressureTimer.running && player.steamPressure <= 100
     repeat: true
     onTriggered: {
       // Our steam pressure regenerates slowly while travelling uniformly
@@ -327,36 +318,6 @@ Item {
       if (player.steamPressure > 100) {
         player.steamPressure = 100
       }
-    }
-  }
-
-  property int __playerSoundStep: 0
-
-  Timer {
-    id: playerSoundTimer
-
-    interval: {
-      if (-levelMovementAnimation.velocity < 100)
-        return 300
-      else if (-levelMovementAnimation.velocity < 500)
-        return 250
-      else
-        return 200
-    }
-
-    running: levelMovementAnimation.running
-    repeat: true
-
-    onTriggered: {
-      if (__playerSoundStep == 0)
-        player.step1.play()
-      else if (__playerSoundStep == 0)
-        player.step2.play()
-      else
-        player.step3.play()
-
-     __playerSoundStep = (++__playerSoundStep)%3
-
     }
   }
 
@@ -372,6 +333,7 @@ Item {
 
     onVelocityChanged: {
       player.velocity = velocity
+      scene.snowing.gravity.x = velocity
       var colormult = velocity*(-1)/1000
       if(colormult>0.60) {
         chimneyExplotionParticle.start()
@@ -379,7 +341,7 @@ Item {
       } else {
         chimneyParticle.startColor = Qt.rgba(1-colormult,1-colormult,1-colormult,colormult)
       }
-      //console.debug("vel changed to:", velocity)
+      console.debug("vel changed to:", velocity)
     }
 
     // running is set to false - call start() here
@@ -460,13 +422,17 @@ Item {
   }
 
   function setAcceleration(acceleration) {
-    // We can't accelerate if our steam pressure is 0
-    if (player.steamPressure <= 0 && acceleration < 0)
-      return;
+    // do not acc when on path
+    if(!player.followingPath)
+    {
+      // We can't accelerate if our steam pressure is 0
+      if (player.steamPressure <= 0 && acceleration < 0)
+        return;
 
-    levelMovementAnimation.acceleration = acceleration * 10
+      levelMovementAnimation.acceleration = acceleration * 10
 
-    console.debug("New acceleration:", acceleration)
+      console.debug("New acceleration:", acceleration)
+    }
   }
 
   function moveFirstObstacleInCurrentTrack() {

@@ -1,17 +1,21 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import Box2D 1.0
 import VPlay 1.0
+import "../particles"
 
 EntityBase {
   entityType: "player"
 
   property alias sprite: sprite
+  property alias steamParticle: steamParticle
+  property alias steamParticle2: steamParticle2
 
   signal died
   signal collisionWithTrackSection(string direction)
 
   signal collision
+  // Currently not used
+  signal coalScooped
 
   // gets increased over time - it has the same value as the y value of the level
   property int score: 0
@@ -25,6 +29,7 @@ EntityBase {
   // Gets decreased while accelerating and honking, increases while acceleration is 0
   property int steamPressure: 100
   property int steamPressureDeltaForHonking: 20
+  property int steamPressureIncreaseWithScooping: 4
 
   property int initialLives: 100
 
@@ -32,11 +37,6 @@ EntityBase {
 
   // this gets added to bonusScore every time the player catches a coin
   property int bonusScoreForCoin: 300
-
-
-  property alias step1: step1
-  property alias step2: step2
-  property alias step3: step3
 
   // set the default pos to the respawnPosition
   //pos: respawnPosition
@@ -63,19 +63,52 @@ EntityBase {
     onWidthChanged: collider.width = sprite.width-offset*2
   }
 
-  Sound {
-    id: step1
-    source: "../snd/s1.wav"
+  MultiTouchArea {
+    anchors.left: sprite.left
+    anchors.verticalCenter: sprite.verticalCenter
+    width: sprite.width / 2
+    height: sprite.height
+
+    enabled: level.multiplayer
+
+    onSwipe: {
+      // Swipe to the right
+      if (angle  > 330 || angle < 30) {
+        steamPressure += steamPressureIncreaseWithScooping
+        coalScooped()
+      }
+    }
   }
 
   Sound {
-    id: step2
-    source: "../snd/s2.wav"
+    id: speedSound
+    source: "../snd/trainspeed0.wav"
+    loops: SoundEffect.Infinite
+
+    onSourceChanged: {
+        stop()
+        play()
+    }
   }
 
-  Sound {
-    id: step3
-    source: "../snd/s3.wav"
+  onVelocityChanged: {
+    console.log("vel changed:", velocity)
+
+    // Stop sound on velocity = 0
+    if (velocity === 0) {
+      speedSound.stop()
+      return
+    }
+
+    // Change sound sample according to speed
+    if (-velocity < level.levelMovementSpeedMaximum / 8)
+      speedSound.source = "../snd/trainspeed0.wav"
+    else if (-velocity < level.levelMovementSpeedMaximum / 2)
+      speedSound.source = "../snd/trainspeed1.wav"
+    else if (-velocity < level.levelMovementSpeedMaximum / 4 * 3)
+      speedSound.source = "../snd/trainspeed2.wav"
+    else
+      speedSound.source = "../snd/trainspeed3.wav"
   }
 
   BoxCollider {
@@ -149,7 +182,7 @@ EntityBase {
     running: false
     velocity: player.velocity*(-1)+5
     rotationAnimationEnabled: true
-    rotationAnimationDuration: player.velocity*(-1)+5
+    rotationAnimationDuration: player.velocity*(-1)/10
 
 
     onPathCompleted: {
@@ -161,4 +194,22 @@ EntityBase {
     }
   }
 
+  SteamParticle {
+    id: steamParticle
+    x: 50
+    y: 30
+    rotation: 210
+    Component.onCompleted: {
+      steamParticle.stop()
+    }
+  }
+  SteamParticle {
+    id: steamParticle2
+    x: 50
+    y: -30
+    rotation: -30
+    Component.onCompleted: {
+      steamParticle2.stop()
+    }
+  }
 }

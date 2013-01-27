@@ -8,6 +8,8 @@ Scene {
   width: 480
   height: 320
 
+  property alias snowing:snowing
+
   // this is an important performance improvement, as renderer can skip invisible items (and all its children)
   // also, the focus-property for key handling relies on the visible-property
   visible: opacity>0
