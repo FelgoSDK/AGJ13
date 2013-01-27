@@ -49,12 +49,12 @@ EntityBase {
 
   MultiResolutionImage {
     id: multiresimg
-//    contentWidth: img.width/multiresimg.contentScaleFactor
-//    contentHeight: img.height/multiresimg.contentScaleFactor
-    source:  (variationType==="straight") ? "../img/railstraight-sd.png" :
-             ((variationType==="up" || variationType==="down" ||
-               variationType==="upreceiver" || variationType==="downreceiver") ? "../img/railcurve-sd.png" :
-                                                                                 "../img/raildoubled-sd.png") // is used when variationtype is both
+    contentWidth: img.width/multiresimg.contentScaleFactor+1
+    contentHeight: img.height/multiresimg.contentScaleFactor
+    source:  (variationType==="straight") ? "../img/rails-sd.png" :
+             ((variationType==="up" || variationType==="upreceiver") ? "../img/cross_ccw-sd.png" :
+               ((variationType==="down" || variationType==="downreceiver") ? "../img/cross_ccw-sd.png" :
+                                                                                 "../img/cross-sd.png")) // is used when variationtype is both
     anchors.centerIn: parent
     mirrorY: (variationType==="down" || variationType==="downreceiver")
     mirrorX: (variationSource==="receiver")

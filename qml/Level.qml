@@ -186,7 +186,7 @@ Item {
   MultiResolutionImage {
     //BackgroundImage { // dont use a BackgroundImage yet, because blending isnt working correclty! (overlapping regions appear lighter!)
     id:levelBackground
-    source: "img/background-wood2-sd.png"
+    source: "img/background-snow1-sd.png"
 
     // the logical width should be the scene size - this will change when the background image is bigger than the scene size to support multiple resolutions & aspect ratios
     // in that case, use a MultiResolutionImage with pixelFormat set to 3 and position it in the horizontal center
@@ -203,7 +203,7 @@ Item {
   MultiResolutionImage {
     //BackgroundImage { // dont use a BackgroundImage yet, because blending isnt working correclty! (overlapping regions appear lighter!)
     id:levelBackground2
-    source: "img/background-wood2-sd.png"
+    source: "img/background-snow2-sd.png"
 
     //opacity: 0.6 // for testing the second copy of the background
     scale: 1.2

@@ -13,16 +13,15 @@ SceneBase {
     window.state = "main"
   }
 
-  // use the hd-graphics right now with 649x960 resolution, because it was faster during development
-  // in the end, a MultiResolutionImage should be used and 3 different formats of the image provided (-sd, -hd and -hd2)!
-  //BackgroundImage {
   MultiResolutionImage {
-    source: "img/gameOverScreen-sd.png"
+    id: multires
+    x: scene.gameWindowAnchorItem.x
+    y: scene.gameWindowAnchorItem.y
+    contentWidth: scene.gameWindowAnchorItem.width/multires.contentScaleFactor
+    contentHeight: scene.gameWindowAnchorItem.height/multires.contentScaleFactor
+
+    source: "img/background-snow2-sd.png"
     anchors.centerIn: parent
-    // this might be used if the image should be moved vertically around its center
-    //        anchors.horizontalCenter: parent.horizontalCenter
-    //        anchors.verticalCenter: parent.verticalCenter
-    //        anchors.verticalCenterOffset: 10
   }
 
   MenuText {
