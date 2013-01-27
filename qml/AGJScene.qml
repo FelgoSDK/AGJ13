@@ -140,7 +140,7 @@ SceneBase {
 
   // this button is only for testing and only visible in debug mode
   // it shows the ingameMenu to quickly restart the game and test different performance options
-  SimpleButton {
+  /*SimpleButton {
     id: hud
     width: 64
     height: 64
@@ -155,7 +155,24 @@ SceneBase {
 
       //window.state = "gameOver" // uncommment this for testing the state-changes when pressing the menu button
     }
+  }*/
+  Image {
+    source: "img/pausebutton.png"
+    width: 64
+    height: 32
+    x: scene.gameWindowAnchorItem.width-50
+
+    MultiTouchArea {
+      anchors.fill: parent
+      onClicked: {
+        // this activates the ingameMenu state, which will show the IngameMenu item
+        scene.state = "ingameMenu"
+      }
+    }
+
   }
+
+
   // this gets only displayed when the menu button is pressed, which is only allowed in debug builds
   IngameMenu {
     id: ingameMenu
@@ -252,7 +269,6 @@ SceneBase {
     State {
       name: "ingameMenu"
       PropertyChanges { target: ingameMenu; visible: true}
-      PropertyChanges { target: hud; visible: false}
       StateChangeScript {
         script: {
           level.pauseGame();
