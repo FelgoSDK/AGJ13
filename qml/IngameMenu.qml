@@ -23,4 +23,10 @@ Column {
       itemEditor.visible = !itemEditor.visible
     }
   }
+  MenuButton {
+    text: "Toggle Sound"
+    onClicked: {
+      rootGameWindow.settings.soundEnabled = !rootGameWindow.settings.soundEnabled
+    }
+  }
 }
