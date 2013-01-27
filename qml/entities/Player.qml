@@ -166,6 +166,9 @@ EntityBase {
     y = level.height/2
     score = 0
 
+    // Start sound effect
+    soundRepeater.itemAt(__currentSoundIndex).play()
+
     console.debug("initialized player to level center:", x, y)
   }
 
