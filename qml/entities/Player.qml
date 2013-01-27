@@ -36,11 +36,6 @@ EntityBase {
   // this gets added to bonusScore every time the player catches a coin
   property int bonusScoreForCoin: 300
 
-
-  property alias step1: step1
-  property alias step2: step2
-  property alias step3: step3
-
   // set the default pos to the respawnPosition
   //pos: respawnPosition
 
@@ -84,18 +79,34 @@ EntityBase {
   }
 
   Sound {
-    id: step1
-    source: "../snd/s1.wav"
+    id: speedSound
+    source: "../snd/trainspeed0.wav"
+    loops: SoundEffect.Infinite
+
+    onSourceChanged: {
+        stop()
+        play()
+    }
   }
 
-  Sound {
-    id: step2
-    source: "../snd/s2.wav"
-  }
+  onVelocityChanged: {
+    console.log("vel changed:", velocity)
 
-  Sound {
-    id: step3
-    source: "../snd/s3.wav"
+    // Stop sound on velocity = 0
+    if (velocity === 0) {
+      speedSound.stop()
+      return
+    }
+
+    // Change sound sample according to speed
+    if (-velocity < level.levelMovementSpeedMaximum / 8)
+      speedSound.source = "../snd/trainspeed0.wav"
+    else if (-velocity < level.levelMovementSpeedMaximum / 2)
+      speedSound.source = "../snd/trainspeed1.wav"
+    else if (-velocity < level.levelMovementSpeedMaximum / 4 * 3)
+      speedSound.source = "../snd/trainspeed2.wav"
+    else
+      speedSound.source = "../snd/trainspeed3.wav"
   }
 
   BoxCollider {
