@@ -31,7 +31,7 @@ EntityBase {
   property int steamPressureDeltaForHonking: 20
   property int steamPressureIncreaseWithScooping: 4
 
-  property int initialLives: 100
+  property int initialLives: 3
 
   property int lives: initialLives
 
@@ -169,6 +169,8 @@ EntityBase {
 
   function init() {
     lives = initialLives
+
+    steamPressure = 100
 
     y = level.height/2
     score = 0

@@ -29,4 +29,11 @@ Column {
       rootGameWindow.settings.soundEnabled = !rootGameWindow.settings.soundEnabled
     }
   }
+  MenuButton {
+    text: "Main Menu"
+    onClicked: {
+      scene.state = "" // reset to default state, so hide this menu
+      window.state = "main"
+    }
+  }
 }
