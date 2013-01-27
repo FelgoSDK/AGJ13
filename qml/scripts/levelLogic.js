@@ -102,7 +102,7 @@ function createRandomRowForRowNumber(rowNumber) {
 
     // add obstacle
     if(generateObstacles) {
-//      createRandomObstacleInTrack(currentVariationType,newTrackCenterPos.x,newTrackCenterPos.y)
+      createRandomObstacleInTrack(currentVariationType,newTrackCenterPos.x,newTrackCenterPos.y)
     }
   }
 
