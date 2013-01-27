@@ -78,35 +78,44 @@ EntityBase {
     }
   }
 
-  Sound {
-    id: speedSound
-    source: "../snd/trainspeed0.wav"
-    loops: SoundEffect.Infinite
+  // Used for velocity-based sound effect
+  Repeater {
+    id: soundRepeater
+    model: 4
 
-    onSourceChanged: {
-        stop()
-        play()
+    Sound {
+      source: "../snd/trainspeed" + index + ".wav"
+      loops: SoundEffect.Infinite
     }
   }
 
-  onVelocityChanged: {
-    console.log("vel changed:", velocity)
+  property int __currentSoundIndex: 0
 
+  onVelocityChanged: {
     // Stop sound on velocity = 0
     if (velocity === 0) {
-      speedSound.stop()
+      soundRepeater.itemAt(__currentSoundIndex).stop()
       return
     }
 
     // Change sound sample according to speed
+    var newSound = __currentSoundIndex
+
     if (-velocity < level.levelMovementSpeedMaximum / 8)
-      speedSound.source = "../snd/trainspeed0.wav"
+      newSound = 0
     else if (-velocity < level.levelMovementSpeedMaximum / 2)
-      speedSound.source = "../snd/trainspeed1.wav"
+      newSound = 1
     else if (-velocity < level.levelMovementSpeedMaximum / 4 * 3)
-      speedSound.source = "../snd/trainspeed2.wav"
+      newSound = 2
     else
-      speedSound.source = "../snd/trainspeed3.wav"
+      newSound = 3
+
+    if (__currentSoundIndex !== newSound) {
+      soundRepeater.itemAt(__currentSoundIndex).stop()
+      __currentSoundIndex = newSound
+      console.log("CURRRENT SOUND INEX:::::::::", __currentSoundIndex)
+      soundRepeater.itemAt(__currentSoundIndex).play()
+    }
   }
 
   BoxCollider {
