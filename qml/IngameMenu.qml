@@ -19,6 +19,7 @@ Column {
   }
   MenuButton {
     text: "Tweak"
+    visible: system.debugBuild
     onClicked: {
       itemEditor.visible = !itemEditor.visible
     }
