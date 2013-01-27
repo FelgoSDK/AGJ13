@@ -69,6 +69,10 @@ Item {
   // pooling doesnt work with variationTypes yet!
   property bool trackSectionPoolingEnabled: true
 
+  // debug flags
+  property bool showCollision: false
+  property bool showTouchAreas: false
+
   EditableComponent {
       id: editableEditorComponent
       target: parent

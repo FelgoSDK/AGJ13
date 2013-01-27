@@ -140,6 +140,14 @@ EntityBase {
     sensor: true
     // do not deactivate if straight, because when player collides with a straight section, and the switch would be set afterwards, then it would switch track although player is further behind
     //active: variationSource == "sender" //&& turnDirection != "straight"
+    //active: !(variationType==="straight")
+
+    Rectangle {
+      anchors.fill: parent
+      visible: level.showCollision && (variationSource === "sender" )
+      opacity: 0.6
+      color: "red"
+    }
 
     fixture.onBeginContact: {
       var fixture = other;
@@ -165,10 +173,25 @@ EntityBase {
 
   MultiTouchArea {
     // Probably make a little bit higher than the actual track section item?
-    anchors.fill: multiresimg
+    //anchors.fill: multiresimg
+    //anchors.left: multiresimg.left
+    x: multiresimg.x-multiresimg.width/4
+    y: multiresimg.y-multiresimg.height/2
+    height: multiresimg.height*2
+    width: multiresimg.width
 
     // Straight types need no swipes
-    enabled: touchEnabled
+    enabled: touchEnabled //&& !(variationType==="straight")
+
+    Rectangle {
+      anchors.fill: parent
+      visible: level.showTouchAreas && (variationSource === "sender")
+      opacity: 0.5
+    }
+
+    onClicked: {
+      console.debug("LOG",variationSource,variationType)
+    }
 
     onSwipe: {
       // console.debug("angle is", angle)

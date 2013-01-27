@@ -25,69 +25,59 @@ SceneBase {
   }
 
   Column {
-    anchors.horizontalCenter: parent.horizontalCenter
+    id: leftColumn
+    anchors.verticalCenter: parent.verticalCenter
+    x: 50
     y: 50
+    spacing: 15
 
     MenuText {
-      text: "Credits"
-      font.pixelSize: 35
-    }
-
-    Item {
-      width: 1
-      height: 35
+      text: qsTr("V-Play Team:\nAlex Leutgoeb\nChristian Feldbacher\nDavid Berger\nNico Harather")
     }
 
     MenuText {
-      text: "Design and Development:"
+      text: qsTr("Graphics:\nMarkus Fellner")
     }
-
-    MenuText {
-      text: "Alexander Leutgoeb, Christian Feldbacher \nDavid Berger, Nico Harather\n Markus Fellner  "
-    }
-
-    Item {
-      width: 1
-      height: 25
-    }
-
-    MenuText {
-      text: "Sound:"
-    }
-
-    MenuText {
-      text: "\"XXX\""
-    }
-
-    MenuText {
-      text: "(xxx.com)"
-    }
-
-    Item {
-      width: 1
-      height: 90
-    }
-
-    MenuText {
-      text: "Proudly developed with"
-    }
-
-    MenuText {
-      text: "V-Play Game Engine"
-    }
-
   }
 
   MenuButton {
-    anchors.horizontalCenter: parent.horizontalCenter
+    id: b1
     anchors.bottom: parent.bottom
     anchors.bottomMargin: 30
 
-    text: "Back"
+    text: qsTr("Back")
 
     width: 170 * 0.8
     height: 60 * 0.8
 
     onClicked: window.state = "main"
   }
+
+  Column {
+    id: logoColumn
+    //anchors.top: b1.top
+    //anchors.topMargin: -8
+    anchors.left: leftColumn.right
+    anchors.leftMargin: 30
+    anchors.verticalCenter: parent.verticalCenter
+    spacing: 8
+
+    MenuText {
+      text: qsTr("Proudly developed with")
+    }
+
+    Image {
+      source: "img/vplay.png"
+      // the image size is bigger (for hd2 image), so only a single image no multiresimage can be used
+      // this scene is not performance sensitive anyway!
+      fillMode: Image.PreserveAspectFit
+      height: 55
+
+      MouseArea {
+        anchors.fill: parent
+        onClicked: nativeUtils.openUrl("http://v-play.net");
+      }
+    }
+  }
+
 }

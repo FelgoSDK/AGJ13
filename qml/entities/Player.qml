@@ -54,10 +54,13 @@ EntityBase {
   property bool followingPath: false
   property real velocity: 200
 
+  property real offset: 20
   MultiResolutionImage {
     id: sprite
     source:  "../img/train-sd.png"
     anchors.centerIn: parent
+    onHeightChanged: collider.height = sprite.height-offset*2
+    onWidthChanged: collider.width = sprite.width-offset*2
   }
 
   Sound {
@@ -77,12 +80,18 @@ EntityBase {
 
   BoxCollider {
     id: collider
-    anchors.fill: sprite
-    // prevent from using wrong switches because the train collides with them when rotating.
-    //anchors.topMargin: 10
-    //anchors.bottomMargin: 10
+    x: sprite.x+offset*2
+    y: sprite.y+offset
+
     collisionTestingOnlyMode: true
     sensor: true
+
+    Rectangle {
+      anchors.fill: parent
+      opacity: 0.6
+      color: "red"
+      visible: level.showCollision
+    }
 
     categories: level.playerColliderGroup
 
