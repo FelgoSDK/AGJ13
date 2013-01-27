@@ -112,10 +112,10 @@ SceneBase {
     anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
     anchors.topMargin: 5
 
-    text: "Score: " + Math.round(player.totalScore) + " Lives:" + player.lives + " Speed:" + -Math.round(level.levelMovementSpeedCurrent)
+    text: "Score: " + Math.round(player.totalScore)// + " Lives:" + player.lives + " Speed:" + -Math.round(level.levelMovementSpeedCurrent)
     font.family: fontHUD.name
     font.pixelSize: 22
-    color: "white"
+    color: "blue"
   }
 
   // gets called by Main when this scene gets active
