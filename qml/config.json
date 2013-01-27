@@ -3,9 +3,5 @@
   "identifier": "net.vplay.demos.Locomotive",
   "orientation": "landscape",
   "versioncode": 1,
-  "versionname": "1",
-
-  "ios": {
-    "prerendered_icon": true
-  }
+  "versionname": "1.0"
 }
