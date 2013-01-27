@@ -263,19 +263,6 @@ Item {
     width: 80 // make big enough, so they dont go through
   }
 
-  /* TODO: does it work with physics, when the tracks are moved, and not the whole world? i guess not, because the positions are not mapped to world when the parent changes!
-  Item {
-    id: tracks
-    TrackSection {
-    }
-
-    TrackSection {
-      x: 100
-      y: scene.height/2
-    }
-  }
-  */
-
   Timer {
     id: pressureTimer
 
@@ -416,13 +403,17 @@ Item {
   }
 
   function setAcceleration(acceleration) {
-    // We can't accelerate if our steam pressure is 0
-    if (player.steamPressure <= 0 && acceleration < 0)
-      return;
+    // do not acc when on path
+    if(!player.followingPath)
+    {
+      // We can't accelerate if our steam pressure is 0
+      if (player.steamPressure <= 0 && acceleration < 0)
+        return;
 
-    levelMovementAnimation.acceleration = acceleration * 10
+      levelMovementAnimation.acceleration = acceleration * 10
 
-    console.debug("New acceleration:", acceleration)
+      console.debug("New acceleration:", acceleration)
+    }
   }
 
   function moveFirstObstacleInCurrentTrack() {

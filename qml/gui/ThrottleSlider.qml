@@ -232,8 +232,8 @@ Item {
     anchors.right: handle.horizontalCenter
     anchors.rightMargin: handle.width / 3
     anchors.leftMargin: 2
-    anchors.topMargin: handle.width / 3
-    anchors.bottomMargin: handle.width / 3
+    //anchors.topMargin: handle.width / 3
+    //anchors.bottomMargin: handle.width / 3
 
     states: State {
       when: slider.inverted
