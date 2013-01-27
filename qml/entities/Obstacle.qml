@@ -20,9 +20,9 @@ EntityBase {
     console.debug("obstacle used from pool")
   }
 
-  Image {
+  MultiResolutionImage {
     id: sprite
-    source: "../img/cowdy.png"
+    source: "../img/moose-sd.png"
 
 //    width: 7
 //    height: 10

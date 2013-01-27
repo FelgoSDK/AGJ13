@@ -169,7 +169,7 @@ EntityBase {
     running: false
     velocity: player.velocity*(-1)+5
     rotationAnimationEnabled: true
-    rotationAnimationDuration: player.velocity*(-1)+5
+    rotationAnimationDuration: player.velocity*(-1)/10
 
 
     onPathCompleted: {
