@@ -87,23 +87,30 @@ EntityBase {
     }
   }
 
-  NumberAnimation {
+  NumberAnimation on y {
    id: anim
-   duration: 200
+   duration: 150
   }
 
   function jump() {
-    if(directionUp) {
-      var point
-      point.x = obstacle.x
+    console.debug("JUMP!!!")
+
+    var point = Qt.point(0, 0)
+    if(directionUp) {      
+      //point.x = obstacle.x
       point.y = obstacle.y-level.trackSectionHeight
-      anim.to = point
+//      anim.to = point
     } else {
-      point.x = obstacle.x
+      //point.x = obstacle.x
       point.y = obstacle.y+level.trackSectionHeight
-      anim.to = point
+//      anim.to = point
     }
 
+
+    // do not set it directly, but use an animation
+    //obstacle.y = point.y
+
+    anim.to = point.y
     anim.start()
   }
 

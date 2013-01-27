@@ -27,7 +27,8 @@ EntityBase {
   property int deaths: 0
 
   // Gets decreased while accelerating and honking, increases while acceleration is 0
-  property int steamPressure: 100
+  property int initialSteamPressure: 100
+  property int steamPressure: initialSteamPressure
   property int steamPressureDeltaForHonking: 20
   property int steamPressureIncreaseWithScooping: 4
 
@@ -170,7 +171,7 @@ EntityBase {
   function init() {
     lives = initialLives
 
-    steamPressure = 100
+    steamPressure = initialSteamPressure
 
     y = level.height/2
     score = 0
