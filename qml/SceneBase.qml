@@ -1,5 +1,6 @@
 import QtQuick 1.1
 import VPlay 1.0
+import "particles"
 
 // base component for all 3 scenes in the game
 Scene {
@@ -41,6 +42,13 @@ Scene {
 
   Keys.onBackPressed: {
     backPressed()
+  }
+
+  Snowing {
+    id: snowing
+    Component.onCompleted: {
+      snowing.start()
+    }
   }
 
 }

@@ -73,7 +73,7 @@ SceneBase {
   // this allows usage of the left and right keys on desktop systems or mobiles with physical keyboards
   // focus must be set to visible, not just to true, because when the scene gets invisible, it looses focus and would never get set to true again!  
   // forward the input to the controller of the player
-  Keys.forwardTo: player.controller
+  //Keys.forwardTo: player.controller
 
   Keys.onReleased: {
     if(event.key === Qt.Key_Plus)
@@ -172,9 +172,15 @@ SceneBase {
     onHonkingChanged: {
       // Honking is only possible if we have more than 20% steam
       if (honking && player.steamPressure >= player.steamPressureDeltaForHonking) {
+        hornSound.play();
         level.moveFirstObstacleInCurrentTrack()
         player.steamPressure -= player.steamPressureDeltaForHonking
       }
+    }
+
+    Sound {
+      id: hornSound
+      source: "snd/horn.wav"
     }
   }
 
@@ -241,6 +247,7 @@ SceneBase {
     State {
       name: "ingameMenu"
       PropertyChanges { target: ingameMenu; visible: true}
+      PropertyChanges { target: hud; visible: false}
       StateChangeScript {
         script: {
           level.pauseGame();

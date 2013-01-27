@@ -216,7 +216,7 @@ Item {
         if(playerRowActive>railAmount-1)
           playerRowActive = railAmount-1
       }
-      player.y = startYForFirstRail+(playerRowActive)*trackSectionHeight
+      player.trackChangeTo(Qt.point(player.x+200,startYForFirstRail+(playerRowActive)*trackSectionHeight))
     }
 
     SmokeParticle {
@@ -239,9 +239,9 @@ Item {
       tangentialAcceleration: 4
       finishParticleSize: 0
       finishParticleSizeVariance: 0
-      speed: 277
+      speed: 200
       speedVariance: 6.58
-      startColor: Qt.rgba(1.0,0.18,0.0,0.90)
+      startColor: Qt.rgba(0.0,0.18,0.2,0.90)
       finishColor: Qt.rgba(1.0,1.0,1.0,0.0)
     }
   }
@@ -307,6 +307,36 @@ Item {
     }
   }
 
+  property int __playerSoundStep: 0
+
+  Timer {
+    id: playerSoundTimer
+
+    interval: {
+      if (-levelMovementAnimation.velocity < 100)
+        return 300
+      else if (-levelMovementAnimation.velocity < 500)
+        return 250
+      else
+        return 200
+    }
+
+    running: levelMovementAnimation.running
+    repeat: true
+
+    onTriggered: {
+      if (__playerSoundStep == 0)
+        player.step1.play()
+      else if (__playerSoundStep == 0)
+        player.step2.play()
+      else
+        player.step3.play()
+
+     __playerSoundStep = (++__playerSoundStep)%3
+
+    }
+  }
+
   MovementAnimation {
     id: levelMovementAnimation
     property: "x"
@@ -318,11 +348,11 @@ Item {
     velocity: -levelMovementSpeed
 
     onVelocityChanged: {
+      player.velocity = velocity
       var colormult = velocity*(-1)/1000
-      console.log("===="+colormult)
-      if(colormult>0.75) {
+      if(colormult>0.60) {
         chimneyExplotionParticle.start()
-        chimneyParticle.startColor = Qt.rgba(1.0,0.5,1-colormult,colormult)
+        chimneyParticle.startColor = Qt.rgba(0.0,0.18,0.2,0.9)
       } else {
         chimneyParticle.startColor = Qt.rgba(1-colormult,1-colormult,1-colormult,colormult)
       }
@@ -393,6 +423,10 @@ Item {
       // divide by an arbitrary number, so the text doesnt get changed every frame which is bad for performance as it is no bitmap font yet!
       player.score = -(level.x/40).toFixed()
 
+    if(!player.followingPath) {
+      player.x = -level.x + player.sprite.width/2
+    }
+
   }
 
   function accelerate(diff) {
@@ -447,9 +481,11 @@ Item {
   // ------------------- for debugging only ------------------- //
   function pauseGame() {
     console.debug("pauseGame()")
+    levelMovementAnimation.stop()
   }
   function resumeGame() {
     console.debug("resumeGame()")
+    levelMovementAnimation.start()
   }
 
   function restartGame() {
