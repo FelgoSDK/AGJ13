@@ -69,6 +69,9 @@ Item {
   // pooling doesnt work with variationTypes yet!
   property bool trackSectionPoolingEnabled: true
 
+  // multiplayer: 2nd player must scoop coal to increase pressure, single player: pressure increases by time
+  property bool multiplayer: true
+
   EditableComponent {
       id: editableEditorComponent
       target: parent
@@ -296,7 +299,8 @@ Item {
     id: pressureRegenerationTimer
 
     interval: 2500;
-    running: !pressureTimer.running && player.steamPressure <= 100
+    // Only used in single player mode
+    running: !multiplayer && levelMovementAnimation.running && !pressureTimer.running && player.steamPressure <= 100
     repeat: true
     onTriggered: {
       // Our steam pressure regenerates slowly while travelling uniformly
