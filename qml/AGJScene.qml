@@ -112,7 +112,7 @@ SceneBase {
     anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
     anchors.topMargin: 5
 
-    text: /*"Score: " + player.totalScore + */" Lives:" + player.lives + " Speed:" + level.levelMovementSpeed
+    text: "Score: " + Math.round(player.totalScore) + " Lives:" + player.lives + " Speed:" + -Math.round(level.levelMovementSpeedCurrent)
     font.family: fontHUD.name
     font.pixelSize: 22
     color: "white"

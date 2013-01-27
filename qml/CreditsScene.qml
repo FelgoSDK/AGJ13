@@ -20,7 +20,7 @@ SceneBase {
     contentWidth: scene.gameWindowAnchorItem.width/multires.contentScaleFactor
     contentHeight: scene.gameWindowAnchorItem.height/multires.contentScaleFactor
 
-    source: "img/mainMenuBackground-sd.png"
+    source: "img/background-snow2-sd.png"
     anchors.centerIn: parent
   }
 

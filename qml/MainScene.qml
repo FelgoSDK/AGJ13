@@ -19,6 +19,16 @@ SceneBase {
     nativeUtils.displayMessageBox(qsTr("Really quit the game?"), "", 2);
   }
 
+  MultiResolutionImage {
+    id: multires
+    x: scene.gameWindowAnchorItem.x
+    y: scene.gameWindowAnchorItem.y
+    contentWidth: scene.gameWindowAnchorItem.width/multires.contentScaleFactor
+    contentHeight: scene.gameWindowAnchorItem.height/multires.contentScaleFactor
+
+    source: "img/background-snow2-sd.png"
+    anchors.centerIn: parent
+  }
 
   Column {
     spacing: 5

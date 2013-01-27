@@ -14,6 +14,8 @@ Item {
 
   // gets used to measure how much the level was moved downwards in the last frame - if this is bigger than gridSize, a new row will be created in onYChanged
   property real lastX: 0
+  // for calculating the scores
+  property real lastFrameX: 0
 
   // how many new rows were created, it starts with 0 if the level has y position 0, and then gets increased with every gridSize
   // gets initialized in onCompleted
@@ -36,6 +38,10 @@ Item {
   property real levelMovementSpeedMinimum: 20
   property real levelMovementSpeedMaximum: 800
   property real levelMovementSpeed: 50//levelMovementSpeedMinimum
+  property alias levelMovementSpeedCurrent: levelMovementAnimation.velocity
+
+  // gets modified, the higher the speed is from MovementAnimation - if it is 0, the speed is minimum, if it is 1, the speed is maximum
+  property real speedScoringMultiplier: levelMovementSpeed-levelMovementSpeedMinimum / levelMovementSpeedMaximum
 
   // probability of 30% to create a obstacle on top of the track, so in 3 of 10 tracks there will be a obstacle created
   property real obstacleCreationPropability: 0.3
@@ -87,7 +93,7 @@ Item {
   // On straight pieces, probability is low because player can only honk to escape the cows then.
   property real pCowAfterPlayerSwitchInLastColumn: 0.8
   property real pCowAfterNonPlayerSwitch: 0.4
-  property real pCowFreePos: 0.05
+  property real pCowFreePos: 0.02
 
   EditableComponent {
       id: editableEditorComponent
@@ -153,7 +159,8 @@ Item {
 
     // it is important to set lastX before level.x! otherwise in onXChanged it would lead to a creation already!
     lastX = -0
-    level.x = 0
+    lastFrameX = 0
+    level.x = lastX
 
     player.init()
 
@@ -186,7 +193,7 @@ Item {
   MultiResolutionImage {
     //BackgroundImage { // dont use a BackgroundImage yet, because blending isnt working correclty! (overlapping regions appear lighter!)
     id:levelBackground
-    source: "img/background-wood2-sd.png"
+    source: "img/background-snow1-sd.png"
 
     // the logical width should be the scene size - this will change when the background image is bigger than the scene size to support multiple resolutions & aspect ratios
     // in that case, use a MultiResolutionImage with pixelFormat set to 3 and position it in the horizontal center
@@ -203,7 +210,7 @@ Item {
   MultiResolutionImage {
     //BackgroundImage { // dont use a BackgroundImage yet, because blending isnt working correclty! (overlapping regions appear lighter!)
     id:levelBackground2
-    source: "img/background-wood2-sd.png"
+    source: "img/background-snow2-sd.png"
 
     //opacity: 0.6 // for testing the second copy of the background
     scale: 1.2
@@ -345,6 +352,10 @@ Item {
         chimneyParticle.startColor = Qt.rgba(1-colormult,1-colormult,1-colormult,colormult)
       }
       console.debug("vel changed to:", velocity)
+
+
+      // the faster the player moves, the more points he gets
+      speedScoringMultiplier = (-velocity-levelMovementSpeedMinimum)/levelMovementSpeedMaximum
     }
 
     // running is set to false - call start() here
@@ -407,13 +418,21 @@ Item {
     // for performance reasons, disable the score updating every frame, which is expensive with the text element because a texture is recreated every time the text changes!
     if(enableConstantScoreTextUpdating)
       player.score = -level.x.toFixed()
-    else
+    else {
+      var deltaX = -(x - lastFrameX)
+      // deltaX is in between 0.3 ... 15 - the faster the train is, the
+      var additionalScore = deltaX/10 * level.speedScoringMultiplier
+      //console.debug("additionalScore:", additionalScore, "scoringMultiplier:", level.speedScoringMultiplier, "deltaX:", deltaX)
+      player.score += additionalScore
       // divide by an arbitrary number, so the text doesnt get changed every frame which is bad for performance as it is no bitmap font yet!
-      player.score = -(level.x/40).toFixed()
+      //player.score = -(level.x/40).toFixed()
+    }
 
     if(!player.followingPath) {
       player.x = -level.x + player.sprite.width/2
     }
+
+    lastFrameX = level.x
 
   }
 
