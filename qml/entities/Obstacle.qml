@@ -22,6 +22,10 @@ EntityBase {
 
   property bool directionUp: true
 
+  onMovedToPool: {
+    anim.stop()
+  }
+
   Component.onCompleted: {
     //console.debug("NEW Obstacle created")
     var propability = Math.random()
