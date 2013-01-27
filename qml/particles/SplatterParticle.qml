@@ -15,7 +15,7 @@ Particle {
   particleLifespanVariance: 0.2
   startParticleSize: 150
   startParticleSizeVariance: 6
-  finishParticleSize: 5
+  finishParticleSize: 150
   finishParticleSizeVariance: 0
   rotation: 180
   angleVariance: 45
@@ -47,9 +47,9 @@ Particle {
   rotatePerSecondVariance: 0
 
   // Appearance
-  startColor: Qt.rgba(0.75,0.75,0.75,0.8);
+  startColor: Qt.rgba(0.75,0.75,0.75,0.9);
   startColorVariance: Qt.rgba(0,0,0,0);
-  finishColor: Qt.rgba(0.3,0.3,0.3,0);
+  finishColor: Qt.rgba(1,1,1,1);
   finishColorVariance: Qt.rgba(0,0,0,0);
   blendFuncSource: Particle.GL_SRC_ALPHA
   blendFuncDestination: Particle.GL_ONE_MINUS_SRC_ALPHA

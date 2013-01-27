@@ -7,7 +7,5 @@
 
   "ios": {
     "prerendered_icon": true
-  },
-  
-  "sdk": "edge"
+  }
 }
