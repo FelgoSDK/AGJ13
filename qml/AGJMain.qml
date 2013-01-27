@@ -38,10 +38,11 @@ GameWindow {
   }
 
   // use BackgroundMusic for long-playing background sounds
-//  BackgroundMusic {
-//    id: backgroundMusic
-//    source: system.isPlatform(System.Meego) || system.isPlatform(System.Symbian) ? "snd/bg-slow-mono.ogg" : "snd/bg-slow.wav"
-//  }
+  BackgroundMusic {
+    id: backgroundMusic
+    source: "snd/wind.wav"
+    volume: 0.6
+  }
 
   // Custom font loading of ttf fonts
   FontLoader {
