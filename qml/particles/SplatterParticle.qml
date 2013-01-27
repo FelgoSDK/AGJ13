@@ -5,38 +5,38 @@ Particle {
   id: splatterParticle
 
   // Particle location properties
-  x:-10
-  y: 0
+  x:13
+  y:13
   sourcePositionVariance: Qt.point(0,0)
 
   // Particle configuration properties
-  maxParticles: 20
-  particleLifespan: 0.3
-  particleLifespanVariance: 0.2
-  startParticleSize: 150
-  startParticleSizeVariance: 6
-  finishParticleSize: 150
+  maxParticles: 21
+  particleLifespan: 0
+  particleLifespanVariance: 1.02
+  startParticleSize: 0
+  startParticleSizeVariance: 0
+  finishParticleSize: 48
   finishParticleSizeVariance: 0
-  rotation: 180
-  angleVariance: 45
+  rotation: 0
+  angleVariance: 360
   rotationStart: 0
-  rotationEnd: 0
   rotationStartVariance: 0
+  rotationEnd: 0
   rotationEndVariance: 0
 
   // Emitter Behaviour
   emitterType: Particle.Gravity
-  duration: 0.5
+  duration: 0.1
   positionType: Particle.Relative
 
   // Gravity Mode (Gravity + Tangential Accel + Radial Accel)
-  gravity: Qt.point(0,0)
-  speed: 60
+  gravity: Qt.point(2,0)
+  speed: 81
   speedVariance: 0
   tangentialAcceleration: 0
   tangentialAccelVariance: 0
-  radialAcceleration: -45
-  radialAccelVariance: 20
+  radialAcceleration: 0
+  radialAccelVariance: 0
 
   // Radiation Mode (circular movement)
   minRadius: 0
@@ -47,15 +47,11 @@ Particle {
   rotatePerSecondVariance: 0
 
   // Appearance
-  startColor: Qt.rgba(0.75,0.75,0.75,0.9);
+  startColor: Qt.rgba(1.0,1.0,0,1.0);
   startColorVariance: Qt.rgba(0,0,0,0);
-  finishColor: Qt.rgba(1,1,1,1);
+  finishColor: Qt.rgba(1.0,1.0,0,1.0);
   finishColorVariance: Qt.rgba(0,0,0,0);
   blendFuncSource: Particle.GL_SRC_ALPHA
   blendFuncDestination: Particle.GL_ONE_MINUS_SRC_ALPHA
-  textureFileName: "particleSplatter.png"
-
-  Component.onCompleted: {
-    splatterParticle.start()
-  }
+  textureFileName: "scull.png"
 }
