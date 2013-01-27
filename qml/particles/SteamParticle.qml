@@ -55,8 +55,4 @@ Particle {
   blendFuncSource: Particle.GL_SRC_ALPHA
   blendFuncDestination: Particle.GL_ONE_MINUS_SRC_ALPHA
   textureFileName: "particleSmoke_32.png"
-
-  Component.onCompleted: {
-    smokeParticle.start()
-  }
 }

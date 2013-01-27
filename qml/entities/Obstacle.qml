@@ -82,7 +82,9 @@ EntityBase {
       var collidedEntity = component.owningEntity;
       var collidedEntityType = collidedEntity.entityType;
       if(collidedEntityType === "player") {
-        splatterParticle.start()
+        level.splatterParticle.x = obstacle.x
+        level.splatterParticle.y = obstacle.y
+        level.splatterParticle.start()
       }
     }
   }
@@ -105,13 +107,5 @@ EntityBase {
     }
 
     anim.start()
-  }
-
-  SplatterParticle {
-    id: splatterParticle
-    x:100
-    Component.onCompleted: {
-      splatterParticle.stopLivingParticles()
-    }
   }
 }

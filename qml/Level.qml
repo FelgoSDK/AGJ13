@@ -39,7 +39,7 @@ Item {
   property real levelMovementSpeedMaximum: 400
   property real levelMovementSpeed: 50//levelMovementSpeedMinimum
   property alias levelMovementSpeedCurrent: levelMovementAnimation.velocity
-
+  property alias splatterParticle: splatterParticle
   // gets modified, the higher the speed is from MovementAnimation - if it is 0, the speed is minimum, if it is 1, the speed is maximum
   property real speedScoringMultiplier: levelMovementSpeed-levelMovementSpeedMinimum / levelMovementSpeedMaximum
 
@@ -224,6 +224,10 @@ Item {
     z:-2
   }
 
+  SplatterParticle {
+    id: splatterParticle
+    z: 2
+  }
 
   // start in the center of the scene, and a little bit below the top
   // the player will fall to the playerInitialBlock below at start
@@ -458,6 +462,9 @@ Item {
       console.debug("New acceleration:", acceleration)
     }
   }
+
+
+
 
   function moveFirstObstacleInCurrentTrack() {
     // Get obstacles of type cow
