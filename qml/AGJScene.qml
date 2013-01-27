@@ -118,17 +118,6 @@ SceneBase {
     color: "white"
   }
 
-  Text {
-    // place it on top of the window, not on top of the logical scene
-    anchors.top: scoreText.bottom
-    anchors.horizontalCenter: scoreText.horizontalCenter
-
-    text: "Pressure: " + player.steamPressure + "%"
-    font.family: fontHUD.name
-    font.pixelSize: 18
-    color: "white"
-  }
-
   // gets called by Main when this scene gets active
   // starts a game again - stopGame() was called before so it is save to call that here
   function enterScene() {
@@ -179,6 +168,17 @@ SceneBase {
     // in the default state, this should be invisible!
     visible: false
     anchors.centerIn: parent
+  }
+
+  PressureOverlay {
+    id: pressureOverlay
+
+    pressure: player.steamPressure
+
+    anchors.bottom: gameWindowAnchorItem.bottom
+    anchors.left: gameWindowAnchorItem.left
+    anchors.leftMargin: 10
+    anchors.bottomMargin: 10
   }
 
   HornControl {

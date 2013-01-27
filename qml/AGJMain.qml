@@ -41,7 +41,7 @@ GameWindow {
   BackgroundMusic {
     id: backgroundMusic
     source: "snd/wind.wav"
-    volume: 0.6
+    volume: 0.75
   }
 
   // Custom font loading of ttf fonts

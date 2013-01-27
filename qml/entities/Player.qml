@@ -75,6 +75,8 @@ EntityBase {
       // Swipe to the right
       if (angle  > 330 || angle < 30) {
         steamPressure += steamPressureIncreaseWithScooping
+        if (steamPressure > 200)
+          steamPressure = 200
         coalScooped()
       }
     }
@@ -120,6 +122,11 @@ EntityBase {
     }
   }
 
+  Sound {
+    id: hitSound
+    source: "../snd/hit.wav"
+  }
+
   BoxCollider {
     id: collider
     x: sprite.x+offset*2
@@ -145,6 +152,8 @@ EntityBase {
       var collidedEntity = component.owningEntity;
       var collidedEntityType = collidedEntity.entityType;
       if(collidedEntityType === "obstacle") {
+        hitSound.play()
+
         // the obstacle is pooled for better performance
         collidedEntity.removeEntity();
 
@@ -163,6 +172,9 @@ EntityBase {
 
     y = level.height/2
     score = 0
+
+    // Start sound effect
+    soundRepeater.itemAt(__currentSoundIndex).play()
 
     console.debug("initialized player to level center:", x, y)
   }
