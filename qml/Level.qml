@@ -52,7 +52,8 @@ Item {
   property real trackSectionHeight: scene.height/5 // this is NOT the image size!
 
   // make some more, so they are created outside of the screen also at 16:9 devices
-  property int numVisibleTracks: level.width/trackSectionWidth + 5 // for testing the creation and make it visible in the scene, set the additional amount to 0
+  // do not set too many in the future, because then there are not that many switches created at the current player rail
+  property int numVisibleTracks: level.width/trackSectionWidth + 2 // for testing the creation and make it visible in the scene, set the additional amount to 0
 
   // the background images are moved up by this offset so on widescreen devices the full background is visible
   property real __xOffsetForWindow: scene.__xOffsetForAbsoluteWindowCoordinates
@@ -76,15 +77,32 @@ Item {
   property bool showCollision: false
   property bool showTouchAreas: false
 
+  // ------ probability values for balancing
+
+  property real pSwitchAtPlayerRail: 0.4
+  property real pSwitchAtNonPlayerRow: 0.2
+
+  // Hhigher probability to create a cow, if there was a switch to the left.
+  // Even higher, if the switch was where the player is.
+  // On straight pieces, probability is low because player can only honk to escape the cows then.
+  property real pCowAfterPlayerSwitchInLastColumn: 0.8
+  property real pCowAfterNonPlayerSwitch: 0.4
+  property real pCowFreePos: 0.05
 
   EditableComponent {
       id: editableEditorComponent
       target: parent
       type: "Level"
       properties: {
-        "railAmount":               {"minimum": 0, "maximum": 10,"stepsize": 1,  "default": 3},
+        /*
+"railAmount":               {"minimum": 0, "maximum": 10,"stepsize": 1,  "default": 3},
         "playerRowActive":          {"minimum": 0, "maximum": railAmount,"stepsize": 1,  "default": 1},
         "trackSectionPoolingEnabled":          {"minimum": false, "maximum": true, "default": trackSectionPoolingEnabled},
+        */
+
+        "pCowAfterPlayerSwitchInLastColumn": {"minimum": 0.01, "maximum": 1, "default": pCowAfterPlayerSwitchInLastColumn},
+        "pCowAfterNonPlayerSwitch": {"minimum": 0.01, "maximum": 1, "default": pCowAfterNonPlayerSwitch},
+        "pCowFreePos": {"minimum": 0.01, "maximum": 1, "default": pCowFreePos},
 
         // Particle configuration properties
         "obstacleCreationPropability":               {"minimum": 0, "maximum": 1, "default": 0.3,"stepsize": 0.01, "label": "Obstacles" /*,"group": "level"*/},
@@ -315,6 +333,7 @@ Item {
 
     onVelocityChanged: {
       player.velocity = velocity
+      scene.snowing.gravity.x = velocity
       var colormult = velocity*(-1)/1000
       if(colormult>0.60) {
         chimneyExplotionParticle.start()
@@ -322,7 +341,7 @@ Item {
       } else {
         chimneyParticle.startColor = Qt.rgba(1-colormult,1-colormult,1-colormult,colormult)
       }
-      //console.debug("vel changed to:", velocity)
+      console.debug("vel changed to:", velocity)
     }
 
     // running is set to false - call start() here

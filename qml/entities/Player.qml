@@ -1,12 +1,14 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import Box2D 1.0
 import VPlay 1.0
+import "../particles"
 
 EntityBase {
   entityType: "player"
 
   property alias sprite: sprite
+  property alias steamParticle: steamParticle
+  property alias steamParticle2: steamParticle2
 
   signal died
   signal collisionWithTrackSection(string direction)
@@ -201,4 +203,22 @@ EntityBase {
     }
   }
 
+  SteamParticle {
+    id: steamParticle
+    x: 50
+    y: 30
+    rotation: 210
+    Component.onCompleted: {
+      steamParticle.stop()
+    }
+  }
+  SteamParticle {
+    id: steamParticle2
+    x: 50
+    y: -30
+    rotation: -30
+    Component.onCompleted: {
+      steamParticle2.stop()
+    }
+  }
 }
