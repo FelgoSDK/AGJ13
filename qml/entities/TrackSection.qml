@@ -62,7 +62,9 @@ EntityBase {
 
   MultiResolutionImage {
     id: sign
-    anchors.left: img.left
+    x: img.x-sign.width/2
+    z: parent.z+5
+    //anchors.left: img.left
     anchors.verticalCenter: img.verticalCenter
 
     visible: !(variationType==="straight") && (variationSource==="sender")
@@ -104,7 +106,7 @@ EntityBase {
       anchors.rightMargin: 1
 //      color: "brown"
     }
-    Rectangle {
+    /*Rectangle {
       id: rectTop
       x: variationSource === "sender" ? 0 : main.width-height
       anchors.bottom: main.top
@@ -137,7 +139,7 @@ EntityBase {
       height: 5
       color: "blue"
       visible: turnDirection === "down"
-    }
+    }*/
   }
 
   BoxCollider {
