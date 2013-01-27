@@ -170,6 +170,8 @@ EntityBase {
   function init() {
     lives = initialLives
 
+    steamPressure = 100
+
     y = level.height/2
     score = 0
 
