@@ -122,6 +122,11 @@ EntityBase {
     }
   }
 
+  Sound {
+    id: hitSound
+    source: "../snd/hit.wav"
+  }
+
   BoxCollider {
     id: collider
     x: sprite.x+offset*2
@@ -147,6 +152,8 @@ EntityBase {
       var collidedEntity = component.owningEntity;
       var collidedEntityType = collidedEntity.entityType;
       if(collidedEntityType === "obstacle") {
+        hitSound.play()
+
         // the obstacle is pooled for better performance
         collidedEntity.removeEntity();
 
