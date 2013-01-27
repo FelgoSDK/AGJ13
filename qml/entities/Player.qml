@@ -12,6 +12,8 @@ EntityBase {
   signal collisionWithTrackSection(string direction)
 
   signal collision
+  // Currently not used
+  signal coalScooped
 
   // gets increased over time - it has the same value as the y value of the level
   property int score: 0
@@ -25,6 +27,7 @@ EntityBase {
   // Gets decreased while accelerating and honking, increases while acceleration is 0
   property int steamPressure: 100
   property int steamPressureDeltaForHonking: 20
+  property int steamPressureIncreaseWithScooping: 4
 
   property int initialLives: 100
 
@@ -58,6 +61,23 @@ EntityBase {
     id: sprite
     source:  "../img/train-sd.png"
     anchors.centerIn: parent
+  }
+
+  MultiTouchArea {
+    anchors.left: sprite.left
+    anchors.verticalCenter: sprite.verticalCenter
+    width: sprite.width / 2
+    height: sprite.height
+
+    enabled: level.multiplayer
+
+    onSwipe: {
+      // Swipe to the right
+      if (angle  > 330 || angle < 30) {
+        steamPressure += steamPressureIncreaseWithScooping
+        coalScooped()
+      }
+    }
   }
 
   Sound {
