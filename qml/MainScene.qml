@@ -36,7 +36,7 @@ SceneBase {
     anchors.verticalCenter: parent.verticalCenter
 
     MenuText {
-      text: "AGJ"
+      text: "Locomotive Breath"
       font.pixelSize: 35
       //font.bold: true
     }
