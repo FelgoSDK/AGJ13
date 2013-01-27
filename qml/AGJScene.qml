@@ -230,6 +230,43 @@ SceneBase {
     }
   }
 
+  Row {
+    anchors.bottom: scene.gameWindowAnchorItem.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    spacing: 10
+
+    Image {
+      source: "img/moose-sd.png"
+      width: 32
+      height: 32
+      visible: player.lives>0
+    }
+
+    Image {
+      source: "img/moose-sd.png"
+      width: 32
+      height: 32
+      visible: player.lives>1
+    }
+
+    Image {
+      source: "img/moose-sd.png"
+      width: 32
+      height: 32
+      visible: player.lives>2
+    }
+
+//    Repeater {
+//      model: player.lives
+
+//      Image {
+//        source: "img/moose-sd.png"
+//        width: 32
+//        height: 32
+//      }
+//    }
+  }
+
   ItemEditor {
     id: itemEditor
     //width: 200
