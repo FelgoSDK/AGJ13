@@ -350,14 +350,14 @@ Item {
     onVelocityChanged: {
       player.velocity = velocity
       scene.snowing.gravity.x = velocity
-      var colormult = velocity*(-1)/1000
-      if(colormult>0.60) {
+      var colormult = velocity*(-1)/400
+      if(colormult>0.80) {
         chimneyExplotionParticle.start()
         chimneyParticle.startColor = Qt.rgba(0.0,0.18,0.2,0.9)
       } else {
         chimneyParticle.startColor = Qt.rgba(1-colormult,1-colormult,1-colormult,colormult)
       }
-//      console.debug("vel changed to:", velocity)
+      //console.debug("vel changed to:", velocity)
 
 
       // the faster the player moves, the more points he gets
