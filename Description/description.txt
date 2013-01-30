@@ -1,7 +1,7 @@
 Locomotive Breath is a multitouch tablet game which is playable in singleplayer or co-op mode.
-Aim of the game is to drive a steam locomotive by regulating the velocity and switching the rails to avoid colissions with moose standing around. The player is able to switch the rails with a finger-swipe up or down on the labeled rails.
+Aim of the game is to drive a steam locomotive by regulating the velocity and switching the rails to avoid collisions with moose standing around. The player is able to switch the rails with a finger-swipe up or down on the labeled rails.
 
-In case of a co-op game the second player is asked to shovel coals or release steam with the pipe to keep the preasure in the green field.
-Aditionally, the steam pipe helps to chase away moose standing on your lane but this only works with enough steam in the boiler.
+In case of a co-op game the second player is asked to shovel coals or release steam with the pipe to keep the pressure in the green field.
+Additionally, the steam pipe helps to chase away moose standing on your lane - but this only works with enough steam in the boiler!
 
-We choosed the snow scenery with moose, because of the nordish problem with them standing on railway lanes, when the snow around is to much.
+We chose the snow scenery with moose, because of the nordish problem with them standing on railway lanes, when there is too much snow.
