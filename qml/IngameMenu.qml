@@ -17,13 +17,13 @@ Column {
       scene.state = "" // reset to default state, so hide this menu
     }
   }
-  MenuButton {
-    text: "Tweak"
-    visible: system.debugBuild
-    onClicked: {
-      itemEditor.visible = !itemEditor.visible
-    }
-  }
+//  MenuButton {
+//    text: "Tweak"
+//    visible: system.debugBuild
+//    onClicked: {
+//      itemEditor.visible = !itemEditor.visible
+//    }
+//  }
   MenuButton {
     text: "Toggle Sound"
     onClicked: {

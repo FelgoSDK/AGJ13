@@ -95,28 +95,29 @@ Item {
   property real pCowAfterNonPlayerSwitch: 0.4
   property real pCowFreePos: 0.02
 
-  EditableComponent {
-      id: editableEditorComponent
-      target: parent
-      type: "Level"
-      properties: {
-        /*
-"railAmount":               {"minimum": 0, "maximum": 10,"stepsize": 1,  "default": 3},
-        "playerRowActive":          {"minimum": 0, "maximum": railAmount,"stepsize": 1,  "default": 1},
-        "trackSectionPoolingEnabled":          {"minimum": false, "maximum": true, "default": trackSectionPoolingEnabled},
-        */
 
-        "pCowAfterPlayerSwitchInLastColumn": {"minimum": 0.01, "maximum": 1, "default": pCowAfterPlayerSwitchInLastColumn},
-        "pCowAfterNonPlayerSwitch": {"minimum": 0.01, "maximum": 1, "default": pCowAfterNonPlayerSwitch},
-        "pCowFreePos": {"minimum": 0.01, "maximum": 1, "default": pCowFreePos},
+//  EditableComponent {
+//      id: editableEditorComponent
+//      target: parent
+//      type: "Level"
+//      properties: {
+//        /*
+//"railAmount":               {"minimum": 0, "maximum": 10,"stepsize": 1,  "default": 3},
+//        "playerRowActive":          {"minimum": 0, "maximum": railAmount,"stepsize": 1,  "default": 1},
+//        "trackSectionPoolingEnabled":          {"minimum": false, "maximum": true, "default": trackSectionPoolingEnabled},
+//        */
 
-        // Particle configuration properties
-        "obstacleCreationPropability":               {"minimum": 0, "maximum": 1, "default": 0.3,"stepsize": 0.01, "label": "Obstacles" /*,"group": "level"*/},
-        "levelMovementSpeed":                      {"minimum": 0, "maximum": 1000, "default": levelMovementSpeed,"stepsize": 1, /*"group": "level"*/},
-        "levelMovementSpeedMinimum":               {"minimum": 0, "maximum": 1000, "default": levelMovementSpeedMinimum,"stepsize": 1, /*"group": "level"*/},
-        "levelMovementSpeedMaximum":               {"minimum": 0, "maximum": 1000, "default": levelMovementSpeedMaximum,"stepsize": 1, /*"group": "level"*/},
-      }
-  }
+//        "pCowAfterPlayerSwitchInLastColumn": {"minimum": 0.01, "maximum": 1, "default": pCowAfterPlayerSwitchInLastColumn},
+//        "pCowAfterNonPlayerSwitch": {"minimum": 0.01, "maximum": 1, "default": pCowAfterNonPlayerSwitch},
+//        "pCowFreePos": {"minimum": 0.01, "maximum": 1, "default": pCowFreePos},
+
+//        // Particle configuration properties
+//        "obstacleCreationPropability":               {"minimum": 0, "maximum": 1, "default": 0.3,"stepsize": 0.01, "label": "Obstacles" /*,"group": "level"*/},
+//        "levelMovementSpeed":                      {"minimum": 0, "maximum": 1000, "default": levelMovementSpeed,"stepsize": 1, /*"group": "level"*/},
+//        "levelMovementSpeedMinimum":               {"minimum": 0, "maximum": 1000, "default": levelMovementSpeedMinimum,"stepsize": 1, /*"group": "level"*/},
+//        "levelMovementSpeedMaximum":               {"minimum": 0, "maximum": 1000, "default": levelMovementSpeedMaximum,"stepsize": 1, /*"group": "level"*/},
+//      }
+//  }
 
   Component.onCompleted: {
 

@@ -16,7 +16,7 @@ GameWindow {
   property int maximumHighscore: 0
   property int lastScore: 0
 
-  displayFpsEnabled: true
+  displayFpsEnabled: false
 
   Component.onCompleted: {
     var storedScore = settings.getValue("maximumHighscore");

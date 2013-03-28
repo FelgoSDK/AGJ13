@@ -9,7 +9,7 @@ SceneBase {
   property alias level: level
   property alias player: level.player
   property alias entityContainer: level
-  property alias itemEditor: itemEditor
+  //property alias itemEditor: itemEditor
 
   // make 1 grid (so 1 block and the player size) 48 logical px - a roost has this size, so 320/48= 6.6 can be displayed in one scene
   gridSize: 96//48//32
@@ -251,6 +251,7 @@ SceneBase {
     }
   }
 
+  /*
   ItemEditor {
     id: itemEditor
     //width: 200
@@ -277,6 +278,7 @@ SceneBase {
 
     opacity: 0.4
   }
+  */
 
   states: [
     State {
