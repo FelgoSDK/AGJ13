@@ -14,20 +14,6 @@ SceneBase {
   // make 1 grid (so 1 block and the player size) 48 logical px - a roost has this size, so 320/48= 6.6 can be displayed in one scene
   gridSize: 96//48//32
 
-  // place it on bottom, because otherwise it would be unfair compared to different devices because the player would see more to the bottom playfield!
-  //sceneAlignmentY: "bottom"
-
-  // place it on right, because otherwise it would be unfair compared to different devices because the player would see more to the bottom playfield!
-  //sceneAlignmentX: "right"
-
-  // put it left, so the train is always on the very left side - in the end, it should be put right! does not matter if train reaches further right
-  sceneAlignmentX: "left"
-
-  // for performance-testing, if the score should updated every frame with the y value of the level
-  // it is set to false, because updating a static text every frame is very poor for performance, because a texture is generated every frame!
-  // thus, if this flag is set to false the score is only updated every 10th frame which speeds things up
-  property bool enableConstantScoreTextUpdating: false
-
   onBackPressed: {
     // TODO: instead of navigating to main without any warning, show an pause screen to avoid unintended exit of the game
     // it is important to call stopGame() here, because otherwise the entities would not be deleted!
@@ -52,28 +38,23 @@ SceneBase {
     //y: level.y // uncomment this, if you want the physics world move with the level - this is only for testing the debugDraw, and has no effect on the game logic ans the physics positions are not mapped back to the physicsWorld!
   }
 
-  Level {
-    id: level
+    Level {
+      id: level
 
-    width: scene.width
-    height: scene.height
+      width: scene.width
+      height: scene.height
 
 
-    onGameLost: {
-      level.stopGame();
-      // lastScore is used in GameOverScreen to check if a new highscore is reached
-      lastScore = player.totalScore;
-      // Increment the player's death count
-      player.deaths++;
-      // change to state gameOver showing the GameOverScene - in the SceneBase a crossfade effect is implemented
-      window.state = "gameOver"
+      onGameLost: {
+        level.stopGame();
+        // lastScore is used in GameOverScreen to check if a new highscore is reached
+        lastScore = player.totalScore;
+        // Increment the player's death count
+        player.deaths++;
+        // change to state gameOver showing the GameOverScene - in the SceneBase a crossfade effect is implemented
+        window.state = "gameOver"
+      }
     }
-  }
-
-  // this allows usage of the left and right keys on desktop systems or mobiles with physical keyboards
-  // focus must be set to visible, not just to true, because when the scene gets invisible, it looses focus and would never get set to true again!  
-  // forward the input to the controller of the player
-  //Keys.forwardTo: player.controller
 
   Keys.onReleased: {
     if(event.key === Qt.Key_Plus)
@@ -86,30 +67,12 @@ SceneBase {
   }
 
 
-//  MouseArea {
-//    // use the full window as control item, press anywhere on the left half for steering left, on the right half for steering right
-//    anchors.fill: scene.gameWindowAnchorItem
-//    onPressed: {
-//      if(mouseX > scene.gameWindowAnchorItem.width/2)
-//        player.controller.xAxis = 1;
-//      else
-//        player.controller.xAxis = -1;
-//    }
-//    onPositionChanged: {
-//      if(mouseX > scene.gameWindowAnchorItem.width/2)
-//        player.controller.xAxis = 1;
-//      else
-//        player.controller.xAxis = -1;
-//    }
-//    onReleased: player.controller.xAxis = 0
-//  }
-
   Text {
     id: scoreText
 
     // place it on top of the window, not on top of the logical scene
     anchors.top: scene.gameWindowAnchorItem.top
-    anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
+    anchors.horizontalCenter: scene.horizontalCenter
     anchors.topMargin: 5
 
     text: "Score: " + Math.round(player.totalScore)// + " Lives:" + player.lives + " Speed:" + -Math.round(level.levelMovementSpeedCurrent)
@@ -149,13 +112,19 @@ SceneBase {
     source: "img/pausebutton.png"
     width: 64
     height: 32
-    x: scene.gameWindowAnchorItem.width-50
+    anchors.top: scene.gameWindowAnchorItem.top
+    anchors.right: scene.gameWindowAnchorItem.right
+    anchors.rightMargin: -5
 
     MultiTouchArea {
       anchors.fill: parent
       onClicked: {
         // this activates the ingameMenu state, which will show the IngameMenu item
-        scene.state = "ingameMenu"
+        if(scene.state == "") {
+          scene.state = "ingameMenu"
+        } else {
+          scene.state = ""
+        }
       }
     }
 
@@ -175,16 +144,16 @@ SceneBase {
 
     pressure: player.steamPressure
 
-    anchors.bottom: gameWindowAnchorItem.bottom
-    anchors.left: gameWindowAnchorItem.left
+    anchors.bottom: scene.gameWindowAnchorItem.bottom
+    anchors.left: scene.gameWindowAnchorItem.left
     anchors.leftMargin: 10
     anchors.bottomMargin: 10
   }
 
   HornControl {
-    anchors.top: gameWindowAnchorItem.top
-    anchors.left: gameWindowAnchorItem.left
-    anchors.leftMargin: 10
+    anchors.top: scene.gameWindowAnchorItem.top
+    anchors.left: scene.gameWindowAnchorItem.left
+    anchors.leftMargin: 4
 
     onHonkingChanged: {
       // Honking is only possible if we have more than 20% steam
@@ -207,25 +176,20 @@ SceneBase {
   }
 
   ThrottleControl {
-    // Can't use anchors here because of rotation
-    // anchors.right: gameWindowAnchorItem.right
-    // anchors.bottom: gameWindowAnchorItem.bottom
-    x: gameWindowAnchorItem.x + gameWindowAnchorItem.width - width/2 - height
-    y: gameWindowAnchorItem.y + gameWindowAnchorItem.height - width/2 - height
+    anchors.right: scene.gameWindowAnchorItem.right
+    anchors.bottom: scene.gameWindowAnchorItem.bottom
+    anchors.rightMargin: 10
 
     onBrakeChanged: {
       if (brake) {
-        console.log("Train in brake mode!")
         level.setAcceleration(20);
       }
       else {
-        console.log("Brakes released")
         level.setAcceleration(0)
       }
     }
 
     onAccelerationChanged: {
-      console.log("Train's acceleration value", acceleration)
       level.setAcceleration(-acceleration)
     }
   }
@@ -233,7 +197,7 @@ SceneBase {
   Row {
     id: row
     anchors.bottom: scene.gameWindowAnchorItem.bottom
-    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.horizontalCenter: scene.horizontalCenter
     spacing: 10
 
     Repeater {
