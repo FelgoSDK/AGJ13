@@ -14,7 +14,7 @@ var FONT_XXSMALL = 16;
 
 var COLOR_TEXT = "#e6e4e3" // i.e.: Text Color
 var COLOR_FOREGROUND = "#534f4e"; // i.e.:  Button Color
-var COLOR_SIGNAL = "#2b8cc0"; // i.e.: Slider Progress
+var COLOR_SIGNAL = "green";//#2b8cc0"; // i.e.: Slider Progress
 var COLOR_SECONDARY_FOREGROUND = "#423e3d"; // i.e.: Slider Track
 var COLOR_BACKGROUND = "#44403f"; // Background
 
