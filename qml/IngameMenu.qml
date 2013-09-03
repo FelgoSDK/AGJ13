@@ -6,11 +6,6 @@ Column {
 
 
   MenuButton {
-    text: "Resume"
-    onClicked: scene.state = "" // reset to default state, so hide this menu
-  }
-
-  MenuButton {
     text: "Restart"
     onClicked: {
       level.restartGame();

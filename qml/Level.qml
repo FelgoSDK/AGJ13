@@ -6,9 +6,6 @@ import "entities"
 import "particles"
 import "scripts/levelLogic.js" as LevelLogic
 
-// the level gets moved in the negative y direction (so upwards) -> this has the effect that all entities in it are moving downwards!
-// no Flickable is needed as root item, because it shouldnt be able to get pinched or moved by the user - instead the level gets moved downwards over time with increasing speed
-//Flickable {
 Item {
   id: level
 
@@ -59,7 +56,7 @@ Item {
 
   // make some more, so they are created outside of the screen also at 16:9 devices
   // do not set too many in the future, because then there are not that many switches created at the current player rail
-  property int numVisibleTracks: level.width/trackSectionWidth + 2 // for testing the creation and make it visible in the scene, set the additional amount to 0
+  property int numVisibleTracks: scene.gameWindowAnchorItem.width/trackSectionWidth + 2 // for testing the creation and make it visible in the scene, set the additional amount to 0
 
   // the background images are moved up by this offset so on widescreen devices the full background is visible
   property real __xOffsetForWindow: scene.__xOffsetForAbsoluteWindowCoordinates
@@ -124,20 +121,16 @@ Item {
     // this creates some roosts, coins and windows beforehand, so they dont need to be created at runtime
     preCreateEntityPool();
 
-    // startGame() is called in ChickenOutbreakScene.enterScene()
   }
 
   function preCreateEntityPool() {
-//    entityManager.createPooledEntitiesFromUrl(Qt.resolvedUrl("entities/TrackSection.qml"), 40);
+    entityManager.createPooledEntitiesFromUrl(Qt.resolvedUrl("entities/TrackSection.qml"), 40);
     entityManager.createPooledEntitiesFromUrl(Qt.resolvedUrl("entities/Obstacle.qml"), 10);
 
   }
 
 
   function stopGame() {
-
-    console.debug("stopGame")
-
     levelMovementAnimation.stop()
 
     // this function automatically pools all entities which have poolingEnabled set to true
@@ -145,16 +138,11 @@ Item {
     entityManager.removeAllEntities();
     // from now on generate obstacles
     LevelLogic.generateObstacles = false
-
-    // only use this for debugging, whena game should immediately be started after it was stopped
-    //startGame();
   }
 
   // initialize level data - this function can be called multiple times, so every time a new game gets started
   // it is called from ChickenOutbreakScene.enterScene()
   function startGame() {
-    console.debug("Level: startGame()");
-
     // it is important that lastY is set first, so the dy in onYChanged will be 0 and no new row is created
     currentTrackColumn = 0
 
@@ -165,14 +153,9 @@ Item {
 
     player.init()
 
-    // start positioned on the window top
-    levelBackground.x = -__xOffsetForWindow;
-    levelBackground2.x = levelBackground.x+levelBackgroundWidth;
-
     levelMovementSpeedCurrent = levelMovementSpeed
 
     LevelLogic.init()
-    console.debug("numVisibleTracks:", numVisibleTracks)
     for(var i=0; i<numVisibleTracks; i++) {
       LevelLogic.createRandomRowForRowNumber(i);
     }
@@ -180,49 +163,24 @@ Item {
     LevelLogic.generateObstacles = true
 
 
-    // the minimum is still 0 here!?
-//    levelMovementSpeed = -levelMovementSpeedMinimum
-    //levelMovementAnimation.velocity = -levelMovementSpeedMinimum
-    // levelMovementAnimation.velocity = -levelMovementSpeedMaximum // for performance testing with higher velocity
     levelMovementAnimation.start();
 
-    console.debug("movementanimation.v:", levelMovementAnimation.velocity)
   }
 
   // this is the offset of the 2 backgrounds
   // make the offset a litte bit smaller, so no black background shines through when they are put below each other
   property real levelBackgroundWidth: levelBackground.width*levelBackground.scale-1
 
-  MultiResolutionImage {
-    //BackgroundImage { // dont use a BackgroundImage yet, because blending isnt working correclty! (overlapping regions appear lighter!)
-    id:levelBackground
-    source: "img/background-snow1-sd.png"
+  // handles the repositioning of the background, if they are getting out of the scene
+  // internally, 4 images are created below each other so it appears to the user as being one continuous background
+  ParallaxScrollingBackground {
+    id: levelBackground
 
-    // the logical width should be the scene size - this will change when the background image is bigger than the scene size to support multiple resolutions & aspect ratios
-    // in that case, use a MultiResolutionImage with pixelFormat set to 3 and position it in the horizontal center
-    // multiply width & height by 1.2, so it is still visible on 4:3 and 16:9 ratios!
-    scale: 1.2
-
-    // position horizontally centered
-    anchors.verticalCenter: parent.verticalCenter
-
-    // the windows have z=-1, all other objects have 0, so put behind the windows
-    z:-2
-  }
-
-  MultiResolutionImage {
-    //BackgroundImage { // dont use a BackgroundImage yet, because blending isnt working correclty! (overlapping regions appear lighter!)
-    id:levelBackground2
-    source: "img/background-snow2-sd.png"
-
-    //opacity: 0.6 // for testing the second copy of the background
-    scale: 1.2
-
-    // position horizontally centered
-    anchors.verticalCenter: parent.verticalCenter
-
-    // the windows have z=-1, all other objects have 0, so put behind the windows
-    z:-2
+    x: -level.x
+    sourceImage: "img/background-snow1-sd.png"
+    sourceImage2: "img/background-snow2-sd.png"
+    movementVelocity: Qt.point(levelMovementAnimation.velocity,0)
+    running: levelMovementAnimation.running // start non-running, gets set to true in startGame
   }
 
   SplatterParticle {
@@ -246,7 +204,7 @@ Item {
       gameLost();
     }
     onCollisionWithTrackSection: {
-      console.debug("PLAYER COLLIDED WITH trackelement, variation:",direction)
+      //console.debug("PLAYER COLLIDED WITH trackelement, variation:",direction)
       if(direction === "up") {
         playerRowActive--
         if(playerRowActive<0)
@@ -287,11 +245,8 @@ Item {
   }
 
   BorderRegion {
-    x: -level.x - width - trackSectionWidth// + 5
-    // for testing the functionality, put it inside the view not outside
-    //x: -level.x
-    y: scene.gameWindowAnchorItem.x
-    height: scene.gameWindowAnchorItem.height// make bigger than the window, because the roost can stand out of the scene on the right side when the gridSize is not a multiple of the scene.width (which it currently is: 320/48=6.6) and thus if the player would stand on the right side no collision would be detected!
+    x: -level.x - width - trackSectionWidth*3
+    height: scene.height// make bigger than the window, because the roost can stand out of the scene on the right side when the gridSize is not a multiple of the scene.width (which it currently is: 320/48=6.6) and thus if the player would stand on the right side no collision would be detected!
     width: 80 // make big enough, so they dont go through
   }
 
@@ -305,9 +260,6 @@ Item {
     running: levelMovementAnimation.acceleration < 0 && player.steamPressure > 0 && -levelMovementAnimation.velocity !== levelMovementSpeedMaximum || levelMovementAnimation.acceleration > 0 && -levelMovementAnimation.velocity !== levelMovementSpeedMinimum
     repeat: true
     onTriggered: {
-
-      console.log("levelMovementSpeed", levelMovementSpeed, "levelMovementSpeedMinimum", levelMovementSpeedMinimum)
-
       // Acceleration is negative
       player.steamPressure += levelMovementAnimation.acceleration / 10
 
@@ -406,34 +358,7 @@ Item {
       //lastX = x;
 
     }
-
-    // handles the repositioning of the backgrounds, if they are getting out of the scene
-    // by tiling the 2 backgrounds vertically, it appears to the user as being one continuous background
-    if(-x-__xOffsetForWindow > (levelBackground.x+levelBackgroundWidth)) {
-      //console.debug("shift background1 down from", levelBackground.x, levelBackgroundWidth)
-      levelBackground.x += 2*levelBackgroundWidth
-      //console.debug("... to", levelBackground.x)
-    }
-    if(-x-__yOffsetForWindow > (levelBackground2.x+levelBackgroundWidth)) {
-      //console.debug("shift background2 down from", levelBackground2.x, levelBackgroundWidth )
-      levelBackground2.x += 2*levelBackgroundWidth
-      //console.debug("... to", levelBackground2.x)
-    }
-
-
-    // TODO: use a bitmap font for text updating which is much faster -> this feature is not supported by V-Play yet, contact us if you would need it at team@v-play.net
-    // for performance reasons, disable the score updating every frame, which is expensive with the text element because a texture is recreated every time the text changes!
-    if(enableConstantScoreTextUpdating)
-      player.score = -level.x.toFixed()
-    else {
-      var deltaX = -(x - lastFrameX)
-      // deltaX is in between 0.3 ... 15 - the faster the train is, the
-      var additionalScore = deltaX/10 * level.speedScoringMultiplier
-      //console.debug("additionalScore:", additionalScore, "scoringMultiplier:", level.speedScoringMultiplier, "deltaX:", deltaX)
-      player.score += additionalScore
-      // divide by an arbitrary number, so the text doesnt get changed every frame which is bad for performance as it is no bitmap font yet!
-      //player.score = -(level.x/40).toFixed()
-    }
+    player.score = -(level.x/40).toFixed()
 
     if(!player.followingPath) {
       player.x = -level.x + player.sprite.width/2
@@ -445,9 +370,6 @@ Item {
 
   function accelerate(diff) {
     levelMovementAnimation.acceleration += diff
-
-    console.debug("acceleration diff:", diff, "new acc:", levelMovementAnimation.acceleration)
-
   }
 
   function setAcceleration(acceleration) {
@@ -460,12 +382,8 @@ Item {
 
       levelMovementAnimation.acceleration = acceleration * 10
 
-      console.debug("New acceleration:", acceleration)
     }
   }
-
-
-
 
   function moveFirstObstacleInCurrentTrack() {
     // Get obstacles of type cow
@@ -505,16 +423,13 @@ Item {
 
   // ------------------- for debugging only ------------------- //
   function pauseGame() {
-    console.debug("pauseGame()")
     levelMovementAnimation.stop()
   }
   function resumeGame() {
-    console.debug("resumeGame()")
     levelMovementAnimation.start()
   }
 
   function restartGame() {
-    console.debug("restartGame()")
     stopGame();
     startGame();
   }
