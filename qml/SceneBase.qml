@@ -14,7 +14,6 @@ Scene {
   // also, the focus-property for key handling relies on the visible-property
   visible: opacity>0
 
-
   // handle this signal in each Scene
   signal backPressed
 
@@ -22,6 +21,11 @@ Scene {
   Behavior on opacity {
     // the cross-fade animation should last 350ms
     NumberAnimation { duration: 350 }
+  }
+
+  // white background for all scenes
+  Rectangle {
+    anchors.fill: scene.gameWindowAnchorItem
   }
 
   // NOTE: setting the focus to activeScene === squabySceneBase is not sufficient when the scene gets loaded dynamically!

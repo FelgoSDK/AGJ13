@@ -8,6 +8,8 @@ GameWindow {
   height: 320*2//*1.5
 
 
+  resizeable: true
+
   property alias level: scene.level
   property alias player: scene.player // this works, when player is defined as alias in scene
 
@@ -15,8 +17,8 @@ GameWindow {
   // these get accessed from the MainScene and the ChickenOutbreakScene
   property int maximumHighscore: 0
   property int lastScore: 0
-
-  displayFpsEnabled: false
+  property bool debugVisuals: false
+  displayFpsEnabled: true
 
   Component.onCompleted: {
     var storedScore = settings.getValue("maximumHighscore");

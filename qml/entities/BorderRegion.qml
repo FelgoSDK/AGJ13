@@ -38,10 +38,11 @@ EntityBase {
     }
   }
 
-  // just for debugging, to test where the region is (it is not visible if out of scene, but it can be moved slightly into the scene for testing the behavior
+
   Rectangle {
-    id: rect
+    anchors.fill: boxCollider
     color: "brown"
-    anchors.fill: parent
+    opacity: 0.5
+    visible: debugVisuals
   }
 }

@@ -128,6 +128,13 @@ EntityBase {
     source: "../snd/hit.wav"
   }
 
+  Rectangle {
+    anchors.fill: collider
+    color: "red"
+    opacity: 0.5
+    visible: debugVisuals
+  }
+
   BoxCollider {
     id: collider
     x: sprite.x+offset*2

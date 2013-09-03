@@ -56,13 +56,12 @@ EntityBase {
     anchors.centerIn: parent
     rotation: directionUp ? 0 : 180
   }
-//  Rectangle {
-//    id: sprite
-//    width: 50
-//    height: 50
-//    color: "yellow"
-//    anchors.centerIn: parent
-//  }
+  Rectangle {
+    anchors.fill: collider
+    color: "yellow"
+    opacity: 0.5
+    visible: debugVisuals
+  }
 
   property alias collider: collider
   BoxCollider {
