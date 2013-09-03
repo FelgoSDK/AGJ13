@@ -49,8 +49,8 @@ EntityBase {
 
   MultiResolutionImage {
     id: multiresimg
-    contentWidth: img.width/multiresimg.contentScaleFactor+1
-    contentHeight: img.height/multiresimg.contentScaleFactor
+    //contentWidth: img.width/multiresimg.contentScaleFactor+1
+    //contentHeight: img.height/multiresimg.contentScaleFactor
     source:  (variationType==="straight") ? "../img/rails-sd.png" :
              ((variationType==="up" || variationType==="upreceiver") ? "../img/cross_ccw-sd.png" :
                ((variationType==="down" || variationType==="downreceiver") ? "../img/cross_ccw-sd.png" :
@@ -104,42 +104,14 @@ EntityBase {
       anchors.right: parent.right
       anchors.leftMargin: 1
       anchors.rightMargin: 1
-//      color: "brown"
     }
-    /*Rectangle {
-      id: rectTop
-      x: variationSource === "sender" ? 0 : main.width-height
-      anchors.bottom: main.top
-      width: 5
-      height: 5
-      color: variationSource === "sender" ? "green" : variationSource === "receiver" ? "red" : "white"
-      visible: variationType === "up" || variationType === "both"
-    }
-    Rectangle {
-      x: 0
-      anchors.bottom: rectTop.top
-      width: 5
-      height: 5
-      color: "blue"
-      visible: turnDirection === "up"
-    }
-    Rectangle {
-      id: rectBottom
-      x: variationSource === "sender" ? 0 : main.width-height
-      anchors.top: main.bottom
-      width: 5
-      height: 5
-      color: variationSource === "sender" ? "green" : variationSource === "receiver" ? "red" : "white"
-      visible: variationType === "down" || variationType === "both"
-    }
-    Rectangle {
-      x: 0
-      anchors.top: rectBottom.bottom
-      width: 5
-      height: 5
-      color: "blue"
-      visible: turnDirection === "down"
-    }*/
+  }
+
+  Rectangle {
+    anchors.fill: collider
+    color: "green"
+    opacity: 0.5
+    visible: debugVisuals
   }
 
   BoxCollider {
