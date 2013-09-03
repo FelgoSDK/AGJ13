@@ -13,15 +13,11 @@ SceneBase {
     window.state = "main"
   }
 
-  MultiResolutionImage {
-    id: multires
+  ParallaxScrollingBackground {
     x: scene.gameWindowAnchorItem.x
-    y: scene.gameWindowAnchorItem.y
-    contentWidth: scene.gameWindowAnchorItem.width/multires.contentScaleFactor
-    contentHeight: scene.gameWindowAnchorItem.height/multires.contentScaleFactor
-
-    source: "img/background-snow2-sd.png"
-    anchors.centerIn: parent
+    sourceImage: "img/background-snow1-sd.png"
+    sourceImage2: "img/background-snow2-sd.png"
+    movementVelocity: Qt.point(-80,0)
   }
 
   MenuText {
@@ -68,17 +64,6 @@ SceneBase {
     var deaths = player.deaths;
 
     console.log("Collected grains:", grains);
-//    if(gameCenter.authenticated) {
-//      if (grains >= 10)
-//        gameCenter.reportAchievement("grains10", 100, true);
-//      if (grains >= 25)
-//        gameCenter.reportAchievement("grains25", 100, true);
-//      if (grains >= 50)
-//        gameCenter.reportAchievement("grains50", 100, true);
-
-//      if (deaths >= 10)
-//        gameCenter.reportAchievement("chickendead1", 100, true);
-//    }
 
     console.log("Player's death count:", deaths);
   }

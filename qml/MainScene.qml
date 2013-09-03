@@ -19,15 +19,13 @@ SceneBase {
     nativeUtils.displayMessageBox(qsTr("Really quit the game?"), "", 2);
   }
 
-  MultiResolutionImage {
-    id: multires
-    x: scene.gameWindowAnchorItem.x
-    y: scene.gameWindowAnchorItem.y
-    contentWidth: scene.gameWindowAnchorItem.width/multires.contentScaleFactor
-    contentHeight: scene.gameWindowAnchorItem.height/multires.contentScaleFactor
+  ParallaxScrollingBackground {
+    id: levelBackground
 
-    source: "img/background-snow2-sd.png"
-    anchors.centerIn: parent
+    x: scene.gameWindowAnchorItem.x
+    sourceImage: "img/background-snow1-sd.png"
+    sourceImage2: "img/background-snow2-sd.png"
+    movementVelocity: Qt.point(-80,0)
   }
 
   Column {
