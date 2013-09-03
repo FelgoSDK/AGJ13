@@ -286,8 +286,8 @@ Item {
       id: imageGroove
       MultiResolutionImage {
         id: imageGrooveID
-        contentWidth: parent.width/imageGrooveID.contentScaleFactor
-        contentHeight: parent.height/imageGrooveID.contentScaleFactor
+        //contentWidth: parent.width/imageGrooveID.contentScaleFactor
+        //contentHeight: parent.height/imageGrooveID.contentScaleFactor
         objectName: "slider_imageGroove"
         source: sliderStyle.grooveItemBackground
       }
@@ -615,8 +615,8 @@ Item {
       id: imageValueIndicator
       MultiResolutionImage {
         id: imageValueIndicatorImage
-        contentWidth: __valueIndicatorItem.width/imageValueIndicatorImage.contentScaleFactor
-        contentHeight: __valueIndicatorItem.height/imageValueIndicatorImage.contentScaleFactor
+        //contentWidth: __valueIndicatorItem.width/imageValueIndicatorImage.contentScaleFactor
+        //contentHeight: __valueIndicatorItem.height/imageValueIndicatorImage.contentScaleFactor
         objectName: "slider_imageValueIndicator"
         source: sliderStyle.valueBackground
       }

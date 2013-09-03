@@ -2,8 +2,14 @@ import QtQuick 1.1
 import VPlay 1.0
 
 Item {
-  width: throttleSlider.width
-  height: throttleSlider.height
+  width: throttleSlider.height
+  height: throttleSlider.width
+
+  Rectangle {
+    anchors.fill: parent
+    color: "red"
+    opacity: 0.5
+  }
 
   // Indicates if the control is currently in brake mode
   property bool brake
@@ -11,17 +17,16 @@ Item {
   // acceleration is between 0 and 10
   property real acceleration
 
-  // Rotate the item here instead of using orientation: Qt.Vertical on the slider
-  rotation: -90
-
   ThrottleSlider {
     id: throttleSlider
 
     // Width is height with vertical orientation
     width: 100
 
-    x: 0
-    y: 0
+    orientation: Qt.Vertical
+
+    x: height/2-width/2
+    y: width/2-height/2
 
     minimumValue: 0
     maximumValue: 13
